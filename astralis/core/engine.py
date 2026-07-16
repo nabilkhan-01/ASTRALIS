@@ -1,4 +1,5 @@
 from astralis.core.config import Config
+from astralis.core.logger import AstralisLogger
 
 
 class Engine:
@@ -6,17 +7,18 @@ class Engine:
 
     def __init__(self):
         self.config = Config()
+        self.logger = AstralisLogger().logger
 
     def start(self):
         """Start the ASTRALIS application."""
 
-        # TODO: Initialize logger
         # TODO: Validate configuration
         # TODO: Load core modules
         # TODO: Run health checks
 
-        print(f"Starting {self.config.project_name}")
-        print(f'Version {self.config.version} "{self.config.codename}"')
-        print(self.config.tagline)
-        print("-" * 40)
-        print("System initialized successfully.")
+        self.logger.info(f"Starting {self.config.project_name}")
+        self.logger.info(
+            f'Version {self.config.version} "{self.config.codename}"'
+        )
+        self.logger.info(f"Philosophy: {self.config.tagline}")
+        self.logger.info("ASTRALIS is ready.")
