@@ -6,47 +6,90 @@
 
 ASTRALIS is designed as a modular AI Operating System.
 
-Each capability exists as an independent module while communicating through a shared core engine.
+Its architecture emphasizes **modularity, maintainability, and extensibility**. Each capability is implemented as an independent module coordinated by a shared Core Engine.
 
-This architecture allows the project to evolve without requiring major redesigns.
+The goal is to allow ASTRALIS to grow over time without requiring major architectural redesigns.
 
 ---
 
 ## High-Level Architecture
 
 ```text
-                User
-                  │
-      ┌───────────┴───────────┐
-      │                       │
-   Voice UI              Desktop UI
-      │                       │
-      └───────────┬───────────┘
-                  │
-           ASTRALIS Core
-                  │
-     ┌────────────┼────────────┐
-     │            │            │
-  Brain        Memory       Security
-     │            │            │
-     └──────┬─────┴─────┬──────┘
-            │           │
-         Tool System   Vision
-            │
-     ┌──────┼────────────────────┐
-     │      │        │           │
- Browser  Files   Terminal   Automation
+                    User
+                      │
+        ┌─────────────┴─────────────┐
+        │                           │
+     Voice UI                  Desktop UI
+        │                           │
+        └─────────────┬─────────────┘
+                      │
+                 Core Engine
+                      │
+        ┌─────────────┼─────────────┐
+        │             │             │
+     Brain         Memory       Security
+        │             │             │
+        └──────┬──────┴──────┬──────┘
+               │             │
+          Tool System      Vision
+               │
+     ┌─────────┼────────────────────┐
+     │         │         │          │
+ Browser     Files    Terminal  Automation
+```
+
+---
+
+## Core Architecture
+
+The Core Engine coordinates all application services and manages the lifecycle of ASTRALIS.
+
+```text
+Core Engine
+│
+├── Configuration
+├── Logger
+├── Module Registry
+└── (Future)
+    ├── Module Loader
+    ├── Lifecycle Manager
+    ├── Health Checker
+    └── Event Bus
 ```
 
 ---
 
 ## Core Components
 
-### Core
+### Core Engine
 
-Coordinates communication between all modules.
+Coordinates application startup, shutdown, and communication between core services.
 
-Responsible for application startup and lifecycle.
+The Engine does **not** contain AI logic. Its responsibility is orchestration.
+
+---
+
+### Configuration
+
+Provides a single source of truth for application-wide settings.
+
+User preferences are intentionally managed separately.
+
+---
+
+### Logger
+
+Provides centralized logging across the application.
+
+All modules should use the shared logger instead of direct `print()` statements.
+
+---
+
+### Module Registry
+
+Maintains a centralized collection of registered application modules.
+
+The registry enables future extensibility without tightly coupling modules to the Engine.
 
 ---
 
@@ -74,7 +117,7 @@ Processes screenshots, images, and visual context.
 
 ---
 
-### Tools
+### Tool System
 
 Allows ASTRALIS to interact with the operating system and external services.
 
@@ -82,26 +125,39 @@ Allows ASTRALIS to interact with the operating system and external services.
 
 ### Security
 
-Manages permissions, authentication, and sensitive operations.
+Responsible for permissions, authentication, and sensitive operations.
 
 ---
 
-### UI
+### User Interface
 
-Provides interfaces for users to interact with ASTRALIS.
+Provides interfaces through which users interact with ASTRALIS.
+
+Examples include desktop applications, voice interfaces, APIs, and future mobile clients.
 
 ---
 
-## Design Goals
+## Design Principles
 
 - Modular
 - Extensible
 - Maintainable
-- Secure
 - Explainable
+- Secure
+- Human-Centered
 
 ---
 
-Project: ASTRALIS
+## Guiding Philosophy
 
-Philosophy: Assist. Don't Control.
+Every architectural decision should support the founding principle:
+
+> **Assist. Don't Control.**
+
+---
+
+Project: **ASTRALIS**
+
+Version: **v0.0.1 "Genesis"**
+
+Philosophy: **Assist. Don't Control.**

@@ -1,5 +1,6 @@
 from astralis.core.config import Config
 from astralis.core.logger import AstralisLogger
+from astralis.core.registry import ModuleRegistry
 
 
 class Engine:
@@ -8,6 +9,7 @@ class Engine:
     def __init__(self):
         self.config = Config()
         self.logger = AstralisLogger().logger
+        self.registry = ModuleRegistry()
 
     def start(self):
         """Start the ASTRALIS application."""

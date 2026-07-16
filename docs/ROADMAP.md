@@ -6,33 +6,49 @@ This roadmap outlines the planned evolution of ASTRALIS. It serves as a guide ra
 
 ---
 
+# Current Development
+
+**Current Version:** `v0.0.1 "Genesis"`
+
+**Current Milestone:** `v0.1.0 "Foundation"`
+
+---
+
 ## v0.0.1 — Genesis ✅
 
 Project foundation.
 
 ### Goals
 
-- Initialize repository
-- Establish project philosophy
-- Define engineering principles
-- Create documentation
-- Prepare development environment
+- [x] Initialize repository
+- [x] Establish project philosophy
+- [x] Define engineering principles
+- [x] Create documentation
+- [x] Prepare development environment
 
-Status: Completed
+**Status:** Completed
 
 ---
 
-## v0.1.0 — Foundation
+## v0.1.0 — Foundation 🚧
 
-Build the foundation of ASTRALIS.
+Build the software foundation of ASTRALIS.
 
-### Goals
+### Progress
 
-- Core project architecture
-- Configuration system
-- Logging
-- Module loader
-- Command interface
+- [x] Core project architecture
+- [x] Configuration system
+- [x] Centralized logging
+- [x] Application startup
+- [x] Module registry
+- [ ] Module loader
+- [ ] Lifecycle manager
+- [ ] Health checks
+- [ ] Brain skeleton
+
+### Success Criteria
+
+ASTRALIS can reliably start, manage its core services, and provide a stable foundation for future modules.
 
 ---
 
@@ -143,12 +159,26 @@ Bring everything together.
 
 The first complete release of ASTRALIS.
 
-This milestone represents a stable, reliable, and extensible AI Operating System built upon the philosophy:
+### Success Criteria
+
+ASTRALIS is a stable, reliable, modular, and extensible AI Operating System that faithfully follows its founding philosophy.
 
 > **Assist. Don't Control.**
 
 ---
 
-Project: ASTRALIS
+## Engineering Philosophy
 
-Philosophy: Assist. Don't Control.
+ASTRALIS is developed incrementally.
+
+Every milestone must leave the project in a stable, working state before moving to the next.
+
+Features are added only when they align with the project's guiding philosophy:
+
+> **Assist. Don't Control.**
+
+---
+
+Project: **ASTRALIS**
+
+Tagline: **Assist. Don't Control.**
