@@ -1,5 +1,11 @@
+from astralis.core.engine import Engine
+
+
 def main():
-    print("Welcome to ASTRALIS")
+    """Application entry point."""
+
+    engine = Engine()
+    engine.start()
 
 
 if __name__ == "__main__":
