@@ -55,11 +55,13 @@ Completed
 - ✅ Core Engine
 - ✅ Centralized logging
 - ✅ Module Registry
+- ✅ Module Loader
+- ✅ Lifecycle Manager
 
 Currently Working On
 
-- 🚧 Foundation services
-- 🚧 Core application modules
+- 🚧 Health Checker
+- 🚧 Brain Foundation
 
 ---
 
@@ -88,12 +90,13 @@ ASTRALIS/
 
 Project documentation is maintained inside the `docs/` directory.
 
-- 📖 Founder's Note
 - 🏛️ Architecture
-- 📜 Engineering Principles
-- 🗺️ Roadmap
-- 🧠 Architecture Decision Records (ADR)
 - 📝 Changelog
+- 🧠 Decisions [Architecture Decision Records (ADR)]
+- 📖 Founder's Note
+- 🔮 Future Decisions
+- 📜 Principles
+- 🗺️ Roadmap
 
 ---
 
