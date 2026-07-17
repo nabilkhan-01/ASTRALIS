@@ -55,8 +55,8 @@ Core Engine
 ├── Logger
 ├── Module Registry
 ├── Module Loader
+├── Lifecycle Manager
 └── (Future)
-    ├── Lifecycle Manager
     ├── Health Checker
     └── Event Bus
 ```
@@ -73,11 +73,11 @@ main.py
     ▼
 Engine.start()
     │
-    ├── Load Configuration
-    ├── Initialize Logger
-    ├── Create Module Registry
-    ├── Create Module Loader
+    ├── Transition to INITIALIZING
+    ├── Validate Configuration      (Future)
+    ├── Run Health Checks           (Future)
     ├── Load Modules
+    ├── Transition to RUNNING
     └── Application Ready
 ```
 
@@ -126,6 +126,14 @@ Responsible for initializing application modules and registering them with the M
 The Module Loader focuses solely on module initialization.
 
 It does **not** contain AI logic, business logic, or application state.
+
+---
+
+### Lifecycle Manager
+
+Maintains the current lifecycle state of ASTRALIS.
+
+The Lifecycle Manager represents application state but does not control application behavior. Lifecycle transitions are initiated by the Core Engine.
 
 ---
 

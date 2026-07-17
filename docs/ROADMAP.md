@@ -42,7 +42,7 @@ Build the software foundation of ASTRALIS.
 - [x] Application startup
 - [x] Module registry
 - [x] Module loader
-- [ ] Lifecycle manager
+- [x] Lifecycle manager
 - [ ] Health checks
 - [ ] Brain foundation
 

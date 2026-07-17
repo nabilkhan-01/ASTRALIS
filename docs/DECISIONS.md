@@ -12,10 +12,6 @@ The purpose of these records is to document not only **what** decisions were mad
 
 Use Python as the Primary Programming Language
 
-### Status
-
-Accepted
-
 ### Decision
 
 ASTRALIS will be developed primarily in Python.
@@ -40,10 +36,6 @@ It also enables seamless integration with modern AI frameworks while remaining h
 
 Adopt a Modular Architecture
 
-### Status
-
-Accepted
-
 ### Decision
 
 ASTRALIS will be divided into independent modules coordinated by a central Core Engine.
@@ -67,10 +59,6 @@ Each module owns a single responsibility and communicates through well-defined i
 ### Title
 
 Project Philosophy
-
-### Status
-
-Accepted
 
 ### Decision
 
@@ -98,10 +86,6 @@ Every feature should respect user autonomy, provide transparency, and keep human
 
 Documentation Before Development
 
-### Status
-
-Accepted
-
 ### Decision
 
 Project philosophy, architecture, roadmap, and engineering principles should be established before implementing major functionality.
@@ -125,10 +109,6 @@ Strong documentation reduces ambiguity, improves onboarding, and preserves archi
 ### Title
 
 Centralized Configuration Management
-
-### Status
-
-Accepted
 
 ### Decision
 
@@ -154,10 +134,6 @@ Configuration describes application behavior, while user-specific preferences re
 
 Centralized Logging
 
-### Status
-
-Accepted
-
 ### Decision
 
 All application logging is performed through a centralized logging service rather than direct `print()` statements.
@@ -179,10 +155,6 @@ Centralized logging provides consistent formatting, simplifies debugging, and al
 ### Title
 
 Incremental Development
-
-### Status
-
-Accepted
 
 ### Decision
 
@@ -206,10 +178,6 @@ Incremental development improves software quality, reduces complexity, simplifie
 
 Core Engine Owns Core Services
 
-### Status
-
-Accepted
-
 ### Decision
 
 The Core Engine creates and coordinates shared application services including Configuration, Logging, Module Registry, and Module Loader.
@@ -231,10 +199,6 @@ Centralizing ownership provides a predictable startup sequence while avoiding un
 ### Title
 
 Use a Module Registry
-
-### Status
-
-Accepted
 
 ### Decision
 
@@ -258,10 +222,6 @@ The registry decouples the Engine from individual modules, making the architectu
 
 Delegate Module Initialization to the Module Loader
 
-### Status
-
-Accepted
-
 ### Decision
 
 The Core Engine delegates module initialization to a dedicated Module Loader.
@@ -284,10 +244,6 @@ Separating module initialization from the Engine keeps the Engine focused on coo
 
 User-Controlled Module Activation
 
-### Status
-
-Accepted
-
 ### Decision
 
 Modules may be discovered automatically, but activation should occur only through explicit user intent or application configuration.
@@ -307,19 +263,25 @@ Users should remain in control of what capabilities become active.
 
 ---
 
-## Future ADRs
+## ADR-0012
 
-Examples of future architectural decisions include:
+### Title
 
-- AI Provider Abstraction
-- Memory Architecture
-- Storage Architecture
-- Permission System
-- Plugin Framework
-- Event Bus
-- Security Model
-- Local-First Design
-- Multi-Agent Communication
+Introduce a Dedicated Lifecycle Manager
+
+### Decision
+
+The application lifecycle is represented by a dedicated Lifecycle Manager. The Core Engine controls lifecycle transitions.
+
+### Rationale
+
+Separating lifecycle state from application orchestration keeps responsibilities clear and maintains a single source of truth for application state.
+
+### Consequences
+
+- The Engine remains the orchestrator.
+- Lifecycle state is centralized.
+- Future state validation can be added without redesigning the Engine.
 
 ---
 
