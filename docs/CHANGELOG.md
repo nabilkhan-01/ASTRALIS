@@ -22,6 +22,7 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
   - Roadmap
   - Decisions (ADR)
   - Changelog
+  - Future Decisions
 
 #### Core Infrastructure
 
@@ -33,6 +34,12 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Implemented Module Loader
 - Implemented Lifecycle Manager
 - Implemented Health Checker
+
+#### Brain
+
+- Established Brain foundation
+- Added Brain module
+- Defined Brain public interface
 
 ---
 

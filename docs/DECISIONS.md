@@ -312,6 +312,30 @@ Separating health verification from application orchestration keeps responsibili
 
 ---
 
+## ADR-0014
+
+### Title
+
+Introduce the Brain Module
+
+### Decision
+
+ASTRALIS introduces a dedicated Brain module responsible for coordinating intelligence across the system.
+
+The Brain exposes a single public interface for processing user requests while remaining independent of specific AI providers and supporting modules.
+
+### Rationale
+
+Separating intelligence coordination from application orchestration keeps responsibilities clear and allows the Brain to evolve independently of the Core Engine.
+
+### Consequences
+
+- The Engine communicates only with the Brain.
+- The Brain becomes the central coordinator for intelligent behavior.
+- Future integrations with Memory, Vision, Tools, and AI providers remain isolated from the Engine.
+
+---
+
 Project: **ASTRALIS**
 
 Current Release: **v0.0.1 "Genesis"**

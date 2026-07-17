@@ -147,7 +147,11 @@ The Health Checker reports system health but does not decide application behavio
 
 ### Brain
 
-Responsible for reasoning, planning, and AI orchestration.
+Coordinates intelligence across ASTRALIS.
+
+The Brain understands user requests, determines how they should be handled, and coordinates other modules when necessary.
+
+The Brain does not directly store data, execute tools, or interact with storage. Those responsibilities belong to dedicated modules.
 
 ---
 

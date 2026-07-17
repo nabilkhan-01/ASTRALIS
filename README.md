@@ -57,10 +57,10 @@ Completed
 - ✅ Module Registry
 - ✅ Module Loader
 - ✅ Lifecycle Manager
+- ✅ Health Checker
 
 Currently Working On
 
-- 🚧 Health Checker
 - 🚧 Brain Foundation
 
 ---
@@ -69,16 +69,22 @@ Currently Working On
 
 ```text
 ASTRALIS/
+├── assets/
 │
 ├── astralis/
 │   ├── core/
 │   ├── brain/
+│   ├── security/
 │   ├── memory/
-│   ├── tools/
 │   ├── vision/
-│   └── voice/
+│   ├── voice/
+│   ├── tools/
+│   ├── automation/
+│   ├── ui/
+│   └── __init__.py
 │
 ├── docs/
+├── tests/
 │
 ├── main.py
 └── README.md
@@ -92,7 +98,7 @@ Project documentation is maintained inside the `docs/` directory.
 
 - 🏛️ Architecture
 - 📝 Changelog
-- 🧠 Decisions [Architecture Decision Records (ADR)]
+- 🧠 Decisions (Architecture Decision Records)
 - 📖 Founder's Note
 - 🔮 Future Decisions
 - 📜 Principles
@@ -131,7 +137,7 @@ Build an extensible AI Operating System capable of:
 
 ## Development Philosophy
 
-ASTRALIS is built in public, one carefully reviewed commit at a time.
+ASTRALIS is built in public, one carefully reviewed capability at a time.
 
 Every architectural decision is documented.
 Every feature begins with design.
