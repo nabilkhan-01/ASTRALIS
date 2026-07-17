@@ -52,7 +52,7 @@ ASTRALIS will be divided into independent modules coordinated by a central Core 
 
 A modular architecture improves maintainability, scalability, testing, and future expansion.
 
-Each module should own a single responsibility and communicate through well-defined interfaces.
+Each module owns a single responsibility and communicates through well-defined interfaces.
 
 ### Consequences
 
@@ -138,13 +138,13 @@ Application-wide configuration is managed through a single Config object owned b
 
 Maintaining a single source of truth prevents configuration inconsistencies and simplifies application maintenance.
 
-Configuration should describe application behavior, while user-specific preferences remain separate.
+Configuration describes application behavior, while user-specific preferences remain separate.
 
 ### Consequences
 
 - Core services receive configuration from the Engine.
 - Duplicate configuration across modules is avoided.
-- User preferences are stored independently of application configuration.
+- User preferences are stored independently.
 
 ---
 
@@ -169,8 +169,8 @@ Centralized logging provides consistent formatting, simplifies debugging, and al
 ### Consequences
 
 - Modules use the shared logger.
-- Log formatting remains consistent throughout the project.
-- Future support for log files and remote logging can be added without changing existing modules.
+- Log formatting remains consistent.
+- Future logging improvements require minimal architectural changes.
 
 ---
 
@@ -186,7 +186,7 @@ Accepted
 
 ### Decision
 
-ASTRALIS will be developed through small, complete, and reviewable capabilities rather than large feature drops.
+ASTRALIS is developed through small, complete, and reviewable capabilities rather than large feature drops.
 
 ### Rationale
 
@@ -194,9 +194,9 @@ Incremental development improves software quality, reduces complexity, simplifie
 
 ### Consequences
 
-- Each commit should introduce one meaningful capability.
-- Every feature should leave the project in a working state.
-- Documentation should evolve alongside implementation.
+- Each commit introduces one meaningful capability.
+- Every feature leaves the project in a working state.
+- Documentation evolves alongside implementation.
 
 ---
 
@@ -212,17 +212,17 @@ Accepted
 
 ### Decision
 
-The Core Engine is responsible for creating and coordinating shared application services such as Configuration, Logging, and the Module Registry.
+The Core Engine creates and coordinates shared application services including Configuration, Logging, Module Registry, and Module Loader.
 
 ### Rationale
 
-Centralizing ownership provides a predictable application lifecycle and avoids unnecessary duplication of shared services.
+Centralizing ownership provides a predictable startup sequence while avoiding unnecessary duplication of shared services.
 
 ### Consequences
 
 - A single Engine instance manages application startup.
-- Shared services are created once and reused.
-- Module ownership remains clear and maintainable.
+- Shared services are initialized once.
+- Responsibilities remain clearly separated.
 
 ---
 
@@ -238,11 +238,11 @@ Accepted
 
 ### Decision
 
-ASTRALIS maintains a centralized Module Registry responsible for tracking available modules.
+ASTRALIS maintains a centralized Module Registry responsible for tracking initialized application modules.
 
 ### Rationale
 
-The registry decouples the Engine from individual modules, making the architecture easier to extend as new capabilities are added.
+The registry decouples the Engine from individual modules, making the architecture easier to extend as new capabilities are introduced.
 
 ### Consequences
 
@@ -252,9 +252,64 @@ The registry decouples the Engine from individual modules, making the architectu
 
 ---
 
+## ADR-0010
+
+### Title
+
+Delegate Module Initialization to the Module Loader
+
+### Status
+
+Accepted
+
+### Decision
+
+The Core Engine delegates module initialization to a dedicated Module Loader.
+
+### Rationale
+
+Separating module initialization from the Engine keeps the Engine focused on coordinating the application lifecycle while allowing the loading process to evolve independently.
+
+### Consequences
+
+- The Engine remains lightweight.
+- Module initialization follows a single, consistent process.
+- Future loading strategies can evolve without redesigning the Engine.
+
+---
+
+## ADR-0011
+
+### Title
+
+User-Controlled Module Activation
+
+### Status
+
+Accepted
+
+### Decision
+
+Modules may be discovered automatically, but activation should occur only through explicit user intent or application configuration.
+
+### Rationale
+
+Automatically executing newly discovered modules conflicts with ASTRALIS's guiding philosophy.
+
+Users should remain in control of what capabilities become active.
+
+### Consequences
+
+- Plugin discovery is separate from plugin activation.
+- Users explicitly enable new capabilities.
+- Security and transparency are improved.
+- The architecture remains aligned with **Assist. Don't Control.**
+
+---
+
 ## Future ADRs
 
-Examples of decisions expected during future development include:
+Examples of future architectural decisions include:
 
 - AI Provider Abstraction
 - Memory Architecture
@@ -270,6 +325,8 @@ Examples of decisions expected during future development include:
 
 Project: **ASTRALIS**
 
-Version: **v0.0.1 "Genesis"**
+Current Release: **v0.0.1 "Genesis"**
+
+Current Milestone: **v0.1.0 "Foundation"**
 
 Philosophy: **Assist. Don't Control.**

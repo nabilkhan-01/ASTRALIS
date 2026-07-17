@@ -8,7 +8,7 @@ This roadmap outlines the planned evolution of ASTRALIS. It serves as a guide ra
 
 # Current Development
 
-**Current Version:** `v0.0.1 "Genesis"`
+**Current Release:** `v0.0.1 "Genesis"`
 
 **Current Milestone:** `v0.1.0 "Foundation"`
 
@@ -41,10 +41,10 @@ Build the software foundation of ASTRALIS.
 - [x] Centralized logging
 - [x] Application startup
 - [x] Module registry
-- [ ] Module loader
+- [x] Module loader
 - [ ] Lifecycle manager
 - [ ] Health checks
-- [ ] Brain skeleton
+- [ ] Brain foundation
 
 ### Success Criteria
 
