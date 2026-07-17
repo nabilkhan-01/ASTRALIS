@@ -285,6 +285,33 @@ Separating lifecycle state from application orchestration keeps responsibilities
 
 ---
 
+---
+
+## ADR-0013
+
+### Title
+
+Introduce a Dedicated Health Checker
+
+### Decision
+
+ASTRALIS introduces a dedicated Health Checker responsible for verifying the readiness of core application services.
+
+The Health Checker reports the health of the system but does not determine application behavior.
+
+### Rationale
+
+Separating health verification from application orchestration keeps responsibilities clearly defined and allows the health system to evolve independently of the startup process.
+
+### Consequences
+
+- Health verification is centralized.
+- The Health Checker reports system readiness.
+- Startup decisions remain the responsibility of the Core Engine.
+- Core services can be validated through a consistent interface.
+
+---
+
 Project: **ASTRALIS**
 
 Current Release: **v0.0.1 "Genesis"**

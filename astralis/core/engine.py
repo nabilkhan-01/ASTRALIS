@@ -3,6 +3,7 @@ from astralis.core.lifecycle import (
     LifecycleManager,
     LifecycleState,
 )
+from astralis.core.health import HealthChecker
 from astralis.core.loader import ModuleLoader
 from astralis.core.logger import AstralisLogger
 from astralis.core.registry import ModuleRegistry
@@ -14,6 +15,7 @@ class Engine:
     def __init__(self) -> None:
         self.config = Config()
         self.logger = AstralisLogger().logger
+        self.health = HealthChecker()
         self.registry = ModuleRegistry()
         self.loader = ModuleLoader(
             self.registry,
@@ -41,10 +43,31 @@ class Engine:
         )
 
         # TODO: Validate configuration
-        # TODO: Run health checks
 
         # Initialize application modules.
         self.loader.load_modules()
+
+        # Run health checks.
+        self.logger.info("Running health checks...")
+
+        results = self.health.run_checks(
+            config=self.config,
+            logger=self.logger,
+            registry=self.registry,
+            loader=self.loader,
+            lifecycle=self.lifecycle,
+        )
+
+        for service, healthy in results.items():
+            status = "✓" if healthy else "✗"
+            self.logger.info(f"{status} {service}")
+            
+        self.logger.info("Health checks passed.")
+
+        if not all(results.values()):
+            raise RuntimeError(
+                "Health checks failed. Startup aborted."
+            )
 
         # Transition to running.
         self.lifecycle.transition_to(

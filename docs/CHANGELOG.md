@@ -32,6 +32,7 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Implemented Module Registry
 - Implemented Module Loader
 - Implemented Lifecycle Manager
+- Implemented Health Checker
 
 ---
 

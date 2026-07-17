@@ -56,8 +56,8 @@ Core Engine
 ├── Module Registry
 ├── Module Loader
 ├── Lifecycle Manager
+├── Health Checker
 └── (Future)
-    ├── Health Checker
     └── Event Bus
 ```
 
@@ -134,6 +134,14 @@ It does **not** contain AI logic, business logic, or application state.
 Maintains the current lifecycle state of ASTRALIS.
 
 The Lifecycle Manager represents application state but does not control application behavior. Lifecycle transitions are initiated by the Core Engine.
+
+---
+
+### Health Checker
+
+Verifies the readiness of ASTRALIS core services.
+
+The Health Checker reports system health but does not decide application behavior. Startup decisions remain the responsibility of the Core Engine.
 
 ---
 

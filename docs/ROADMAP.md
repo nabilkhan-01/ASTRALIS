@@ -43,7 +43,7 @@ Build the software foundation of ASTRALIS.
 - [x] Module registry
 - [x] Module loader
 - [x] Lifecycle manager
-- [ ] Health checks
+- [x] Health checks
 - [ ] Brain foundation
 
 ### Success Criteria
