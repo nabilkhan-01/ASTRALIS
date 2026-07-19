@@ -20,6 +20,18 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Established the Brain processing pipeline
 - Defined validation, interpretation, planning, and execution stages
 
+#### Provider
+
+- Introduced the provider abstraction
+- Defined a common interface for AI providers
+- Added MockProvider implementation
+- Connected the Brain to the provider abstraction
+
+#### User Interface
+
+- Introduced an interactive command-line interface
+- Connected the CLI to the Brain processing pipeline
+
 ---
 
 ## [v0.1.0] - Foundation
@@ -60,12 +72,7 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 
 ---
 
-#### Provider
 
-- Introduced the provider abstraction
-- Defined a common interface for AI providers
-- Added MockProvider implementation
-- Connected the Brain to the provider abstraction
 
 Project: **ASTRALIS**
 

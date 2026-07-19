@@ -1,6 +1,4 @@
 from astralis.brain.brain import Brain
-from astralis.brain.request import Request
-from astralis.brain.source import RequestSource
 from astralis.core.config import Config
 from astralis.core.health import HealthChecker
 from astralis.core.lifecycle import (
@@ -12,6 +10,7 @@ from astralis.core.logger import AstralisLogger
 from astralis.core.registry import ModuleRegistry
 from astralis.provider.mock import MockProvider
 from astralis.provider.provider import Provider
+from astralis.ui.cli import CommandLineInterface
 
 
 class Engine:
@@ -32,7 +31,10 @@ class Engine:
         self.provider: Provider = MockProvider()
 
         # Initialize the Brain.
-        self.brain = Brain(self.provider,)
+        self.brain = Brain(self.provider)
+
+        # Initialize the command-line interface.
+        self.cli = CommandLineInterface(self.brain)
 
     def start(self) -> None:
         """Start the ASTRALIS application."""
@@ -88,26 +90,9 @@ class Engine:
             f"Lifecycle: {self.lifecycle.state.value}"
         )
 
-        # Verify the request processing pipeline.
-        self.logger.info(
-            "Verifying request processing pipeline..."
-        )
-        self._verify_processing_pipeline()
-
         self.logger.info("ASTRALIS is ready.")
 
-    def _verify_processing_pipeline(
-        self,
-    ) -> None:
-        """Verify the Brain request processing pipeline."""
+    def run(self) -> None:
+        """Run the ASTRALIS user interface."""
 
-        request = Request(
-            text="Hello, ASTRALIS!",
-            source=RequestSource.CLI,
-        )
-
-        response = self.brain.process(request)
-
-        self.logger.info(
-            f"Brain response: {response.text}"
-        )
+        self.cli.run()
