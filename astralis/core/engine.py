@@ -8,7 +8,7 @@ from astralis.core.lifecycle import (
 from astralis.core.loader import ModuleLoader
 from astralis.core.logger import AstralisLogger
 from astralis.core.registry import ModuleRegistry
-from astralis.provider.mock import MockProvider
+from astralis.provider.factory import ProviderFactory
 from astralis.provider.provider import Provider
 from astralis.ui.cli import CommandLineInterface
 
@@ -28,7 +28,7 @@ class Engine:
         self.lifecycle = LifecycleManager()
 
         # Initialize the AI provider.
-        self.provider: Provider = MockProvider()
+        self.provider: Provider = ProviderFactory.create(self.config,)
 
         # Initialize the Brain.
         self.brain = Brain(self.provider)

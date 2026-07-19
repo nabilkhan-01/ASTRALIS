@@ -428,6 +428,40 @@ Separating the Brain from provider implementations preserves modularity and allo
 
 ---
 
+# ADR-0019
+
+## Title
+
+Instantiate Providers Through a Factory
+
+## Context
+
+The Engine previously instantiated concrete provider implementations directly.
+
+As additional AI providers are introduced, this would increase coupling between the Engine and provider implementations.
+
+## Decision
+
+Provider instances are created through a centralized `ProviderFactory`.
+
+The Engine requests a provider from the factory instead of instantiating provider implementations directly.
+
+## Rationale
+
+- Keeps the Engine provider-agnostic.
+- Centralizes provider creation logic.
+- Simplifies adding new AI providers.
+- Preserves the separation between application orchestration and provider instantiation.
+
+## Consequences
+
+- The Engine no longer depends on concrete provider implementations.
+- New providers require updates only to the factory.
+- Provider selection is centralized in a single location.
+
+---
+
+
 ## ADR Guidelines
 
 Architecture Decision Records (ADRs) document significant architectural decisions that have a long-term impact on ASTRALIS.

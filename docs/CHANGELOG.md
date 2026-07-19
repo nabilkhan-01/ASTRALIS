@@ -26,6 +26,8 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Defined a common interface for AI providers
 - Added MockProvider implementation
 - Connected the Brain to the provider abstraction
+- Added ProviderFactory
+- Introduced configuration-based provider selection
 
 #### User Interface
 
