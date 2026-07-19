@@ -8,9 +8,9 @@ This roadmap outlines the planned evolution of ASTRALIS. It serves as a guide ra
 
 # Current Development
 
-**Current Release:** `v0.0.1 "Genesis"`
+**Current Release:** `v0.1.0 "Foundation"`
 
-**Current Milestone:** `v0.1.0 "Foundation"`
+**Current Milestone:** `v0.2.0 "Brain Architecture"`
 
 ---
 
@@ -30,7 +30,7 @@ Project foundation.
 
 ---
 
-## v0.1.0 — Foundation 🚧
+## v0.1.0 — Foundation ✅
 
 Build the software foundation of ASTRALIS.
 
@@ -40,19 +40,40 @@ Build the software foundation of ASTRALIS.
 - [x] Configuration system
 - [x] Centralized logging
 - [x] Application startup
-- [x] Module registry
-- [x] Module loader
-- [x] Lifecycle manager
-- [x] Health checks
+- [x] Module Registry
+- [x] Module Loader
+- [x] Lifecycle Manager
+- [x] Health Checker
 - [x] Brain foundation
 
 ### Success Criteria
 
 ASTRALIS can reliably start, manage its core services, and provide a stable foundation for future modules.
 
+**Status:** Completed
+
 ---
 
-## v0.2.0 — Voice
+## v0.2.0 — Brain Architecture 🚧
+
+Establish the communication architecture for intelligent processing.
+
+### Progress
+
+- [x] Request model
+- [x] RequestSource enumeration
+- [ ] Response model
+- [ ] Brain pipeline
+- [ ] AI provider abstraction
+- [ ] Mock provider
+
+### Success Criteria
+
+The Brain can receive structured requests and return structured responses through a provider-independent interface.
+
+---
+
+## v0.3.0 — Voice
 
 Give ASTRALIS a voice.
 
@@ -65,7 +86,7 @@ Give ASTRALIS a voice.
 
 ---
 
-## v0.3.0 — Memory
+## v0.4.0 — Memory
 
 Teach ASTRALIS to remember.
 
@@ -78,7 +99,7 @@ Teach ASTRALIS to remember.
 
 ---
 
-## v0.4.0 — Tools
+## v0.5.0 — Tools
 
 Allow ASTRALIS to interact with the computer.
 
@@ -91,7 +112,7 @@ Allow ASTRALIS to interact with the computer.
 
 ---
 
-## v0.5.0 — Vision
+## v0.6.0 — Vision
 
 Enable visual understanding.
 
@@ -104,9 +125,9 @@ Enable visual understanding.
 
 ---
 
-## v0.6.0 — Intelligence
+## v0.7.0 — Intelligence
 
-Improve reasoning.
+Improve reasoning and decision-making.
 
 ### Goals
 
@@ -117,7 +138,7 @@ Improve reasoning.
 
 ---
 
-## v0.7.0 — Automation
+## v0.8.0 — Automation
 
 Reduce repetitive work.
 
@@ -129,7 +150,7 @@ Reduce repetitive work.
 
 ---
 
-## v0.8.0 — Multi-Agent System
+## v0.9.0 — Multi-Agent System
 
 Expand ASTRALIS into specialized agents.
 
@@ -143,25 +164,13 @@ Expand ASTRALIS into specialized agents.
 
 ---
 
-## v0.9.0 — Personal AI Operating System
+## v1.0.0 — Personal AI Operating System
 
-Bring everything together.
-
-### Goals
-
-- Unified experience
-- Performance optimization
-- User customization
-
----
-
-## v1.0.0 — First Stable Release
-
-The first complete release of ASTRALIS.
+The first stable release of ASTRALIS.
 
 ### Success Criteria
 
-ASTRALIS is a stable, reliable, modular, and extensible AI Operating System that faithfully follows its founding philosophy.
+ASTRALIS is a stable, reliable, modular, extensible, and privacy-respecting AI Operating System that faithfully follows its founding philosophy:
 
 > **Assist. Don't Control.**
 
@@ -181,4 +190,8 @@ Features are added only when they align with the project's guiding philosophy:
 
 Project: **ASTRALIS**
 
-Tagline: **Assist. Don't Control.**
+Current Release: **v0.1.0 "Foundation"**
+
+Current Milestone: **v0.2.0 "Brain Architecture"**
+
+Philosophy: **Assist. Don't Control.**

@@ -2,8 +2,8 @@
 
 > **Assist. Don't Control.**
 
-**Current Release:** `v0.0.1 "Genesis"`  
-**Current Milestone:** `v0.1.0 "Foundation"`
+**Current Release:** `v0.1.0 "Foundation"`  
+**Current Milestone:** `v0.2.0 "Brain Architecture"`
 
 ASTRALIS is a long-term research and engineering project focused on building a personal AI Operating System that assists users while respecting their autonomy, privacy, and decisions.
 
@@ -40,31 +40,10 @@ Build an AI that:
 
 🚧 **Active Development**
 
-### Current Release
+- **Current Release:** **v0.1.0 — Foundation**
+- **Current Milestone:** **v0.2.0 — Brain Architecture**
 
-- ✅ **v0.0.1 — Genesis**
-
-### Current Milestone
-
-**v0.1.0 — Foundation**
-
-**Status:** ✅ Completed
-
-Completed
-
-- ✅ Core project architecture
-- ✅ Configuration system
-- ✅ Core Engine
-- ✅ Centralized logging
-- ✅ Module Registry
-- ✅ Module Loader
-- ✅ Lifecycle Manager
-- ✅ Health Checker
-- ✅ Brain Foundation
-
-Currently Working On
-
-- 🚧 Request Architecture
+Detailed progress is maintained in **`docs/ROADMAP.md`**.
 
 ---
 

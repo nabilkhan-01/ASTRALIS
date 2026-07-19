@@ -6,7 +6,19 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 
 ---
 
-## [0.0.1] - Genesis
+## [Unreleased]
+
+### Added
+
+#### Brain
+
+- Introduced the Request model
+- Added the RequestSource enumeration
+- Updated the Brain interface to process `Request` objects
+
+---
+
+## [v0.1.0] - Foundation
 
 ### Added
 
@@ -46,6 +58,6 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 
 Project: **ASTRALIS**
 
-Current Release: **v0.0.1 "Genesis"**
+Current Release: **v0.1.0 "Foundation"**
 
 Philosophy: **Assist. Don't Control.**

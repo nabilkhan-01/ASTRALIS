@@ -358,6 +358,28 @@ Centralizing ownership of the Brain keeps startup orchestration within the Engin
 
 ---
 
+## ADR-0016
+
+### Title
+
+Represent User Requests with a Request Model
+
+### Decision
+
+The Brain accepts structured Request objects instead of primitive data types.
+
+### Rationale
+
+Using a dedicated request model creates a stable interface between user-facing components and the Brain while allowing the request to evolve without changing the Brain's public API.
+
+### Consequences
+
+- All user input is represented consistently.
+- Future fields can be added without redesigning the Brain interface.
+- Voice, UI, CLI, and API can all produce the same request type.
+
+---
+
 Project: **ASTRALIS**
 
 Current Release: **v0.0.1 "Genesis"**
