@@ -30,11 +30,19 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Introduced configuration-based provider selection
 - Added OpenAIProvider implementation
 - Extended ProviderFactory to support multiple AI providers
+- Integrated OpenAI SDK
+- Added OpenAI client initialization
+- Implemented response generation through the OpenAI Responses API
 
 #### User Interface
 
 - Introduced an interactive command-line interface
 - Connected the CLI to the Brain processing pipeline
+
+#### Configuration
+
+- Added environment-based configuration
+- Introduced support for loading AI settings from `.env`
 
 ---
 

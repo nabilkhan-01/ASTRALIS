@@ -29,7 +29,7 @@ class CommandLineInterface:
 
             if text.lower() in _EXIT_COMMANDS:
                 print()
-                print("Thank you for using ASTRALIS.Goodbye.")
+                print("Thank you for using ASTRALIS.\n Goodbye.")
                 break
 
             request = Request(

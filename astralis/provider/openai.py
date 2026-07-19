@@ -1,3 +1,5 @@
+from openai import OpenAI
+
 from astralis.brain.request import Request
 from astralis.brain.response import Response
 from astralis.core.config import Config
@@ -12,6 +14,9 @@ class OpenAIProvider(Provider):
         config: Config,
     ) -> None:
         self.config = config
+        self.client = OpenAI(
+            api_key=config.openai_api_key,
+        )
 
     def generate(
         self,
@@ -19,7 +24,25 @@ class OpenAIProvider(Provider):
     ) -> Response:
         """Generate a response using OpenAI."""
 
-        return Response(
-            text="OpenAI provider is not configured yet.",
-            success=False,
-        )
+        if not self.config.openai_api_key:
+            return Response(
+                text="OpenAI API key is not configured.",
+                success=False,
+            )
+
+        try:
+            response = self.client.responses.create(
+                model=self.config.model,
+                input=request.text,
+            )
+
+            return Response(
+                text=response.output_text,
+                success=True,
+            )
+
+        except Exception as exc:
+            return Response(
+                text=f"Provider error: {exc}",
+                success=False,
+            )
