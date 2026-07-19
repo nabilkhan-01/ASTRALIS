@@ -366,7 +366,7 @@ Represent User Requests with a Request Model
 
 ### Decision
 
-The Brain accepts structured Request objects instead of primitive data types.
+The Brain communicates using structured Request models instead of primitive data types.
 
 ### Rationale
 
@@ -380,10 +380,55 @@ Using a dedicated request model creates a stable interface between user-facing c
 
 ---
 
+## ADR-0016
+
+### Title
+
+Separate Behavior from Data Models
+
+### Decision
+
+Behavior-oriented components are implemented as regular classes.
+
+Structured data exchanged between major components is represented using dedicated data models. In Python, these models should normally be implemented as dataclasses.
+
+### Rationale
+
+ASTRALIS separates components that perform work from objects that represent information.
+
+This distinction improves readability, reduces boilerplate, and keeps responsibilities clear as the project grows.
+
+### Consequences
+
+- Engine, Brain, Module Loader, Health Checker, and similar components remain regular classes.
+- Request, Response, and future domain models are represented as data models.
+- The architecture maintains a clear distinction between behavior and data.
+---
+
+
+
+## ADR Guidelines
+
+Architecture Decision Records (ADRs) document significant architectural decisions that have a long-term impact on ASTRALIS.
+
+An ADR should be created only when a decision:
+
+- Significantly influences the overall architecture.
+- Is difficult or expensive to reverse.
+- Establishes a long-term engineering principle.
+- Affects multiple modules or future development.
+
+Implementation details, internal algorithms, logging changes, helper classes, and other low-level design choices should be documented through code, commit history, or project documentation rather than ADRs.
+When in doubt, prefer documenting the decision in code or project documentation rather than creating a new ADR.
+
+The goal is to preserve the reasoning behind major architectural decisions—not to record every implementation detail.
+
+--- 
+
 Project: **ASTRALIS**
 
-Current Release: **v0.0.1 "Genesis"**
+Current Release: **v0.1.0 "Foundation"**
 
-Current Milestone: **v0.1.0 "Foundation"**
+Current Milestone: **v0.2.0 "Brain Architecture"**
 
 Philosophy: **Assist. Don't Control.**

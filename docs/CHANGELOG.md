@@ -15,6 +15,8 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Introduced the Request model
 - Added the RequestSource enumeration
 - Updated the Brain interface to process `Request` objects
+- Introduced the Response model
+- Updated the Brain interface to return `Response` objects
 
 ---
 
@@ -59,5 +61,7 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 Project: **ASTRALIS**
 
 Current Release: **v0.1.0 "Foundation"**
+
+Current Milestone: **v0.2.0 "Brain Architecture"**
 
 Philosophy: **Assist. Don't Control.**

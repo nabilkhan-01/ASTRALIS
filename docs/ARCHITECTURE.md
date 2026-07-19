@@ -248,8 +248,8 @@ Each capability will be added only when required, following the principle:
 
 Project: **ASTRALIS**
 
-Current Release: **v0.0.1 "Genesis"**
+Current Release: **v0.1.0 "Foundation"**
 
-Current Milestone: **v0.1.0 "Foundation"**
+Current Milestone: **v0.2.0 "Brain Architecture"**
 
 Philosophy: **Assist. Don't Control.**
