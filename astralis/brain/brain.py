@@ -1,3 +1,4 @@
+from astralis.brain.intent import Intent
 from astralis.brain.interpretation import Interpretation
 from astralis.brain.interpreter import Interpreter
 from astralis.brain.plan import ExecutionPlan
@@ -60,7 +61,25 @@ class Brain:
     ) -> ExecutionPlan:
         """Create an execution plan for the request."""
 
-        return ExecutionPlan()
+        plan = ExecutionPlan()
+
+        if interpretation.intent == Intent.GREETING:
+            plan.greeting_required = True
+        
+        elif interpretation.intent == Intent.QUESTION:
+            plan.provider_required = True
+
+        elif interpretation.intent == Intent.CONVERSATION:
+            plan.provider_required = True
+
+        elif interpretation.intent == Intent.TOOL:
+            plan.tools_required = True
+
+        elif interpretation.intent == Intent.MEMORY:
+            plan.memory_required = True
+
+        return plan
+        
 
     def _execute(
         self,

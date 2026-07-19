@@ -26,6 +26,8 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Introduced the `Interpreter` component
 - Delegated request interpretation from the Brain to the Interpreter
 - Updated the Brain pipeline to produce an `Interpretation` before planning
+- Implemented rule-based intent recognition
+- Updated execution planning to consider interpreted request intent
 
 #### Provider
 
