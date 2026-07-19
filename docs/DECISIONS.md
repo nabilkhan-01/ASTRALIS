@@ -544,6 +544,45 @@ The goal is to preserve the reasoning behind major architectural decisions—not
 
 --- 
 
+## ADR-0022
+
+### Title
+
+The Brain Owns Conversation State
+
+### Context
+
+ASTRALIS supports multiple AI providers including Gemini, OpenAI, and future local models.
+
+Different providers expose different APIs and conversation formats. Storing conversation history inside provider implementations would tightly couple conversation management to a specific provider and make switching providers more difficult.
+
+### Decision
+
+The Brain owns the active conversation.
+
+Conversation history is represented using dedicated `Conversation`, `Message`, and `Role` models.
+
+AI providers receive the current conversation, generate the next assistant response, and return it to the Brain.
+
+Providers remain stateless and never own conversation history.
+
+### Rationale
+
+- Preserves provider independence.
+- Maintains a single source of truth for conversation state.
+- Allows providers to be replaced without losing context.
+- Enables future integration with memory, tools, permissions, and planning.
+- Keeps conversation management independent of provider-specific APIs.
+
+### Consequences
+
+- The Brain becomes responsible for conversation lifecycle.
+- Providers only generate responses from the supplied conversation.
+- Conversation can evolve independently of AI providers.
+- Future interfaces (CLI, Desktop, Voice, Mobile, API) share the same conversation model.
+
+---
+
 Project: **ASTRALIS**
 
 Current Release: **v0.1.0 "Foundation"**

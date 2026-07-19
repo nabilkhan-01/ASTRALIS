@@ -1,6 +1,6 @@
 from openai import OpenAI
 
-from astralis.brain.request import Request
+from astralis.brain.conversation import Conversation
 from astralis.brain.response import Response
 from astralis.core.config import Config
 from astralis.provider.provider import Provider
@@ -20,7 +20,7 @@ class OpenAIProvider(Provider):
 
     def generate(
         self,
-        request: Request,
+        conversation: Conversation,
     ) -> Response:
         """Generate a response using OpenAI."""
 
@@ -32,8 +32,8 @@ class OpenAIProvider(Provider):
 
         try:
             response = self.client.responses.create(
-                model=self.config.model,
-                input=request.text,
+                model=self.config.openai_model,
+                input=conversation.messages[-1].content,
             )
 
             return Response(

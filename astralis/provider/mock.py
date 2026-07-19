@@ -1,3 +1,4 @@
+from astralis.brain.conversation import Conversation
 from astralis.brain.request import Request
 from astralis.brain.response import Response
 from astralis.provider.provider import Provider
@@ -8,7 +9,7 @@ class MockProvider(Provider):
 
     def generate(
         self,
-        request: Request,
+        conversation: Conversation,
     ) -> Response:
         """Generate a placeholder response."""
 

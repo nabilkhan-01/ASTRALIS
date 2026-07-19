@@ -10,7 +10,7 @@ from astralis.core.logger import AstralisLogger
 from astralis.core.registry import ModuleRegistry
 from astralis.provider.factory import ProviderFactory
 from astralis.provider.provider import Provider
-from astralis.ui.cli import CommandLineInterface
+from astralis.interfaces.cli import CommandLineInterface
 
 
 class Engine:

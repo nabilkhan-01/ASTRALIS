@@ -1,15 +1,15 @@
 from abc import ABC, abstractmethod
 
-from astralis.brain.request import Request
+from astralis.brain.conversation import Conversation
 from astralis.brain.response import Response
 
 
 class Provider(ABC):
-    """Defines the interface for AI providers."""
+    """Base class for AI providers."""
 
     @abstractmethod
     def generate(
         self,
-        request: Request,
+        conversation: Conversation,
     ) -> Response:
-        """Generate a response for a request."""
+        """Generate a response."""

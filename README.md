@@ -58,18 +58,20 @@ ASTRALIS/
 │   ├── brain/
 │   ├── security/
 │   ├── memory/
-    ├── provider/
+|   ├── provider/
 │   ├── vision/
 │   ├── voice/
 │   ├── tools/
 │   ├── automation/
-│   ├── ui/
+│   ├── interfaces/
+|   ├── utils/
 │   └── __init__.py
 │
 ├── docs/
 ├── tests/
-│
+├── .env.example
 ├── main.py
+├── requirements.txt
 └── README.md
 ```
 

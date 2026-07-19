@@ -283,6 +283,16 @@ Cloud providers should remain optional rather than mandatory.
 
 --- 
 
+## Conversation Window
+
+The Conversation currently stores every message in the active session.
+
+Future versions should support configurable context windows, summarization, and pruning to prevent unbounded conversation growth while preserving important context.
+
+**Status:** Planned
+
+---
+
 # Documentation Policy
 
 Whenever a feature is intentionally postponed, evaluate whether it belongs in this document.

@@ -5,6 +5,8 @@ from astralis.brain.plan import ExecutionPlan
 from astralis.brain.request import Request
 from astralis.brain.response import Response
 from astralis.provider.provider import Provider
+from astralis.brain.conversation import Conversation
+from astralis.brain.role import Role
 
 
 class Brain:
@@ -16,6 +18,7 @@ class Brain:
     ) -> None:
         self.provider = provider
         self.interpreter = Interpreter()
+        self.conversation = Conversation()
 
     def process(
         self,
@@ -26,6 +29,11 @@ class Brain:
         # Execute the processing pipeline.
         request = self._validate(request)
 
+        self.conversation.add(
+            Role.USER,
+            request.text,
+        )
+
         interpretation = self._interpret(request)
 
         plan = self._plan(
@@ -34,7 +42,6 @@ class Brain:
         )
 
         return self._execute(
-            request,
             plan,
         )
 
@@ -83,15 +90,18 @@ class Brain:
 
     def _execute(
         self,
-        request: Request,
         plan: ExecutionPlan,
     ) -> Response:
         """Execute the processing plan."""
 
         if plan.provider_required:
-            return self.provider.generate(request)
+            response = self.provider.generate(
+                self.conversation,
+            )
 
-        return Response(
-            text="No execution strategy available.",
-            success=False,
-        )
+            self.conversation.add(
+                Role.ASSISTANT,
+                response.text,
+            )
+
+        return response

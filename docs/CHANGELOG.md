@@ -28,6 +28,11 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Updated the Brain pipeline to produce an `Interpretation` before planning
 - Implemented rule-based intent recognition
 - Updated execution planning to consider interpreted request intent
+- Introduced the `Conversation` model
+- Added `Message` and `Role` models
+- Moved conversation ownership to the Brain
+- Added session-based conversation history
+- Updated the Brain to maintain conversation state
 
 #### Provider
 
@@ -46,6 +51,9 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Integrated the Google Gen AI SDK
 - Added support for Gemini API authentication
 - Enabled real AI-powered conversations through Gemini
+- Added a shared system prompt
+- Updated providers to consume `Conversation` objects
+- Separated provider implementation from conversation state
 
 #### User Interface
 

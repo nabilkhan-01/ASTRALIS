@@ -1,9 +1,11 @@
 from google import genai
+from google.genai import types
 
-from astralis.brain.request import Request
+from astralis.brain.conversation import Conversation
 from astralis.brain.response import Response
 from astralis.core.config import Config
 from astralis.provider.provider import Provider
+from astralis.provider.prompts import SYSTEM_PROMPT
 
 
 class GeminiProvider(Provider):
@@ -21,7 +23,7 @@ class GeminiProvider(Provider):
 
     def generate(
         self,
-        request: Request,
+        conversation: Conversation,
     ) -> Response:
         """Generate a response using Google Gemini."""
 
@@ -34,7 +36,10 @@ class GeminiProvider(Provider):
         try:
             response = self.client.models.generate_content(
                 model=self.config.gemini_model,
-                contents=request.text,
+                contents=self._build_contents(conversation),
+                config=types.GenerateContentConfig(
+                    system_instruction=SYSTEM_PROMPT,
+                ),
             )
 
             return Response(
@@ -47,3 +52,31 @@ class GeminiProvider(Provider):
                 text=f"Provider error: {exc}",
                 success=False,
             )
+    
+    
+    def _build_contents(
+        self,
+        conversation: Conversation,
+    ) -> list[types.Content]:
+        """Convert an ASTRALIS conversation into Gemini content."""
+
+        contents = []
+
+        for message in conversation.messages:
+            if message.role.value == "assistant":
+                role = "model"
+            else:
+                role = "user"
+
+            contents.append(
+                types.Content(
+                    role=role,
+                    parts=[
+                        types.Part.from_text(
+                            text=message.content,
+                        )
+                    ],
+                )
+            )
+
+        return contents
