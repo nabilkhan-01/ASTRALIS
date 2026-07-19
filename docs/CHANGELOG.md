@@ -40,6 +40,7 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Established Brain foundation
 - Added Brain module
 - Defined Brain public interface
+- Implemented Brain integration with the Core Engine
 
 ---
 

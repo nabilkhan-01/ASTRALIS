@@ -336,6 +336,28 @@ Separating intelligence coordination from application orchestration keeps respon
 
 ---
 
+## ADR-0015
+
+### Title
+
+Core Engine Owns the Brain
+
+### Decision
+
+The Core Engine owns and initializes the Brain during application startup.
+
+### Rationale
+
+Centralizing ownership of the Brain keeps startup orchestration within the Engine and maintains a single point of coordination for core application services.
+
+### Consequences
+
+- The Engine becomes the entry point to intelligence.
+- Other components interact with the Brain through the Engine.
+- The Brain remains independent of the application lifecycle.
+
+---
+
 Project: **ASTRALIS**
 
 Current Release: **v0.0.1 "Genesis"**

@@ -57,8 +57,7 @@ Core Engine
 ├── Module Loader
 ├── Lifecycle Manager
 ├── Health Checker
-└── (Future)
-    └── Event Bus
+└── Brain
 ```
 
 ---

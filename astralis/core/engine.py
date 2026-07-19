@@ -1,9 +1,10 @@
+from astralis.brain.brain import Brain
 from astralis.core.config import Config
+from astralis.core.health import HealthChecker
 from astralis.core.lifecycle import (
     LifecycleManager,
     LifecycleState,
 )
-from astralis.core.health import HealthChecker
 from astralis.core.loader import ModuleLoader
 from astralis.core.logger import AstralisLogger
 from astralis.core.registry import ModuleRegistry
@@ -22,6 +23,7 @@ class Engine:
             self.logger,
         )
         self.lifecycle = LifecycleManager()
+        self.brain = Brain()
 
     def start(self) -> None:
         """Start the ASTRALIS application."""
@@ -44,6 +46,10 @@ class Engine:
 
         # TODO: Validate configuration
 
+        # Initialize Brain.
+        self.logger.info("Initializing Brain...")
+        self.logger.info("Brain initialized.")
+
         # Initialize application modules.
         self.loader.load_modules()
 
@@ -61,13 +67,13 @@ class Engine:
         for service, healthy in results.items():
             status = "✓" if healthy else "✗"
             self.logger.info(f"{status} {service}")
-            
-        self.logger.info("Health checks passed.")
 
         if not all(results.values()):
             raise RuntimeError(
-                "Health checks failed. Startup aborted."
+                "ASTRALIS failed health checks. Startup aborted."
             )
+
+        self.logger.info("Health checks passed.")
 
         # Transition to running.
         self.lifecycle.transition_to(

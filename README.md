@@ -48,6 +48,8 @@ Build an AI that:
 
 **v0.1.0 — Foundation**
 
+**Status:** ✅ Completed
+
 Completed
 
 - ✅ Core project architecture
@@ -58,10 +60,11 @@ Completed
 - ✅ Module Loader
 - ✅ Lifecycle Manager
 - ✅ Health Checker
+- ✅ Brain Foundation
 
 Currently Working On
 
-- 🚧 Brain Foundation
+- 🚧 Request Architecture
 
 ---
 
