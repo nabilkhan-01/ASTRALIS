@@ -461,7 +461,37 @@ The Engine requests a provider from the factory instead of instantiating provide
 
 ---
 
+# ADR-0020
 
+## Title
+
+Brain Produces Execution Plans
+
+## Context
+
+As ASTRALIS grows, request processing will involve more than simply forwarding requests to an AI provider.
+
+Future capabilities such as memory, tools, permissions, and provider selection require an intermediate planning stage.
+
+## Decision
+
+The Brain produces an `ExecutionPlan` before executing a request.
+
+Execution follows the plan rather than embedding decision logic directly into the execution stage.
+
+## Rationale
+
+- Separates planning from execution.
+- Supports future capabilities without increasing coupling.
+- Keeps request execution predictable and extensible.
+
+## Consequences
+
+- The Brain becomes responsible for planning.
+- Execution follows the generated plan.
+- Future capabilities can extend the plan without changing the overall processing pipeline.
+
+---
 ## ADR Guidelines
 
 Architecture Decision Records (ADRs) document significant architectural decisions that have a long-term impact on ASTRALIS.
