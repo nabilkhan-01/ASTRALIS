@@ -403,9 +403,30 @@ This distinction improves readability, reduces boilerplate, and keeps responsibi
 - Engine, Brain, Module Loader, Health Checker, and similar components remain regular classes.
 - Request, Response, and future domain models are represented as data models.
 - The architecture maintains a clear distinction between behavior and data.
+
 ---
 
+## ADR-0018
 
+## Title
+
+Depend on AI Provider Abstractions
+
+## Decision
+
+The Brain communicates exclusively through a Provider interface rather than depending directly on any specific AI provider.
+
+## Rationale
+
+Separating the Brain from provider implementations preserves modularity and allows AI providers to be replaced without affecting Brain logic.
+
+## Consequences
+
+- The Brain remains provider-agnostic.
+- New providers can be added without modifying the Brain.
+- Switching AI providers requires changes only within the provider layer.
+
+---
 
 ## ADR Guidelines
 

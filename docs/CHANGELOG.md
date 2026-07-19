@@ -60,6 +60,11 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 
 ---
 
+#### Provider
+
+- Introduced the provider abstraction
+- Defined a common interface for AI providers
+
 Project: **ASTRALIS**
 
 Current Release: **v0.1.0 "Foundation"**

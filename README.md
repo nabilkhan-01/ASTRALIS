@@ -58,6 +58,7 @@ ASTRALIS/
 │   ├── brain/
 │   ├── security/
 │   ├── memory/
+    ├── provider/
 │   ├── vision/
 │   ├── voice/
 │   ├── tools/
