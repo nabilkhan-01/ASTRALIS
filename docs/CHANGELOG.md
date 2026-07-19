@@ -28,6 +28,8 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Connected the Brain to the provider abstraction
 - Added ProviderFactory
 - Introduced configuration-based provider selection
+- Added OpenAIProvider implementation
+- Extended ProviderFactory to support multiple AI providers
 
 #### User Interface
 
