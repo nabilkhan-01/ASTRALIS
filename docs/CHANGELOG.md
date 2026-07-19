@@ -17,6 +17,8 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Updated the Brain interface to process `Request` objects
 - Introduced the Response model
 - Updated the Brain interface to return `Response` objects
+- Established the Brain processing pipeline
+- Defined validation, interpretation, planning, and execution stages
 
 ---
 

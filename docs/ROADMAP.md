@@ -62,8 +62,8 @@ Establish the communication architecture for intelligent processing.
 
 - [x] Request model
 - [x] RequestSource enumeration
-- [ ] Response model
-- [ ] Brain pipeline
+- [x] Response model
+- [x] Brain pipeline
 - [ ] AI provider abstraction
 - [ ] Mock provider
 
