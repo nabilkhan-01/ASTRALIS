@@ -33,6 +33,10 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Integrated OpenAI SDK
 - Added OpenAI client initialization
 - Implemented response generation through the OpenAI Responses API
+- Added GeminiProvider implementation
+- Integrated the Google Gen AI SDK
+- Added support for Gemini API authentication
+- Enabled real AI-powered conversations through Gemini
 
 #### User Interface
 

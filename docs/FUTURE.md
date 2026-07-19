@@ -111,11 +111,13 @@ This supports the project philosophy:
 
 # Brain
 
-## Provider Independence
+## Provider Abstraction
 
-Introduce an abstraction layer between the Brain and AI providers.
+The Brain communicates only through the Provider interface.
 
-Future providers may include:
+Concrete AI providers remain interchangeable implementations behind this abstraction.
+
+Possible providers include:
 
 - OpenAI
 - Gemini
@@ -123,11 +125,35 @@ Future providers may include:
 - Ollama
 - Local Models
 
-The Brain should communicate only with the provider interface.
+This abstraction allows new providers to be introduced without modifying the Brain.
+
+**Status:** Implemented
+
+## Intelligent Provider Selection
+
+The current implementation uses a default AI provider selected through configuration.
+
+In future versions, ASTRALIS should determine the most appropriate provider for each request instead of relying solely on a predefined default.
+
+Provider selection may consider:
+
+- Task complexity
+- Required capabilities (reasoning, vision, coding, etc.)
+- Privacy requirements
+- User preferences
+- Provider availability
+- Cost
+- Latency
+- Local versus cloud execution
+
+Users should always be able to override the selected provider when desired.
+
+Until this capability is implemented, ASTRALIS falls back to the configured default provider.
 
 **Status:** Planned
 
----
+**Reason:** Enables intelligent provider selection while preserving user autonomy.
+
 
 ## Response Model Expansion
 
@@ -218,6 +244,17 @@ Examples:
 
 # Intelligence
 
+## Context-Aware Reasoning
+
+The Brain should eventually consider conversation history, user preferences, memory, and environmental context before generating a response.
+
+Reasoning should not depend solely on the current request.
+
+**Status:** Planned
+
+**Reason:** Enables coherent long-term assistance and more personalized interactions.
+
+
 ## Explainability
 
 ASTRALIS should be able to explain significant decisions and recommendations.
@@ -244,7 +281,7 @@ Cloud providers should remain optional rather than mandatory.
 
 **Reason:** Improves privacy, reliability, and user control.
 
----
+--- 
 
 # Documentation Policy
 
