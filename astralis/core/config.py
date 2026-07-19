@@ -18,8 +18,8 @@ class Config:
 
     def __init__(self):
         self.project_name = "ASTRALIS"
-        self.version = "0.0.1"
-        self.codename = "Genesis"
+        self.version = "0.1.0"
+        self.codename = "Foundation"
         self.tagline = "Assist. Don't Control."
 
         self.language = "en"

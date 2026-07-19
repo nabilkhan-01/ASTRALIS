@@ -64,6 +64,8 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 
 - Introduced the provider abstraction
 - Defined a common interface for AI providers
+- Added MockProvider implementation
+- Connected the Brain to the provider abstraction
 
 Project: **ASTRALIS**
 

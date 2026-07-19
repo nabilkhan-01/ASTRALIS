@@ -1,9 +1,16 @@
 from astralis.brain.request import Request
 from astralis.brain.response import Response
+from astralis.provider.provider import Provider
 
 
 class Brain:
     """Coordinates intelligent request processing."""
+
+    def __init__(
+        self,
+        provider: Provider,
+    ) -> None:
+        self.provider = provider
 
     def process(
         self,
@@ -48,7 +55,4 @@ class Brain:
     ) -> Response:
         """Execute the processing plan."""
 
-        return Response(
-            text="Brain processing is not implemented yet.",
-            success=True,
-        )
+        return self.provider.generate(request)
