@@ -1,3 +1,5 @@
+from astralis.brain.interpretation import Interpretation
+from astralis.brain.interpreter import Interpreter
 from astralis.brain.plan import ExecutionPlan
 from astralis.brain.request import Request
 from astralis.brain.response import Response
@@ -12,6 +14,7 @@ class Brain:
         provider: Provider,
     ) -> None:
         self.provider = provider
+        self.interpreter = Interpreter()
 
     def process(
         self,
@@ -21,9 +24,13 @@ class Brain:
 
         # Execute the processing pipeline.
         request = self._validate(request)
-        request = self._interpret(request)
 
-        plan = self._plan(request)
+        interpretation = self._interpret(request)
+
+        plan = self._plan(
+            request,
+            interpretation,
+        )
 
         return self._execute(
             request,
@@ -41,14 +48,15 @@ class Brain:
     def _interpret(
         self,
         request: Request,
-    ) -> Request:
+    ) -> Interpretation:
         """Interpret the user's request."""
 
-        return request
+        return self.interpreter.interpret(request)
 
     def _plan(
         self,
         request: Request,
+        interpretation: Interpretation,
     ) -> ExecutionPlan:
         """Create an execution plan for the request."""
 

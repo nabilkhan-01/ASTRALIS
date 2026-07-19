@@ -21,6 +21,11 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Defined validation, interpretation, planning, and execution stages
 - Introduced the ExecutionPlan model
 - Updated the Brain to generate execution plans before execution
+- Introduced the `Intent` enumeration
+- Added the `Interpretation` model
+- Introduced the `Interpreter` component
+- Delegated request interpretation from the Brain to the Interpreter
+- Updated the Brain pipeline to produce an `Interpretation` before planning
 
 #### Provider
 

@@ -492,6 +492,40 @@ Execution follows the plan rather than embedding decision logic directly into th
 - Future capabilities can extend the plan without changing the overall processing pipeline.
 
 ---
+
+# ADR-0021
+
+## Title
+
+Request Interpretation Is Delegated
+
+## Context
+
+As the Brain grows, request interpretation will become increasingly complex.
+
+Future capabilities such as intent recognition, entity extraction, language detection, conversation context, and confidence scoring should remain separate from orchestration logic.
+
+## Decision
+
+The Brain delegates request interpretation to a dedicated `Interpreter` component.
+
+The `Interpreter` produces an `Interpretation` object representing the Brain's understanding of the request without modifying the original `Request`.
+
+## Rationale
+
+- Separates interpretation from orchestration.
+- Preserves the original request.
+- Allows interpretation to evolve independently.
+- Supports future expansion without increasing Brain complexity.
+
+## Consequences
+
+- The Brain coordinates interpretation rather than implementing it.
+- Interpretation can expand with additional metadata over time.
+- Future planning stages consume an `Interpretation` instead of the raw request.
+
+---
+
 ## ADR Guidelines
 
 Architecture Decision Records (ADRs) document significant architectural decisions that have a long-term impact on ASTRALIS.
