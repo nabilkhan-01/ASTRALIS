@@ -12,9 +12,9 @@ Every milestone strengthens ASTRALIS as an independent intelligence while remain
 
 # Current Development
 
-**Current Release:** `v0.1.0 "Foundation"`
+**Current Release:** `v0.2.0 "Brain Architecture"`
 
-**Current Milestone:** `v0.2.0 "Brain Architecture"`
+**Current Milestone:** `v0.3.0 "Capabilities"`
 
 ---
 
@@ -58,47 +58,50 @@ ASTRALIS provides a stable, modular foundation for future intelligence.
 
 ---
 
-## v0.2.0 — Brain Architecture 🚧
+### v0.2.0 — Brain Architecture ✅
 
 Teach ASTRALIS how to think.
 
-### Progress
+### Completed
 
 #### Brain
 
-- [x] Request model
-- [x] Response model
-- [x] RequestSource
-- [x] Brain processing pipeline
-- [x] Intent recognition
-- [x] Interpretation model
-- [x] Execution Plan
-- [x] Conversation model
-- [x] Provider-independent conversations
+- Request model
+- Response model
+- RequestSource
+- Brain processing pipeline
+- Intent recognition
+- Interpretation model
+- Planner
+- Execution Plan
+- Conversation model
+- Provider-independent conversations
+
+#### Capability Framework
+
+- Capability abstraction
+- Capability registry
+- Capability manager
+- Language capability
+- Capability-based execution
 
 #### AI Providers
 
-- [x] Provider abstraction
-- [x] Provider factory
-- [x] Mock provider
-- [x] OpenAI provider
-- [x] Gemini provider
+- Provider abstraction
+- Provider factory
+- Mock provider
+- OpenAI provider
+- Gemini provider
 
 #### User Interface
 
-- [x] Interactive CLI
-
-### Remaining
-
-- [ ] Capability framework
-- [ ] Capability routing
-- [ ] Intelligent execution planning
-- [ ] Provider selection strategy
-- [ ] Memory integration point
+- Interactive CLI
 
 ### Success Criteria
 
-ASTRALIS understands requests, decides how they should be solved, and routes them through the appropriate capability.
+ASTRALIS understands requests, plans execution, and routes work through independent capabilities while remaining provider-independent.
+
+**Status:** Completed
 
 ---
 
@@ -221,6 +224,7 @@ Strengthen reasoning and orchestration.
 - Capability orchestration
 - Explainable reasoning
 - Adaptive planning
+- Multi-agent coordination
 
 ### Success Criteria
 
@@ -251,16 +255,17 @@ Core principles:
 
 ## Future Vision
 
-### ASTRALIS Language Model
+### ASTRALIS Intelligence
 
 Reduce dependence on external language models.
 
 Goals:
 
-- Train an ASTRALIS language model
-- Fine-tune on curated datasets
+- Develop ASTRALIS language models
 - Local inference
-- Preserve provider independence
+- Provider independence
+- Specialized models
+- Continuous improvement
 
 External providers remain optional.
 
@@ -280,9 +285,9 @@ It is built to become a trusted AI Operating System that helps people think, lea
 
 Project: **ASTRALIS**
 
-Current Release: **v0.1.0 "Foundation"**
+Current Release: **v0.2.0 "Brain Architecture"**
 
-Current Milestone: **v0.2.0 "Brain Architecture"**
+Current Milestone: **v0.3.0 "Capabilities"**
 
 Philosophy: **Assist. Don't Control.**
 

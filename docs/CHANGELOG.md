@@ -10,6 +10,14 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 
 ### Added
 
+_No unreleased changes._
+
+---
+
+## [v0.2.0] - Brain Architecture
+
+### Added
+
 #### Brain
 
 - Introduced the Request model
@@ -20,41 +28,48 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Established the Brain processing pipeline
 - Defined validation, interpretation, planning, and execution stages
 - Introduced the ExecutionPlan model
-- Updated the Brain to generate execution plans before execution
-- Introduced the `Intent` enumeration
-- Added the `Interpretation` model
-- Introduced the `Interpreter` component
+- Introduced the Planner component
+- Extracted execution planning from the Brain into the Planner
+- Introduced the Intent enumeration
+- Added the Interpretation model
+- Introduced the Interpreter component
 - Delegated request interpretation from the Brain to the Interpreter
-- Updated the Brain pipeline to produce an `Interpretation` before planning
 - Implemented rule-based intent recognition
-- Updated execution planning to consider interpreted request intent
-- Introduced the `Conversation` model
-- Added `Message` and `Role` models
+- Introduced the Conversation model
+- Added Message and Role models
 - Moved conversation ownership to the Brain
 - Added session-based conversation history
 - Updated the Brain to maintain conversation state
+- Simplified the Brain into an orchestration component
+
+#### Capability Framework
+
+- Introduced the Capability abstraction
+- Added the CapabilityType enumeration
+- Implemented the CapabilityRegistry
+- Implemented the CapabilityManager
+- Introduced the LanguageCapability
+- Refactored execution routing through the Capability Framework
+- Decoupled the Brain from language providers
 
 #### Provider
 
 - Introduced the provider abstraction
 - Defined a common interface for AI providers
 - Added MockProvider implementation
-- Connected the Brain to the provider abstraction
 - Added ProviderFactory
 - Introduced configuration-based provider selection
 - Added OpenAIProvider implementation
-- Extended ProviderFactory to support multiple AI providers
 - Integrated the OpenAI SDK
-- Added OpenAI client initialization
 - Implemented response generation through the OpenAI Responses API
 - Added GeminiProvider implementation
 - Integrated the Google Gen AI SDK
-- Added support for Gemini API authentication
-- Enabled real AI-powered conversations through Gemini
-- Added a shared system prompt
-- Updated providers to consume `Conversation` objects
+- Added Gemini API authentication
+- Added shared provider system prompt
+- Updated providers to consume Conversation objects
 - Separated provider implementation from conversation state
 - Introduced provider-independent conversation management
+- Improved provider error handling
 
 #### User Interface
 
@@ -65,16 +80,21 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 
 - Added environment-based configuration
 - Introduced support for loading AI settings from `.env`
-- Added provider-specific environment configuration
+- Added provider-specific configuration
 - Added Gemini model configuration
 - Added OpenAI model configuration
 
 #### Documentation
 
-- Updated the roadmap to prioritize capabilities before voice
-- Expanded engineering principles
+- Expanded project architecture documentation
+- Updated the engineering principles
+- Updated the roadmap
+- Updated architectural decisions (ADR)
 - Updated future architectural decisions
-- Recorded conversation architecture milestone
+- Added interface documentation
+- Updated project history
+- Updated changelog
+- Synchronized documentation with the Capability Framework
 
 ---
 
@@ -99,7 +119,7 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 #### Core Infrastructure
 
 - Implemented centralized configuration system
-- Implemented Core Engine
+- Implemented the Core Engine
 - Added application startup sequence
 - Implemented centralized logging system
 - Implemented Module Registry
@@ -110,16 +130,16 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 #### Brain
 
 - Established Brain foundation
-- Added Brain module
-- Defined Brain public interface
+- Added the Brain module
+- Defined the Brain public interface
 - Implemented Brain integration with the Core Engine
 
 ---
 
 Project: **ASTRALIS**
 
-Current Release: **v0.1.0 "Foundation"**
+Current Release: **v0.2.0 "Brain Architecture"**
 
-Current Milestone: **v0.2.0 "Brain Architecture"**
+Current Milestone: **v0.3.0 "Capabilities"**
 
 Philosophy: **Assist. Don't Control.**

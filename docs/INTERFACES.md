@@ -15,7 +15,7 @@ The intelligence does not.
 ## Design Principles
 
 - The Brain must remain completely interface-independent.
-- Every interface communicates through the Engine.
+- Every interface communicates through the Core Engine.
 - Every request is represented using the Request model.
 - Every response is represented using the Response model.
 - Interfaces must never contain business logic.
@@ -24,7 +24,7 @@ The intelligence does not.
 
 ---
 
-## Planned Interfaces
+## Interfaces
 
 ### Command-Line Interface (CLI)
 
@@ -32,7 +32,7 @@ The intelligence does not.
 
 Used for development, debugging, testing, and engineering.
 
-Provides the fastest way to experiment with new capabilities.
+Provides the fastest way to develop and validate new capabilities.
 
 ---
 
@@ -42,11 +42,11 @@ Provides the fastest way to experiment with new capabilities.
 
 The primary experience for ASTRALIS.
 
-Features may include:
+Potential capabilities include:
 
 - Natural conversations
 - Memory management
-- Capabilities
+- Capability management
 - Notifications
 - Project awareness
 - Settings
@@ -67,7 +67,7 @@ Goals:
 - Low-latency responses
 - Hands-free operation
 
-The voice interface should feel like speaking naturally with ASTRALIS rather than issuing commands.
+The experience should feel like talking with ASTRALIS rather than issuing commands.
 
 ---
 
@@ -93,14 +93,14 @@ The mobile interface complements the desktop experience rather than replacing it
 
 **Status:** Planned
 
-Provides a stable interface for third-party applications.
+Provides a stable interface for third-party applications and future integrations.
 
 Potential uses:
 
 - Automation
 - Plugins
-- Integrations
-- Custom applications
+- External applications
+- System integrations
 
 ---
 
@@ -108,9 +108,7 @@ Potential uses:
 
 **Status:** Future
 
-Browser-based access to ASTRALIS.
-
-Useful for remote access and lightweight usage without requiring installation.
+Provides lightweight browser-based access to ASTRALIS without requiring installation.
 
 ---
 
@@ -118,7 +116,7 @@ Useful for remote access and lightweight usage without requiring installation.
 
 ASTRALIS should not depend on a single interface.
 
-Users should be able to interact through:
+Whether users interact through:
 
 - Keyboard
 - Voice
@@ -126,13 +124,17 @@ Users should be able to interact through:
 - APIs
 - Future interfaces
 
-while experiencing the same intelligence, memory, and personality.
+they should experience the same intelligence, memory, capabilities, and personality.
 
 Changing the interface should never change who ASTRALIS is.
 
 ---
 
 Project: **ASTRALIS**
+
+Current Release: **v0.2.0 "Brain Architecture"**
+
+Current Milestone: **v0.3.0 "Capabilities"**
 
 Philosophy:
 

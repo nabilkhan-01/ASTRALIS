@@ -2,12 +2,12 @@
 
 > **Assist. Don't Control.**
 
-**Current Release:** `v0.1.0 "Foundation"`  
-**Current Milestone:** `v0.2.0 "Brain Architecture"`
+**Current Release:** `v0.2.0 "Brain Architecture"`  
+**Current Milestone:** `v0.3.0 "Capabilities"`
 
-ASTRALIS is a long-term research and engineering project focused on building a personal AI Operating System that assists users while respecting their autonomy, privacy, and decisions.
+ASTRALIS is a long-term research and engineering project focused on building a personal AI Operating System that assists people while respecting their autonomy, privacy, and decisions.
 
-Rather than building another chatbot, ASTRALIS aims to become an intelligent companion capable of learning, reasoning, remembering, planning, and helping users accomplish meaningful work while ensuring the user always remains in control.
+Rather than becoming another chatbot, ASTRALIS is designed to become an intelligent companion capable of reasoning, planning, remembering, learning, and helping people accomplish meaningful work while ensuring the user always remains in control.
 
 ---
 
@@ -17,15 +17,15 @@ ASTRALIS is built on one guiding principle:
 
 > **Assist. Don't Control.**
 
-The goal is to augment human decision-making—not replace it.
+Its purpose is to make people more capable—not more dependent.
 
-Every architectural and product decision should align with this philosophy.
+Every architectural and product decision should support this philosophy.
 
 ---
 
 ## Vision
 
-Build an AI that:
+Build an intelligence that:
 
 - Assists instead of controls.
 - Learns and adapts over time.
@@ -34,14 +34,16 @@ Build an AI that:
 - Evolves through modular engineering.
 - Respects user autonomy.
 
+Ultimately, ASTRALIS aims to become an AI Operating System that people trust—not just another AI.
+
 ---
 
 ## Current Status
 
 🚧 **Active Development**
 
-- **Current Release:** **v0.1.0 — Foundation**
-- **Current Milestone:** **v0.2.0 — Brain Architecture**
+- **Current Release:** **v0.2.0 — Brain Architecture**
+- **Current Milestone:** **v0.3.0 — Capabilities**
 
 Detailed progress is maintained in **`docs/ROADMAP.md`**.
 
@@ -54,17 +56,18 @@ ASTRALIS/
 ├── assets/
 │
 ├── astralis/
-│   ├── core/
+│   ├── automation/
 │   ├── brain/
-│   ├── security/
+│   ├── capability/
+│   ├── core/
+│   ├── interfaces/
 │   ├── memory/
-|   ├── provider/
+│   ├── provider/
+│   ├── security/
+|   ├── tools/
+│   ├── utils/
 │   ├── vision/
 │   ├── voice/
-│   ├── tools/
-│   ├── automation/
-│   ├── interfaces/
-|   ├── utils/
 │   └── __init__.py
 │
 ├── docs/
@@ -79,15 +82,16 @@ ASTRALIS/
 
 ## Documentation
 
-Project documentation is maintained inside the `docs/` directory.
+Project documentation is maintained in the `docs/` directory.
 
 - 🏛️ Architecture
 - 📝 Changelog
-- 🧠 Decisions (Architecture Decision Records)
+- 🧠 Architecture Decision Records (ADRs)
 - 📖 Founder's Note
 - 🔮 Future Decisions
-- 📜 Principles
+- 📜 Engineering Principles
 - 🗺️ Roadmap
+- 🖥️ Interfaces
 
 ---
 
@@ -95,7 +99,16 @@ Project documentation is maintained inside the `docs/` directory.
 
 ASTRALIS is developed incrementally.
 
-Every feature is designed, implemented, reviewed, documented, and committed as a complete capability before moving to the next.
+Every capability is:
+
+- Designed
+- Implemented
+- Reviewed
+- Documented
+- Tested
+- Committed
+
+before moving to the next milestone.
 
 The project values:
 
@@ -114,6 +127,7 @@ Build an extensible AI Operating System capable of:
 - Understanding natural language
 - Remembering important information
 - Reasoning through complex tasks
+- Planning before acting
 - Interacting with computers safely
 - Learning from experience
 - Assisting users without replacing their judgment
@@ -122,13 +136,17 @@ Build an extensible AI Operating System capable of:
 
 ## Development Philosophy
 
-ASTRALIS is built in public, one carefully reviewed capability at a time.
+ASTRALIS is built one carefully engineered capability at a time.
 
 Every architectural decision is documented.
-Every feature begins with design.
-Every commit adds one meaningful capability.
 
-The objective is not simply to build an AI, but to build it thoughtfully.
+Every feature begins with design.
+
+Every implementation strengthens the existing architecture rather than replacing it.
+
+The objective is not simply to build another AI.
+
+The objective is to build an intelligence people trust.
 
 ---
 

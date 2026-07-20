@@ -380,7 +380,7 @@ Using a dedicated request model creates a stable interface between user-facing c
 
 ---
 
-## ADR-0016
+## ADR-0017
 
 ### Title
 
@@ -408,19 +408,19 @@ This distinction improves readability, reduces boilerplate, and keeps responsibi
 
 ## ADR-0018
 
-## Title
+### Title
 
 Depend on AI Provider Abstractions
 
-## Decision
+### Decision
 
 The Brain communicates exclusively through a Provider interface rather than depending directly on any specific AI provider.
 
-## Rationale
+### Rationale
 
 Separating the Brain from provider implementations preserves modularity and allows AI providers to be replaced without affecting Brain logic.
 
-## Consequences
+### Consequences
 
 - The Brain remains provider-agnostic.
 - New providers can be added without modifying the Brain.
@@ -428,32 +428,32 @@ Separating the Brain from provider implementations preserves modularity and allo
 
 ---
 
-# ADR-0019
+## ADR-0019
 
-## Title
+### Title
 
 Instantiate Providers Through a Factory
 
-## Context
+### Context
 
 The Engine previously instantiated concrete provider implementations directly.
 
 As additional AI providers are introduced, this would increase coupling between the Engine and provider implementations.
 
-## Decision
+### Decision
 
 Provider instances are created through a centralized `ProviderFactory`.
 
 The Engine requests a provider from the factory instead of instantiating provider implementations directly.
 
-## Rationale
+### Rationale
 
 - Keeps the Engine provider-agnostic.
 - Centralizes provider creation logic.
 - Simplifies adding new AI providers.
 - Preserves the separation between application orchestration and provider instantiation.
 
-## Consequences
+### Consequences
 
 - The Engine no longer depends on concrete provider implementations.
 - New providers require updates only to the factory.
@@ -461,88 +461,62 @@ The Engine requests a provider from the factory instead of instantiating provide
 
 ---
 
-# ADR-0020
+## ADR-0020
 
-## Title
+### Title
 
-Brain Produces Execution Plans
+Delegate Execution Planning to the Planner
 
-## Context
+### Decision
 
-As ASTRALIS grows, request processing will involve more than simply forwarding requests to an AI provider.
+The Brain delegates execution planning to a dedicated Planner component. The Planner produces an ExecutionPlan, allowing the Brain to remain focused on orchestration.
 
-Future capabilities such as memory, tools, permissions, and provider selection require an intermediate planning stage.
+### Rationale
 
-## Decision
+- Separates planning from orchestration.
+- Keeps the Brain small and maintainable.
+- Allows planning strategies to evolve independently.
 
-The Brain produces an `ExecutionPlan` before executing a request.
+### Consequences
 
-Execution follows the plan rather than embedding decision logic directly into the execution stage.
-
-## Rationale
-
-- Separates planning from execution.
-- Supports future capabilities without increasing coupling.
-- Keeps request execution predictable and extensible.
-
-## Consequences
-
-- The Brain becomes responsible for planning.
-- Execution follows the generated plan.
-- Future capabilities can extend the plan without changing the overall processing pipeline.
+- The Brain coordinates planning instead of implementing it.
+- Future planning logic remains isolated.
+- New planning strategies can be introduced without modifying the Brain.
 
 ---
 
-# ADR-0021
+## ADR-0021
 
-## Title
+### Title
 
 Request Interpretation Is Delegated
 
-## Context
+### Context
 
 As the Brain grows, request interpretation will become increasingly complex.
 
 Future capabilities such as intent recognition, entity extraction, language detection, conversation context, and confidence scoring should remain separate from orchestration logic.
 
-## Decision
+### Decision
 
 The Brain delegates request interpretation to a dedicated `Interpreter` component.
 
 The `Interpreter` produces an `Interpretation` object representing the Brain's understanding of the request without modifying the original `Request`.
 
-## Rationale
+### Rationale
 
 - Separates interpretation from orchestration.
 - Preserves the original request.
 - Allows interpretation to evolve independently.
 - Supports future expansion without increasing Brain complexity.
 
-## Consequences
+### Consequences
 
 - The Brain coordinates interpretation rather than implementing it.
 - Interpretation can expand with additional metadata over time.
 - Future planning stages consume an `Interpretation` instead of the raw request.
 
 ---
-
-## ADR Guidelines
-
-Architecture Decision Records (ADRs) document significant architectural decisions that have a long-term impact on ASTRALIS.
-
-An ADR should be created only when a decision:
-
-- Significantly influences the overall architecture.
-- Is difficult or expensive to reverse.
-- Establishes a long-term engineering principle.
-- Affects multiple modules or future development.
-
-Implementation details, internal algorithms, logging changes, helper classes, and other low-level design choices should be documented through code, commit history, or project documentation rather than ADRs.
-When in doubt, prefer documenting the decision in code or project documentation rather than creating a new ADR.
-
-The goal is to preserve the reasoning behind major architectural decisions—not to record every implementation detail.
-
---- 
 
 ## ADR-0022
 
@@ -583,10 +557,51 @@ Providers remain stateless and never own conversation history.
 
 ---
 
+## ADR-0023
+
+### Title
+
+Execute Requests Through Capabilities
+
+### Decision
+
+The Brain executes requests through a Capability Framework rather than communicating directly with AI providers or external systems.
+
+### Rationale
+
+- Separates reasoning from execution.
+- Allows Browser, Memory, Email, Weather and future features to be implemented independently.
+- Keeps the Brain provider-independent.
+
+### Consequences
+
+- New capabilities implement a common interface.
+- The Capability Manager coordinates execution.
+- Language generation becomes one capability among many.
+
+
+## ADR Guidelines
+
+Architecture Decision Records (ADRs) document significant architectural decisions that have a long-term impact on ASTRALIS.
+
+An ADR should be created only when a decision:
+
+- Significantly influences the overall architecture.
+- Is difficult or expensive to reverse.
+- Establishes a long-term engineering principle.
+- Affects multiple modules or future development.
+
+Implementation details, internal algorithms, logging changes, helper classes, and other low-level design choices should be documented through code, commit history, or project documentation rather than ADRs.
+When in doubt, prefer documenting the decision in code or project documentation rather than creating a new ADR.
+
+The goal is to preserve the reasoning behind major architectural decisions—not to record every implementation detail.
+
+--- 
+
 Project: **ASTRALIS**
 
-Current Release: **v0.1.0 "Foundation"**
+Current Release: **v0.2.0 "Brain Architecture"**
 
-Current Milestone: **v0.2.0 "Brain Architecture"**
+Current Milestone: **v0.3.0 "Capabilities"**
 
 Philosophy: **Assist. Don't Control.**

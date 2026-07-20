@@ -18,9 +18,9 @@ It should provide information, guidance, automation, and support while ensuring 
 
 ## 2. Intelligence Belongs to ASTRALIS
 
-The intelligence of ASTRALIS belongs to its own architecture—not to any external language model.
+The intelligence of ASTRALIS belongs to its own architecture rather than any individual language model.
 
-Language models are components used to generate language.
+Language models generate language.
 
 Reasoning, planning, memory, decision-making, and orchestration belong to ASTRALIS.
 
@@ -146,7 +146,7 @@ The purpose of ASTRALIS is not to replace human ability.
 
 Its purpose is to help people think more clearly, learn more effectively, create with confidence, and solve problems while remaining independent.
 
-Success is measured by how much more capable users become—not by how dependent they become on ASTRALIS.
+Success is measured by how much more capable users become—not by how much they rely on ASTRALIS.
 
 ---
 
@@ -170,4 +170,4 @@ Philosophy:
 
 Vision:
 
-> **Build an intelligence people trust—not just another AI.**
+> **Build an Intelligence people trust—not just another AI.**

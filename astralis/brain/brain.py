@@ -1,12 +1,12 @@
 from astralis.brain.conversation import Conversation
 from astralis.brain.interpretation import Interpretation
 from astralis.brain.interpreter import Interpreter
-from astralis.brain.plan import ExecutionPlan
+from astralis.brain.execution_plan import ExecutionPlan
 from astralis.brain.request import Request
 from astralis.brain.response import Response
 from astralis.brain.role import Role
 from astralis.capability.manager import CapabilityManager
-from astralis.capability.capability_type import CapabilityType
+from astralis.brain.planner import Planner
 
 
 class Brain:
@@ -16,9 +16,16 @@ class Brain:
         self,
         capability_manager: CapabilityManager,
     ) -> None:
-        self.capability_manager = capability_manager
+        
+        # Brain components
         self.interpreter = Interpreter()
+        self.planner = Planner()
+
+        # Brain state
         self.conversation = Conversation()
+
+        # Execution
+        self.capability_manager = capability_manager
 
     def process(
         self,
@@ -39,7 +46,7 @@ class Brain:
         interpretation = self._interpret(request)
 
         # Planning
-        plan = self._plan(
+        plan = self.planner.plan(
             interpretation,
         )
 
@@ -72,16 +79,6 @@ class Brain:
         """Interpret the user's request."""
 
         return self.interpreter.interpret(request)
-
-    def _plan(
-        self,
-        interpretation: Interpretation,
-    ) -> ExecutionPlan:
-        """Create an execution plan for the request."""
-
-        return ExecutionPlan(
-            capability=CapabilityType.LANGUAGE,
-        )
 
     def _execute(
         self,

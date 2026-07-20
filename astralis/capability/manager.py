@@ -1,6 +1,6 @@
 from astralis.brain.conversation import Conversation
 from astralis.brain.interpretation import Interpretation
-from astralis.brain.plan import ExecutionPlan
+from astralis.brain.execution_plan import ExecutionPlan
 from astralis.brain.response import Response
 from astralis.capability.registry import CapabilityRegistry
 

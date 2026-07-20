@@ -41,7 +41,16 @@ Other components provide specialized capabilities while remaining independent an
  Interpreter
       │
       ▼
- Execution Planner
+ Planner
+      │
+      ▼
+ Capability Manager
+      │
+      ▼
+ Capability Registry
+      │
+      ▼
+ Language Capability
       │
       ▼
  Provider
@@ -63,53 +72,34 @@ Request
 Validate
     │
     ▼
+Conversation Update
+    │
+    ▼
 Interpret
     │
     ▼
-Plan
+Planner
     │
     ▼
-Execute
+Execution Plan
+    │
+    ▼
+Capability Manager
+    │
+    ▼
+Capability
     │
     ▼
 Provider
     │
     ▼
 Response
+    │
+    ▼
+Conversation Update
 ```
 
 The Brain coordinates every stage of request processing while remaining independent of any specific language model.
-
----
-
-# Future Brain Architecture
-
-```text
-Request
-    │
-    ▼
-Validate
-    │
-    ▼
-Interpret
-    │
-    ▼
-Plan
-    │
-    ▼
-Capability Manager
-    │
-    ├── Language
-    ├── Memory
-    ├── Weather
-    ├── Browser
-    ├── Email
-    ├── Calendar
-    ├── Automation
-    └── Future Capabilities
-```
-
-This architecture separates reasoning from execution and allows new capabilities to be introduced without modifying the Brain.
 
 ---
 
@@ -172,11 +162,11 @@ Coordinates intelligence across ASTRALIS.
 Responsibilities include:
 
 - Request validation
+- Conversation coordination
 - Request interpretation
-- Execution planning
-- Conversation management
+- Planning coordination
 - Capability coordination
-- Response generation
+- Response coordination
 
 The Brain does not directly execute tools, store memory, or interact with external systems.
 
@@ -202,6 +192,7 @@ Future providers may include:
 Providers generate language only.
 
 They do not own intelligence or conversation state.
+Providers are implementation details behind the Language Capability and are never accessed directly by the Brain.
 
 ---
 
@@ -235,17 +226,19 @@ Processes screenshots, images, and visual context.
 
 ---
 
-## Capability System (Planned)
+## Capability System
 
 Provides independent capabilities that allow ASTRALIS to interact with the world.
 
-Examples include:
+Current implementation:
+- Language
 
+Planned:
 - Browser
 - Weather
+- Memory
 - Calendar
 - Email
-- File System
 - Automation
 - Calculator
 
@@ -310,7 +303,6 @@ The architecture is intentionally incremental.
 
 Future milestones will introduce:
 
-- Capability Framework
 - Context Engine
 - Event Bus
 - Plugin System
@@ -324,8 +316,8 @@ Each addition should strengthen the existing architecture rather than replace it
 
 Project: **ASTRALIS**
 
-Current Release: **v0.1.0 "Foundation"**
+Current Release: **v0.2.0 "Brain Architecture"**
 
-Current Milestone: **v0.2.0 "Brain Architecture"**
+Current Milestone: **v0.3.0 "Capabilities"**
 
 Philosophy: **Assist. Don't Control.**

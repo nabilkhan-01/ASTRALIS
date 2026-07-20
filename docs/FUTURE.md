@@ -147,10 +147,17 @@ Provider selection may consider:
 - Cost
 - Latency
 - Local versus cloud execution
+- Model availability
+- Automatic retries
+- Fallback models
 
 Users should always be able to override the selected provider when desired.
 
 Until this capability is implemented, ASTRALIS falls back to the configured default provider.
+
+Future implementations should transparently retry temporary provider failures and fall back to another compatible model or provider whenever practical.
+
+Users should interact with ASTRALIS rather than managing provider availability themselves.
 
 **Status:** Planned
 
@@ -186,30 +193,6 @@ This decision should only be made when the models become genuinely shared.
 **Status:** Deferred
 
 **Reason:** Avoid introducing shared abstractions before they are necessary.
-
----
-
-## Capability Framework
-
-The Brain should eventually execute requests through a capability framework rather than communicating directly with AI providers.
-
-Every capability should expose a common interface and remain independently replaceable.
-
-Examples include:
-
-- Language
-- Weather
-- Memory
-- Browser
-- Calendar
-- Email
-- File System
-
-The Brain should determine which capability is appropriate for a request before execution.
-
-**Status:** Planned
-
-**Reason:** Separates reasoning from execution while enabling modular expansion.
 
 ---
 
@@ -323,7 +306,7 @@ Future versions should support configurable context windows, summarization, and 
 
 ASTRALIS currently relies on external language models through interchangeable providers.
 
-Future versions should support an ASTRALIS language model while preserving the existing provider abstraction.
+Future versions should support one or more language models developed specifically for ASTRALIS while preserving the existing provider abstraction.
 
 External providers should remain optional so users can choose the most appropriate language engine for their needs.
 
@@ -354,6 +337,28 @@ ASTRALIS should use context to provide relevant assistance without becoming intr
 
 ---
 
+## Provider Resilience
+
+Language providers should remain resilient to temporary service failures.
+
+Future implementations may include:
+
+- Automatic retries
+- Exponential backoff
+- Model fallback
+- Provider fallback
+- Health monitoring
+- Cached provider availability
+
+ASTRALIS should recover from temporary provider failures whenever possible without requiring user intervention.
+
+**Status:** Planned
+
+**Reason:** Improves reliability while allowing users to interact with ASTRALIS instead of individual AI providers.
+
+---
+
+
 # Documentation Policy
 
 Whenever a feature is intentionally postponed, evaluate whether it belongs in this document.
@@ -366,8 +371,8 @@ This document should remain intentionally small and contain only significant arc
 
 Project: **ASTRALIS**
 
-Current Release: **v0.1.0 "Foundation"**
+Current Release: **v0.2.0 "Brain Architecture"**
 
-Current Milestone: **v0.2.0 "Brain Architecture"**
+Current Milestone: **v0.3.0 "Capabilities"**
 
 Philosophy: **Assist. Don't Control.**
