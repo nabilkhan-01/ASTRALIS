@@ -20,6 +20,7 @@ class GeminiProvider(Provider):
         self.client = genai.Client(
             api_key=config.gemini_api_key,
         )
+        print(f"Model: {self.config.gemini_model}")
 
     def generate(
         self,
@@ -42,14 +43,49 @@ class GeminiProvider(Provider):
                 ),
             )
 
+            if not response.text:
+                return Response(
+                    text="The language provider returned an empty response.",
+                    success=False,
+                )
+            
             return Response(
                 text=response.text,
                 success=True,
             )
 
         except Exception as exc:
+            message = str(exc)
+
+            if "503" in message:
+                return Response(
+                    text=(
+                        "The language service is temporarily unavailable due to high demand. "
+                        "Please try again in a few moments."
+                    ),
+                    success=False,
+                )
+
+            if "404" in message:
+                return Response(
+                    text=(
+                        "The configured language model is unavailable. "
+                        "Please verify the configured model name."
+                    ),
+                    success=False,
+                )
+
+            if "429" in message:
+                return Response(
+                    text=(
+                        "The language service rate limit has been reached. "
+                        "Please wait a few moments before trying again."
+                    ),
+                    success=False,
+                )
+            
             return Response(
-                text=f"Provider error: {exc}",
+                text=f"Provider error: {message}",
                 success=False,
             )
     

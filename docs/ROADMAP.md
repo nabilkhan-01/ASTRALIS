@@ -1,8 +1,12 @@
 # ASTRALIS Roadmap
 
-> "Every great system begins with a single step."
+> "Build an intelligence people trust—not just another AI."
 
-This roadmap outlines the planned evolution of ASTRALIS. It serves as a guide rather than a fixed contract. As the project evolves, milestones may change based on new ideas, research, and real-world feedback.
+This roadmap outlines the long-term evolution of ASTRALIS into an AI Operating System.
+
+Every milestone strengthens ASTRALIS as an independent intelligence while remaining faithful to its philosophy:
+
+> **Assist. Don't Control.**
 
 ---
 
@@ -34,21 +38,21 @@ Project foundation.
 
 Build the software foundation of ASTRALIS.
 
-### Progress
+### Completed
 
-- [x] Core project architecture
-- [x] Configuration system
-- [x] Centralized logging
-- [x] Application startup
-- [x] Module Registry
-- [x] Module Loader
-- [x] Lifecycle Manager
-- [x] Health Checker
-- [x] Brain foundation
+- Core architecture
+- Configuration system
+- Centralized logging
+- Application startup
+- Module Registry
+- Module Loader
+- Lifecycle Manager
+- Health Checker
+- Brain foundation
 
 ### Success Criteria
 
-ASTRALIS can reliably start, manage its core services, and provide a stable foundation for future modules.
+ASTRALIS provides a stable, modular foundation for future intelligence.
 
 **Status:** Completed
 
@@ -56,56 +60,70 @@ ASTRALIS can reliably start, manage its core services, and provide a stable foun
 
 ## v0.2.0 — Brain Architecture 🚧
 
-Establish the communication architecture for intelligent processing.
+Teach ASTRALIS how to think.
 
 ### Progress
 
 #### Brain
 
 - [x] Request model
-- [x] RequestSource enumeration
 - [x] Response model
+- [x] RequestSource
 - [x] Brain processing pipeline
-- [x] Execution Plan
-- [x] Intent enumeration
+- [x] Intent recognition
 - [x] Interpretation model
-- [x] Request Interpreter
+- [x] Execution Plan
+- [x] Conversation model
+- [x] Provider-independent conversations
 
 #### AI Providers
 
 - [x] Provider abstraction
-- [x] Mock AI provider
+- [x] Provider factory
+- [x] Mock provider
 - [x] OpenAI provider
 - [x] Gemini provider
 
 #### User Interface
 
-- [x] Interactive command-line interface
+- [x] Interactive CLI
 
-#### Remaining Work
+### Remaining
 
-- [x] Intent recognition rules
+- [ ] Capability framework
+- [ ] Capability routing
 - [ ] Intelligent execution planning
 - [ ] Provider selection strategy
-- [ ] Tool routing
 - [ ] Memory integration point
 
 ### Success Criteria
 
-The Brain can interpret requests, generate execution plans, and communicate with interchangeable AI providers through a provider-independent architecture.
+ASTRALIS understands requests, decides how they should be solved, and routes them through the appropriate capability.
 
 ---
 
-## v0.3.0 — Voice
+## v0.3.0 — Capabilities
 
-Give ASTRALIS a voice.
+Allow ASTRALIS to interact with the real world.
 
 ### Goals
 
-- Speech-to-text
-- Text-to-speech
-- Wake word
-- Natural conversation
+Core capabilities:
+
+- Weather
+- Time
+- Alarm
+- Calendar
+- Email
+- Browser
+- File System
+- Search
+- Calculator
+- Notes
+
+### Success Criteria
+
+ASTRALIS performs useful real-world tasks instead of only answering questions.
 
 ---
 
@@ -119,19 +137,28 @@ Teach ASTRALIS to remember.
 - Long-term memory
 - User preferences
 - Conversation history
+- Project awareness
+
+### Success Criteria
+
+ASTRALIS understands users, projects, and ongoing conversations while keeping users in control of their data.
 
 ---
 
-## v0.5.0 — Tools
+## v0.5.0 — Voice
 
-Allow ASTRALIS to interact with the computer.
+Give ASTRALIS a natural voice.
 
 ### Goals
 
-- File system
-- Application control
-- Browser integration
-- Terminal execution
+- Speech-to-text
+- Text-to-speech
+- Wake word
+- Natural conversation
+
+### Success Criteria
+
+Talking with ASTRALIS feels natural.
 
 ---
 
@@ -141,24 +168,28 @@ Enable visual understanding.
 
 ### Goals
 
-- Screen analysis
-- Image understanding
+- Screen understanding
 - OCR
+- Image understanding
 - Context awareness
 
 ---
 
-## v0.7.0 — Intelligence
+## v0.7.0 — Awareness
 
-Improve reasoning and decision-making.
+Teach ASTRALIS to understand context.
 
 ### Goals
 
-- Intelligent planning
-- Multi-step reasoning
-- Decision engine
-- Provider selection
-- Task orchestration
+- Active project awareness
+- Workspace awareness
+- Context engine
+- Intelligent suggestions
+- Presence without interruption
+
+### Success Criteria
+
+ASTRALIS understands what the user is doing and offers help only when it is genuinely useful.
 
 ---
 
@@ -169,34 +200,69 @@ Reduce repetitive work.
 ### Goals
 
 - Scheduled tasks
-- Workflows
+- Workflow automation
 - Background jobs
-
----
-
-## v0.9.0 — Multi-Agent System
-
-Expand ASTRALIS into specialized agents.
-
-### Goals
-
-- Planner Agent
-- Research Agent
-- Coding Agent
-- Memory Agent
-- Vision Agent
-
----
-
-## v1.0.0 — Personal AI Operating System
-
-The first stable release of ASTRALIS.
+- Smart reminders
 
 ### Success Criteria
 
-ASTRALIS is a stable, reliable, modular, extensible, and privacy-respecting AI Operating System that faithfully follows its founding philosophy:
+ASTRALIS automates repetitive work while respecting permissions and user control.
+
+---
+
+## v0.9.0 — Intelligence
+
+Strengthen reasoning and orchestration.
+
+### Goals
+
+- Multi-step planning
+- Decision engine
+- Capability orchestration
+- Explainable reasoning
+- Adaptive planning
+
+### Success Criteria
+
+ASTRALIS chooses the best strategy before acting rather than simply responding.
+
+---
+
+## v1.0.0 — AI Operating System
+
+The first stable release.
+
+### Success Criteria
+
+ASTRALIS is a reliable, privacy-respecting AI Operating System capable of helping users throughout their daily work while remaining faithful to its philosophy:
 
 > **Assist. Don't Control.**
+
+Core principles:
+
+- User remains in control.
+- Privacy first.
+- Honest by design.
+- Modular architecture.
+- Trusted companion.
+- Intelligence belongs to ASTRALIS.
+
+---
+
+## Future Vision
+
+### ASTRALIS Language Model
+
+Reduce dependence on external language models.
+
+Goals:
+
+- Train an ASTRALIS language model
+- Fine-tune on curated datasets
+- Local inference
+- Preserve provider independence
+
+External providers remain optional.
 
 ---
 
@@ -206,9 +272,9 @@ ASTRALIS is developed incrementally.
 
 Every milestone must leave the project in a stable, working state before moving to the next.
 
-Features are added only when they align with the project's guiding philosophy:
+ASTRALIS is not built to become another chatbot.
 
-> **Assist. Don't Control.**
+It is built to become a trusted AI Operating System that helps people think, learn, create, and solve problems while respecting their autonomy.
 
 ---
 
@@ -219,3 +285,7 @@ Current Release: **v0.1.0 "Foundation"**
 Current Milestone: **v0.2.0 "Brain Architecture"**
 
 Philosophy: **Assist. Don't Control.**
+
+Vision:
+
+> **Build an intelligence people trust—not just another AI.**

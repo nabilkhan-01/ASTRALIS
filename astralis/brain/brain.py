@@ -1,12 +1,12 @@
-from astralis.brain.intent import Intent
+from astralis.brain.conversation import Conversation
 from astralis.brain.interpretation import Interpretation
 from astralis.brain.interpreter import Interpreter
 from astralis.brain.plan import ExecutionPlan
 from astralis.brain.request import Request
 from astralis.brain.response import Response
-from astralis.provider.provider import Provider
-from astralis.brain.conversation import Conversation
 from astralis.brain.role import Role
+from astralis.capability.manager import CapabilityManager
+from astralis.capability.capability_type import CapabilityType
 
 
 class Brain:
@@ -14,9 +14,9 @@ class Brain:
 
     def __init__(
         self,
-        provider: Provider,
+        capability_manager: CapabilityManager,
     ) -> None:
-        self.provider = provider
+        self.capability_manager = capability_manager
         self.interpreter = Interpreter()
         self.conversation = Conversation()
 
@@ -26,24 +26,36 @@ class Brain:
     ) -> Response:
         """Process a user request through the Brain pipeline."""
 
-        # Execute the processing pipeline.
+        # validation
         request = self._validate(request)
 
+        # Conversation
         self.conversation.add(
             Role.USER,
             request.text,
         )
 
+        # Interpretation
         interpretation = self._interpret(request)
 
+        # Planning
         plan = self._plan(
-            request,
             interpretation,
         )
 
-        return self._execute(
+        # Execution
+        response = self._execute(
+            interpretation,
             plan,
         )
+
+        # Conversation
+        self.conversation.add(
+            Role.ASSISTANT,
+            response.text,
+        )
+
+        return response
 
     def _validate(
         self,
@@ -63,45 +75,23 @@ class Brain:
 
     def _plan(
         self,
-        request: Request,
         interpretation: Interpretation,
     ) -> ExecutionPlan:
         """Create an execution plan for the request."""
 
-        plan = ExecutionPlan()
-
-        if interpretation.intent == Intent.GREETING:
-            plan.greeting_required = True
-        
-        elif interpretation.intent == Intent.QUESTION:
-            plan.provider_required = True
-
-        elif interpretation.intent == Intent.CONVERSATION:
-            plan.provider_required = True
-
-        elif interpretation.intent == Intent.TOOL:
-            plan.tools_required = True
-
-        elif interpretation.intent == Intent.MEMORY:
-            plan.memory_required = True
-
-        return plan
-        
+        return ExecutionPlan(
+            capability=CapabilityType.LANGUAGE,
+        )
 
     def _execute(
         self,
+        interpretation: Interpretation,
         plan: ExecutionPlan,
     ) -> Response:
         """Execute the processing plan."""
 
-        if plan.provider_required:
-            response = self.provider.generate(
-                self.conversation,
-            )
-
-            self.conversation.add(
-                Role.ASSISTANT,
-                response.text,
-            )
-
-        return response
+        return self.capability_manager.execute(
+            conversation=self.conversation,
+            interpretation=interpretation,
+            plan=plan,
+        )

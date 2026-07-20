@@ -9,8 +9,11 @@ from astralis.core.loader import ModuleLoader
 from astralis.core.logger import AstralisLogger
 from astralis.core.registry import ModuleRegistry
 from astralis.provider.factory import ProviderFactory
-from astralis.provider.provider import Provider
 from astralis.interfaces.cli import CommandLineInterface
+from astralis.capability.capability_type import CapabilityType
+from astralis.capability.language import LanguageCapability
+from astralis.capability.manager import CapabilityManager
+from astralis.capability.registry import CapabilityRegistry
 
 
 class Engine:
@@ -27,15 +30,34 @@ class Engine:
         )
         self.lifecycle = LifecycleManager()
 
-        # Initialize the AI provider.
-        self.provider: Provider = ProviderFactory.create(self.config,)
+        # Initialize the language provider.
+        provider = ProviderFactory.create(
+            self.config,
+        )
+
+        # Intialize capabilities.
+        registry = CapabilityRegistry()
+
+        registry.register(
+            CapabilityType.LANGUAGE,
+            LanguageCapability(provider),
+        )
+
+        manager = CapabilityManager(
+            registry,
+        )
 
         # Initialize the Brain.
-        self.brain = Brain(self.provider)
+        self.brain = Brain(
+            manager,
+        )
 
-        # Initialize the command-line interface.
-        self.cli = CommandLineInterface(self.brain)
+        # Initialize the CLI.
+        self.cli = CommandLineInterface(
+            self.brain,
+        )
 
+        
     def start(self) -> None:
         """Start the ASTRALIS application."""
 

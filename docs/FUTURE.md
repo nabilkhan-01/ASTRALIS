@@ -129,6 +129,8 @@ This abstraction allows new providers to be introduced without modifying the Bra
 
 **Status:** Implemented
 
+---
+
 ## Intelligent Provider Selection
 
 The current implementation uses a default AI provider selected through configuration.
@@ -184,6 +186,30 @@ This decision should only be made when the models become genuinely shared.
 **Status:** Deferred
 
 **Reason:** Avoid introducing shared abstractions before they are necessary.
+
+---
+
+## Capability Framework
+
+The Brain should eventually execute requests through a capability framework rather than communicating directly with AI providers.
+
+Every capability should expose a common interface and remain independently replaceable.
+
+Examples include:
+
+- Language
+- Weather
+- Memory
+- Browser
+- Calendar
+- Email
+- File System
+
+The Brain should determine which capability is appropriate for a request before execution.
+
+**Status:** Planned
+
+**Reason:** Separates reasoning from execution while enabling modular expansion.
 
 ---
 
@@ -290,6 +316,41 @@ The Conversation currently stores every message in the active session.
 Future versions should support configurable context windows, summarization, and pruning to prevent unbounded conversation growth while preserving important context.
 
 **Status:** Planned
+
+---
+
+## ASTRALIS Language Model
+
+ASTRALIS currently relies on external language models through interchangeable providers.
+
+Future versions should support an ASTRALIS language model while preserving the existing provider abstraction.
+
+External providers should remain optional so users can choose the most appropriate language engine for their needs.
+
+**Status:** Planned
+
+**Reason:** Reduces dependency on external AI providers while preserving architectural flexibility.
+
+---
+
+## Context Awareness
+
+ASTRALIS should eventually understand the user's current context before deciding how to assist.
+
+Context may include:
+
+- Current project
+- Active application
+- Conversation history
+- User preferences
+- Time and schedule
+- Previous work
+
+ASTRALIS should use context to provide relevant assistance without becoming intrusive.
+
+**Status:** Planned
+
+**Reason:** Enables proactive, context-aware assistance while respecting user autonomy and privacy.
 
 ---
 

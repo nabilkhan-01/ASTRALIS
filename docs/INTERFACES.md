@@ -2,21 +2,25 @@
 
 ## Purpose
 
-Interfaces provide different ways for users and external systems to interact with ASTRALIS.
+Interfaces are different ways for users and external systems to interact with ASTRALIS.
 
-The Brain remains independent of any specific interface.
+Regardless of how a request arrives, it should be processed by the same Brain.
 
-Every interface communicates using the same Request and Response models.
+The interface changes.
+
+The intelligence does not.
 
 ---
 
 ## Design Principles
 
-- The Brain must remain UI-independent.
-- All interfaces communicate through the Engine.
-- Every request is represented by a Request object.
-- Every response is represented by a Response object.
-- Interfaces should never contain business logic.
+- The Brain must remain completely interface-independent.
+- Every interface communicates through the Engine.
+- Every request is represented using the Request model.
+- Every response is represented using the Response model.
+- Interfaces must never contain business logic.
+- New interfaces should be added without modifying the Brain.
+- Users should experience the same ASTRALIS regardless of the interface they choose.
 
 ---
 
@@ -24,40 +28,112 @@ Every interface communicates using the same Request and Response models.
 
 ### Command-Line Interface (CLI)
 
-Status: Implemented
+**Status:** Implemented
 
-Used for development, debugging, and early interaction.
+Used for development, debugging, testing, and engineering.
+
+Provides the fastest way to experiment with new capabilities.
 
 ---
 
 ### Desktop Interface
 
-Status: Planned
+**Status:** Planned
 
-Primary user experience for ASTRALIS.
+The primary experience for ASTRALIS.
 
-Will expose conversation, memory, tools, and system capabilities.
+Features may include:
+
+- Natural conversations
+- Memory management
+- Capabilities
+- Notifications
+- Project awareness
+- Settings
+- Permission management
 
 ---
 
 ### Voice Interface
 
-Status: Planned
+**Status:** Planned
 
-Natural speech interaction through wake-word activation.
+Natural speech interaction.
+
+Goals:
+
+- Wake word
+- Continuous conversation
+- Low-latency responses
+- Hands-free operation
+
+The voice interface should feel like speaking naturally with ASTRALIS rather than issuing commands.
 
 ---
 
 ### Mobile Interface
 
-Status: Planned
+**Status:** Planned
 
-Lightweight companion for notifications, quick conversations, and remote access.
+Companion application.
+
+Goals:
+
+- Notifications
+- Quick conversations
+- Remote access
+- Synchronization
+- Emergency interactions
+
+The mobile interface complements the desktop experience rather than replacing it.
 
 ---
 
 ### API Interface
 
-Status: Planned
+**Status:** Planned
 
-Allows third-party applications to communicate with ASTRALIS through a stable API.
+Provides a stable interface for third-party applications.
+
+Potential uses:
+
+- Automation
+- Plugins
+- Integrations
+- Custom applications
+
+---
+
+### Web Interface
+
+**Status:** Future
+
+Browser-based access to ASTRALIS.
+
+Useful for remote access and lightweight usage without requiring installation.
+
+---
+
+## Long-Term Vision
+
+ASTRALIS should not depend on a single interface.
+
+Users should be able to interact through:
+
+- Keyboard
+- Voice
+- Touch
+- APIs
+- Future interfaces
+
+while experiencing the same intelligence, memory, and personality.
+
+Changing the interface should never change who ASTRALIS is.
+
+---
+
+Project: **ASTRALIS**
+
+Philosophy:
+
+> **Assist. Don't Control.**

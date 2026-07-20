@@ -44,7 +44,7 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Introduced configuration-based provider selection
 - Added OpenAIProvider implementation
 - Extended ProviderFactory to support multiple AI providers
-- Integrated OpenAI SDK
+- Integrated the OpenAI SDK
 - Added OpenAI client initialization
 - Implemented response generation through the OpenAI Responses API
 - Added GeminiProvider implementation
@@ -54,6 +54,7 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Added a shared system prompt
 - Updated providers to consume `Conversation` objects
 - Separated provider implementation from conversation state
+- Introduced provider-independent conversation management
 
 #### User Interface
 
@@ -64,6 +65,16 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 
 - Added environment-based configuration
 - Introduced support for loading AI settings from `.env`
+- Added provider-specific environment configuration
+- Added Gemini model configuration
+- Added OpenAI model configuration
+
+#### Documentation
+
+- Updated the roadmap to prioritize capabilities before voice
+- Expanded engineering principles
+- Updated future architectural decisions
+- Recorded conversation architecture milestone
 
 ---
 
@@ -104,8 +115,6 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Implemented Brain integration with the Core Engine
 
 ---
-
-
 
 Project: **ASTRALIS**
 

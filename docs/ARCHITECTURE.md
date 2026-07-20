@@ -6,47 +6,114 @@
 
 ASTRALIS is designed as a modular AI Operating System.
 
-Its architecture emphasizes **modularity, maintainability, extensibility, and user autonomy**. Every capability is implemented as an independent module coordinated by a shared Core Engine.
+Its architecture emphasizes **modularity, maintainability, extensibility, and user autonomy**.
+
+Every capability is implemented as an independent module coordinated by a shared Core Engine.
 
 The architecture follows the philosophy:
 
 > **Assist. Don't Control.**
 
-Every component is designed to have a single responsibility and communicate through well-defined interfaces, allowing ASTRALIS to evolve without major architectural redesigns.
+The Brain owns intelligence.
+
+Other components provide specialized capabilities while remaining independent and replaceable.
 
 ---
 
-## High-Level Architecture
+# High-Level Architecture
 
 ```text
-                    User
-                      │
-        ┌─────────────┴─────────────┐
-        │                           │
-     Voice UI                  Desktop UI
-        │                           │
-        └─────────────┬─────────────┘
-                      │
-                 Core Engine
-                      │
-        ┌─────────────┼─────────────┐
-        │             │             │
-     Brain         Memory       Security
-        │             │             │
-        └──────┬──────┴──────┬──────┘
-               │             │
-          Tool System      Vision
-               │
-     ┌─────────┼────────────────────┐
-     │         │         │          │
- Browser     Files    Terminal  Automation
+                          User
+                            │
+          ┌─────────────────┴─────────────────┐
+          │                                   │
+        CLI                              Future Interfaces
+                                              │
+                 ┌────────────────────────────┘
+                 │
+            Core Engine
+                 │
+      ┌──────────┼──────────┐
+      │          │          │
+   Brain      Memory    Security
+      │
+      ▼
+ Interpreter
+      │
+      ▼
+ Execution Planner
+      │
+      ▼
+ Provider
+      │
+      ▼
+ Language Model
 ```
+
+Future versions will replace the direct Provider connection with a Capability Framework.
 
 ---
 
-## Core Architecture
+# Current Brain Architecture
 
-The Core Engine coordinates the application's lifecycle and shared services.
+```text
+Request
+    │
+    ▼
+Validate
+    │
+    ▼
+Interpret
+    │
+    ▼
+Plan
+    │
+    ▼
+Execute
+    │
+    ▼
+Provider
+    │
+    ▼
+Response
+```
+
+The Brain coordinates every stage of request processing while remaining independent of any specific language model.
+
+---
+
+# Future Brain Architecture
+
+```text
+Request
+    │
+    ▼
+Validate
+    │
+    ▼
+Interpret
+    │
+    ▼
+Plan
+    │
+    ▼
+Capability Manager
+    │
+    ├── Language
+    ├── Memory
+    ├── Weather
+    ├── Browser
+    ├── Email
+    ├── Calendar
+    ├── Automation
+    └── Future Capabilities
+```
+
+This architecture separates reasoning from execution and allows new capabilities to be introduced without modifying the Brain.
+
+---
+
+# Core Architecture
 
 ```text
 Core Engine
@@ -60,11 +127,13 @@ Core Engine
 └── Brain
 ```
 
+The Core Engine coordinates startup, shutdown, lifecycle management, and shared infrastructure.
+
+It intentionally contains no AI-specific logic.
+
 ---
 
-## Startup Flow
-
-Application startup follows a predictable sequence.
+# Startup Flow
 
 ```text
 main.py
@@ -72,134 +141,139 @@ main.py
     ▼
 Engine.start()
     │
-    ├── Transition to INITIALIZING
-    ├── Validate Configuration      (Future)
-    ├── Run Health Checks           (Future)
+    ├── Initialize Configuration
+    ├── Initialize Logger
     ├── Load Modules
+    ├── Run Health Checks
     ├── Transition to RUNNING
-    └── Application Ready
+    └── Start User Interface
 ```
 
-This startup sequence keeps responsibilities separated while allowing future modules to be introduced without modifying the Engine.
+Startup remains predictable and deterministic.
+
+Future modules should integrate without modifying this sequence.
 
 ---
 
-## Core Components
+# Core Components
 
-### Core Engine
+## Core Engine
 
-Coordinates application startup, shutdown, and communication between shared services.
+Coordinates application startup, shutdown, lifecycle, and shared services.
 
-The Engine **does not contain AI logic**. Its responsibility is orchestration.
-
----
-
-### Configuration
-
-Provides a single source of truth for application-wide configuration.
-
-Application configuration is intentionally separated from user preferences and long-term memory.
+The Engine contains no intelligence.
 
 ---
 
-### Logger
-
-Provides centralized logging throughout the application.
-
-All infrastructure and future modules should use the shared logger rather than direct `print()` statements.
-
----
-
-### Module Registry
-
-Maintains a centralized collection of initialized application modules.
-
-The registry allows modules to be discovered and accessed without tightly coupling them to the Engine.
-
----
-
-### Module Loader
-
-Responsible for initializing application modules and registering them with the Module Registry.
-
-The Module Loader focuses solely on module initialization.
-
-It does **not** contain AI logic, business logic, or application state.
-
----
-
-### Lifecycle Manager
-
-Maintains the current lifecycle state of ASTRALIS.
-
-The Lifecycle Manager represents application state but does not control application behavior. Lifecycle transitions are initiated by the Core Engine.
-
----
-
-### Health Checker
-
-Verifies the readiness of ASTRALIS core services.
-
-The Health Checker reports system health but does not decide application behavior. Startup decisions remain the responsibility of the Core Engine.
-
----
-
-### Brain
+## Brain
 
 Coordinates intelligence across ASTRALIS.
 
-The Brain understands user requests, determines how they should be handled, and coordinates other modules when necessary.
+Responsibilities include:
 
-The Brain does not directly store data, execute tools, or interact with storage. Those responsibilities belong to dedicated modules.
+- Request validation
+- Request interpretation
+- Execution planning
+- Conversation management
+- Capability coordination
+- Response generation
 
----
-
-### Memory
-
-Stores user preferences, conversations, and long-term knowledge.
-
----
-
-### Voice
-
-Handles speech recognition and speech synthesis.
+The Brain does not directly execute tools, store memory, or interact with external systems.
 
 ---
 
-### Vision
+## Provider Layer
+
+Provides interchangeable language generation.
+
+Current implementations include:
+
+- Gemini
+- OpenAI
+- Mock Provider
+
+Future providers may include:
+
+- Claude
+- Ollama
+- Local Models
+- ASTRALIS Language Model
+
+Providers generate language only.
+
+They do not own intelligence or conversation state.
+
+---
+
+## Memory
+
+Responsible for remembering user information, conversations, and long-term knowledge.
+
+Memory decides what should be remembered.
+
+Storage decides where it is persisted.
+
+---
+
+## Security
+
+Responsible for permissions, authentication, and sensitive operations.
+
+Every capability that affects user data or external systems should pass through the Security layer.
+
+---
+
+## Voice
+
+Provides speech recognition and speech synthesis.
+
+---
+
+## Vision
 
 Processes screenshots, images, and visual context.
 
 ---
 
-### Tool System
+## Capability System (Planned)
 
-Allows ASTRALIS to interact with the operating system and external services.
+Provides independent capabilities that allow ASTRALIS to interact with the world.
+
+Examples include:
+
+- Browser
+- Weather
+- Calendar
+- Email
+- File System
+- Automation
+- Calculator
+
+Every capability should expose a common interface.
 
 ---
 
-### Security
+## User Interfaces
 
-Responsible for permissions, authentication, and sensitive operations.
+ASTRALIS should remain independent of any interface.
 
-Every sensitive action should prioritize user consent.
+Current:
 
----
+- Command-Line Interface
 
-### User Interface
+Future:
 
-Provides interfaces through which users interact with ASTRALIS.
-
-Future interfaces may include:
-
-- Desktop Application
-- Voice Interface
+- Desktop
+- Voice
+- Mobile
 - API
-- Mobile Client
+- Web
+
+Changing the interface should never change how ASTRALIS thinks.
 
 ---
 
-## Design Principles
+# Design Principles
 
 The architecture follows these principles:
 
@@ -210,39 +284,41 @@ The architecture follows these principles:
 - Maintainability
 - Transparency
 - Security
-- Human-Centered Design
+- Interface Independence
+- User Autonomy
 
 ---
 
-## Architectural Principles
+# Architectural Principles
 
-Every architectural decision should support the project's core values.
+Every architectural decision should support the project's philosophy.
 
-- Assist instead of control.
-- Keep the user in command.
-- Prefer simple solutions over unnecessary complexity.
-- Build incrementally.
+- The Brain owns intelligence.
+- Providers generate language.
+- Capabilities remain modular.
+- The user remains in control.
+- Build simple today.
+- Extend tomorrow.
 - Design before implementation.
 - Keep documentation synchronized with the codebase.
 
 ---
 
-## Future Evolution
+# Future Evolution
 
-The current architecture is intentionally minimal.
+The architecture is intentionally incremental.
 
-Future milestones will gradually introduce:
+Future milestones will introduce:
 
-- Lifecycle Manager
-- Health Checker
+- Capability Framework
+- Context Engine
 - Event Bus
 - Plugin System
-- AI Provider Layer
+- Awareness Engine
 - Multi-Agent Communication
+- ASTRALIS Language Model
 
-Each capability will be added only when required, following the principle:
-
-> **Simple today. Extensible tomorrow.**
+Each addition should strengthen the existing architecture rather than replace it.
 
 ---
 
