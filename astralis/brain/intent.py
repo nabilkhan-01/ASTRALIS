@@ -8,6 +8,5 @@ class Intent(Enum):
     QUESTION = auto()
     CONVERSATION = auto()
     MEMORY = auto()
-    TOOL = auto()
     SYSTEM = auto()
     UNKNOWN = auto()

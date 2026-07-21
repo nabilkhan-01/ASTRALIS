@@ -18,6 +18,11 @@ class CapabilityRegistry:
     ) -> None:
         """Register a capability."""
 
+        if capability_type in self._capabilities:
+            raise ValueError(
+                f"Capability '{capability_type.name}' is already registered.",
+            )
+
         self._capabilities[
             capability_type
         ] = capability
@@ -34,10 +39,7 @@ class CapabilityRegistry:
 
         if capability is None:
             raise ValueError(
-                f"No capability registered for '{capability_type}'",
+                f"No capability registered for '{capability_type.name}'.",
             )
-        
-        
-        return self._capabilities[
-            capability_type
-        ]
+
+        return capability

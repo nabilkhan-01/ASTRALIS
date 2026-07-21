@@ -10,7 +10,13 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 
 ### Added
 
-_No unreleased changes._
+#### Capability Framework
+
+- Introduced the Capability Framework
+- Added Capability Registry and Capability Manager
+- Added Language and Time capabilities
+- Enabled execution planning through capabilities
+- Implemented the first native capability independent of AI providers
 
 ---
 

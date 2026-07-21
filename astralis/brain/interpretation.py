@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from dataclasses import field
 
 from astralis.brain.intent import Intent
 
@@ -8,4 +9,4 @@ class Interpretation:
     """Represents the Brain's understanding of a request."""
 
     intent: Intent
-    
+    entities: list[str] = field(default_factory=list)

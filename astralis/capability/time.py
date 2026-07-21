@@ -1,0 +1,39 @@
+from datetime import datetime
+
+from astralis.brain.conversation import Conversation
+from astralis.brain.interpretation import Interpretation
+from astralis.brain.response import Response
+from astralis.capability.capability import Capability
+
+
+class TimeCapability(Capability):
+    """Provides the current local date and time."""
+
+    def execute(
+        self,
+        conversation: Conversation,
+        interpretation: Interpretation,
+    ) -> Response:
+        """Return the current date and/or time."""
+
+        now = datetime.now()
+
+        if "time" in interpretation.entities:
+            return Response(
+                text=f"The current time is {now.strftime('%I:%M %p')}.",
+                success=True,
+            )
+
+        if "date" in interpretation.entities:
+            return Response(
+                text=f"Today is {now.strftime('%A, %d %B %Y')}.",
+                success=True,
+            )
+
+        return Response(
+            text=(
+                f"Today is {now.strftime('%A, %d %B %Y')} "
+                f"and the current time is {now.strftime('%I:%M %p')}."
+            ),
+            success=True,
+        )

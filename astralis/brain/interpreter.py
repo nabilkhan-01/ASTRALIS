@@ -39,11 +39,15 @@ class Interpreter:
         "i am",
     )
 
-    TOOL_KEYWORDS = (
-        "weather",
-        "calculate",
-        "search",
-        "open",
+    TIME_KEYWORDS = (
+        "time",
+        "clock",
+    )
+
+    DATE_KEYWORDS = (
+        "date",
+        "day",
+        "today",
     )
 
     def interpret(
@@ -54,32 +58,39 @@ class Interpreter:
 
         text = request.text.strip().lower()
 
-        if text in self.GREETINGS:
-            return Interpretation(
-                intent=Intent.GREETING,
-            )
+        intent = Intent.CONVERSATION
+        entities: list[str] = []
 
-        if (
+        # Greeting
+        if text in self.GREETINGS:
+            intent = Intent.GREETING
+
+        # Memory
+        elif text.startswith(self.MEMORY_PREFIXES):
+            intent = Intent.MEMORY
+            entities.append("memory")
+
+        # Question
+        elif (
             text.endswith("?")
             or text.startswith(self.QUESTION_PREFIXES)
         ):
-            return Interpretation(
-                intent=Intent.QUESTION,
-            )
+            intent = Intent.QUESTION
 
-        if text.startswith(self.MEMORY_PREFIXES):
-            return Interpretation(
-                intent=Intent.MEMORY,
-            )
-
+        # Entity extraction
         if any(
             keyword in text
-            for keyword in self.TOOL_KEYWORDS
+            for keyword in self.TIME_KEYWORDS
         ):
-            return Interpretation(
-                intent=Intent.TOOL,
-            )
+            entities.append("time")
+        
+        if any(
+            keyword in text
+            for keyword in self.DATE_KEYWORDS
+        ):
+            entities.append("date")
 
         return Interpretation(
-            intent=Intent.CONVERSATION,
+            intent=intent,
+            entities=entities,
         )
