@@ -52,6 +52,7 @@ class Brain:
 
         # Execution
         response = self._execute(
+            request,
             interpretation,
             plan,
         )
@@ -82,12 +83,14 @@ class Brain:
 
     def _execute(
         self,
+        request: Request,
         interpretation: Interpretation,
         plan: ExecutionPlan,
     ) -> Response:
         """Execute the processing plan."""
 
         return self.capability_manager.execute(
+            request=request,
             conversation=self.conversation,
             interpretation=interpretation,
             plan=plan,

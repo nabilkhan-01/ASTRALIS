@@ -15,6 +15,7 @@ from astralis.core.logger import AstralisLogger
 from astralis.core.registry import ModuleRegistry
 from astralis.interfaces.cli import CommandLineInterface
 from astralis.provider.factory import ProviderFactory
+from astralis.capability.calculator import CalculatorCapability
 
 
 class Engine:
@@ -73,6 +74,11 @@ class Engine:
         self.capability_registry.register(
             CapabilityType.TIME,
             TimeCapability(),
+        )
+
+        self.capability_registry.register(
+            CapabilityType.CALCULATOR,
+            CalculatorCapability(),
         )
 
     def start(

@@ -8,6 +8,7 @@ class CapabilityType(Enum):
     LANGUAGE = auto()
     MEMORY = auto()
     TIME = auto()
+    CALCULATOR = auto()
     WEATHER = auto()
     BROWSER = auto()
     CALENDAR = auto()

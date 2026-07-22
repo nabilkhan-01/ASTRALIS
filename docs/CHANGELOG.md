@@ -17,6 +17,10 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Added Language and Time capabilities
 - Enabled execution planning through capabilities
 - Implemented the first native capability independent of AI providers
+- Finalized the Capability Framework
+- Updated capabilities to receive request context
+- Added Calculator capability
+- Added native arithmetic execution
 
 ---
 

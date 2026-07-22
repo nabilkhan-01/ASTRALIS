@@ -1,5 +1,6 @@
 from astralis.brain.conversation import Conversation
 from astralis.brain.interpretation import Interpretation
+from astralis.brain.request import Request
 from astralis.brain.response import Response
 from astralis.capability.capability import Capability
 from astralis.provider.provider import Provider
@@ -16,6 +17,7 @@ class LanguageCapability(Capability):
 
     def execute(
         self,
+        request: Request,
         conversation: Conversation,
         interpretation: Interpretation,
     ) -> Response:

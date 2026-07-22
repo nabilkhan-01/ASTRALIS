@@ -50,6 +50,10 @@ class Interpreter:
         "today",
     )
 
+    CALCULATION_KEYWORDS = (
+        "calculate",
+    )
+
     def interpret(
         self,
         request: Request,
@@ -89,6 +93,12 @@ class Interpreter:
             for keyword in self.DATE_KEYWORDS
         ):
             entities.append("date")
+
+        if any(
+            keyword in text
+            for keyword in self.CALCULATION_KEYWORDS
+        ):
+            entities.append("calculation")
 
         return Interpretation(
             intent=intent,

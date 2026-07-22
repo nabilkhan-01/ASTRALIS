@@ -105,31 +105,34 @@ ASTRALIS understands requests, plans execution, and routes work through independ
 
 ---
 
-## v0.3.0 — Capabilities
+## v0.3.0 — Capabilities 🚧
 
 Allow ASTRALIS to interact with the real world.
 
-### Goals
+### Progress
 
-Core capabilities:
+#### Implemented
 
-- Weather
-- Time
-- Alarm
-- Calendar
-- Email
-- Browser
-- File System
-- Search
-- Calculator
-- Notes
+- [x] Capability framework
+- [x] Language capability
+- [x] Time capability
+- [x] Calculator capability
+
+#### Planned
+
+- [ ] Memory capability
+- [ ] Weather capability
+- [ ] Alarm capability
+- [ ] Calendar capability
+- [ ] Browser capability
+- [ ] File System capability
+- [ ] Search capability
+- [ ] Email capability
+- [ ] Notes capability
 
 ### Success Criteria
 
-ASTRALIS performs useful real-world tasks instead of only answering questions.
-
----
-
+ASTRALIS performs useful real-world tasks through independent capabilities while keeping reasoning separate from execution.
 ## v0.4.0 — Memory
 
 Teach ASTRALIS to remember.

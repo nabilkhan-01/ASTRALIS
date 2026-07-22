@@ -33,4 +33,7 @@ class Planner:
         ):
             return CapabilityType.TIME
 
+        if "calculation" in interpretation.entities:
+            return CapabilityType.CALCULATOR
+
         return CapabilityType.LANGUAGE
