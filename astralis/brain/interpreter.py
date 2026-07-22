@@ -54,6 +54,12 @@ class Interpreter:
         "calculate",
     )
 
+    WEATHER_KEYWORDS = (
+        "weather",
+        "forecast",
+        "temperature",
+    )
+
     def interpret(
         self,
         request: Request,
@@ -99,6 +105,12 @@ class Interpreter:
             for keyword in self.CALCULATION_KEYWORDS
         ):
             entities.append("calculation")
+
+        if any(
+            keyword in text
+            for keyword in self.WEATHER_KEYWORDS
+        ):
+            entities.append("weather")
 
         return Interpretation(
             intent=intent,

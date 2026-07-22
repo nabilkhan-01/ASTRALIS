@@ -16,6 +16,7 @@ from astralis.core.registry import ModuleRegistry
 from astralis.interfaces.cli import CommandLineInterface
 from astralis.provider.factory import ProviderFactory
 from astralis.capability.calculator import CalculatorCapability
+from astralis.capability.weather import WeatherCapability
 
 
 class Engine:
@@ -79,6 +80,11 @@ class Engine:
         self.capability_registry.register(
             CapabilityType.CALCULATOR,
             CalculatorCapability(),
+        )
+
+        self.capability_registry.register(
+            CapabilityType.WEATHER,
+            WeatherCapability(),
         )
 
     def start(

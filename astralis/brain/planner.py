@@ -25,7 +25,7 @@ class Planner:
         """Select the capability required for the request."""
 
         if "memory" in interpretation.entities:
-            return CapabilityType.MEMORY
+            return CapabilityType.LANGUAGE
 
         if (
             "time" in interpretation.entities
@@ -36,4 +36,7 @@ class Planner:
         if "calculation" in interpretation.entities:
             return CapabilityType.CALCULATOR
 
+        if "weather" in interpretation.entities:
+            return CapabilityType.WEATHER
+        
         return CapabilityType.LANGUAGE

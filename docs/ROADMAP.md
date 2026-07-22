@@ -111,17 +111,22 @@ Allow ASTRALIS to interact with the real world.
 
 ### Progress
 
-#### Implemented
+#### Infrastructure
 
 - [x] Capability framework
+- [x] API layer
+- [x] Reusable API client
+
+#### Implemented Capabilities
+
 - [x] Language capability
 - [x] Time capability
 - [x] Calculator capability
+- [x] Weather capability
 
-#### Planned
+#### Planned Capabilities
 
 - [ ] Memory capability
-- [ ] Weather capability
 - [ ] Alarm capability
 - [ ] Calendar capability
 - [ ] Browser capability
@@ -132,7 +137,11 @@ Allow ASTRALIS to interact with the real world.
 
 ### Success Criteria
 
-ASTRALIS performs useful real-world tasks through independent capabilities while keeping reasoning separate from execution.
+ASTRALIS performs useful real-world tasks through modular capabilities while remaining independent of both AI providers and external services.
+
+---
+
+
 ## v0.4.0 — Memory
 
 Teach ASTRALIS to remember.

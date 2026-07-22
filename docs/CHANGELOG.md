@@ -10,17 +10,32 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 
 ### Added
 
+#### API Layer
+
+- Introduced the API layer for external service integrations
+- Added the reusable `ApiClient`
+- Added the `WeatherApi`
+- Introduced the `WeatherData` model
+
 #### Capability Framework
 
-- Introduced the Capability Framework
-- Added Capability Registry and Capability Manager
-- Added Language and Time capabilities
-- Enabled execution planning through capabilities
-- Implemented the first native capability independent of AI providers
 - Finalized the Capability Framework
-- Updated capabilities to receive request context
+- Updated capabilities to receive the request context
+
+#### Capabilities
+
+- Added Time capability
 - Added Calculator capability
-- Added native arithmetic execution
+- Added Weather capability
+- Implemented native date and time retrieval
+- Implemented native arithmetic execution
+- Implemented live weather retrieval through Open-Meteo
+
+#### Brain
+
+- Improved capability routing through entity-based planning
+- Enhanced intent interpretation for weather-related requests
+- Added entity extraction for date, time, calculator, and weather requests
 
 ---
 
