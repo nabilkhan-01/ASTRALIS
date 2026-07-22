@@ -22,11 +22,11 @@ class WeatherCapability(Capability):
     ) -> Response:
         """Return the current weather."""
 
-        city = self._extract_city(
-            request.text,
-        )
-
         try:
+            city = self._extract_city(
+                request.text,
+            )
+
             weather = self.api.get_current_weather(
                 city,
             )
@@ -47,13 +47,6 @@ class WeatherCapability(Capability):
                 text=str(error),
                 success=False,
             )
-
-        except requests.RequestException:
-            return Response(
-                text="Unable to retrieve weather information right now.",
-                success=False,
-            )
-
     def _extract_city(
         self,
         text: str,

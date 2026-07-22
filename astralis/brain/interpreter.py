@@ -104,7 +104,7 @@ class Interpreter:
             keyword in text
             for keyword in self.CALCULATION_KEYWORDS
         ):
-            entities.append("calculation")
+            entities.append("calculator")
 
         if any(
             keyword in text

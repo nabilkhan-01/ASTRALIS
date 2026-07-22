@@ -12,8 +12,8 @@ class Config:
 
     # Application Information
     project_name: str = "ASTRALIS"
-    version: str = "0.1.0"
-    codename: str = "Foundation"
+    version: str = "0.2.0"
+    codename: str = "Brain Architecture"
     tagline: str = "Assist. Don't Control."
 
     # Runtime Settings

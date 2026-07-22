@@ -10,6 +10,9 @@ from astralis.capability.capability import Capability
 class TimeCapability(Capability):
     """Provides the current local date and time."""
 
+    def __init__(self) -> None:
+        self._clock = datetime.now
+
     def execute(
         self,
         request: Request,
@@ -18,7 +21,9 @@ class TimeCapability(Capability):
     ) -> Response:
         """Return the current date and/or time."""
 
-        now = datetime.now()
+        _ = request, conversation
+
+        now = self._clock()
 
         if "time" in interpretation.entities:
             return Response(

@@ -33,7 +33,7 @@ class Planner:
         ):
             return CapabilityType.TIME
 
-        if "calculation" in interpretation.entities:
+        if "calculator" in interpretation.entities:
             return CapabilityType.CALCULATOR
 
         if "weather" in interpretation.entities:
