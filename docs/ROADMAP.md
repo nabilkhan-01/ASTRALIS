@@ -125,12 +125,12 @@ Allow ASTRALIS to interact with the real world.
 - [x] Weather capability
 - [x] Search capability
 - [x] Notes capability
+- [x] Browser capability
 
 #### Planned Capabilities
 
 - [ ] Alarm capability
 - [ ] Calendar capability
-- [ ] Browser capability
 - [ ] File System capability
 - [ ] Email capability
 

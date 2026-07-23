@@ -1,0 +1,83 @@
+from astralis.brain.conversation import Conversation
+from astralis.brain.interpretation import Interpretation
+from astralis.brain.request import Request
+from astralis.brain.response import Response
+from astralis.capability.capability import Capability
+from astralis.tools.browser import BrowserTool
+
+
+class BrowserCapability(Capability):
+    """Opens websites in the default browser."""
+
+    SHORTCUTS = {
+        "google": "https://www.google.com",
+        "github": "https://github.com",
+        "youtube": "https://www.youtube.com",
+        "openai": "https://openai.com",
+    }
+
+    def __init__(self) -> None:
+        self.browser = BrowserTool()
+
+    def execute(
+        self,
+        request: Request,
+        conversation: Conversation,
+        interpretation: Interpretation,
+    ) -> Response:
+        """Open a website."""
+
+        _ = conversation, interpretation
+
+        try:
+            url = self._extract_url(
+                request.text,
+            )
+
+            self.browser.open(
+                url,
+            )
+
+            return Response(
+                text=f"Opening {url}",
+                success=True,
+            )
+
+        except Exception as error:
+            return Response(
+                text=str(error),
+                success=False,
+            )
+
+    def _extract_url(
+        self,
+        text: str,
+    ) -> str:
+        """Extract the requested URL."""
+
+        text = text.strip()
+
+        if not text.lower().startswith(
+            "open ",
+        ):
+            raise ValueError(
+                "Please specify a website."
+            )
+
+        target = text[5:].strip().lower()
+
+        if not target:
+            raise ValueError(
+                "Please specify a website."
+            )
+
+        if target in self.SHORTCUTS:
+            return self.SHORTCUTS[target]
+
+        if not (
+            target.startswith("http://")
+            or target.startswith("https://")
+        ):
+            target = f"https://{target}"
+
+        return target

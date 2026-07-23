@@ -72,6 +72,10 @@ class Interpreter:
         "delete note",
     )
 
+    BROWSER_COMMANDS = (
+        "open",
+    )
+
     def interpret(
         self,
         request: Request,
@@ -112,6 +116,14 @@ class Interpreter:
                 entities=entities,
             )
 
+        elif text.startswith(self.BROWSER_COMMANDS,):
+            entities.append("browser")
+
+            return Interpretation(
+                intent=intent,
+                entities=entities,
+            )
+        
         # Question
         elif (
             text.endswith("?")

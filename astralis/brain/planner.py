@@ -42,6 +42,9 @@ class Planner:
         if "notes" in interpretation.entities:
             return CapabilityType.NOTES
 
+        if "browser" in interpretation.entities:
+            return CapabilityType.BROWSER
+        
         if "memory" in interpretation.entities:
             return CapabilityType.LANGUAGE
 

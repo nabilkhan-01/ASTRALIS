@@ -72,6 +72,14 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Added Search capability tests
 - Added Notes capability tests
 
+#### Browser
+
+- Added Browser capability
+- Added BrowserTool
+- Added browser shortcut resolution
+- Added browser capability tests
+- Added browser tool tests
+
 ---
 
 

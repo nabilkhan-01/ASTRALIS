@@ -18,8 +18,8 @@ from astralis.provider.factory import ProviderFactory
 from astralis.capability.calculator import CalculatorCapability
 from astralis.capability.weather import WeatherCapability
 from astralis.capability.search import SearchCapability
-
 from astralis.capability.notes import NotesCapability
+from astralis.capability.browser import BrowserCapability
 
 class Engine:
     """Coordinates the startup and lifecycle of ASTRALIS."""
@@ -99,6 +99,11 @@ class Engine:
         self.capability_registry.register(
             CapabilityType.NOTES,
             NotesCapability(),
+        )
+
+        self.capability_registry.register(
+            CapabilityType.BROWSER,
+            BrowserCapability(),
         )
 
     def start(
