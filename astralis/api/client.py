@@ -25,3 +25,20 @@ class ApiClient(ABC):
         response.raise_for_status()
 
         return response.json()
+
+    def post(
+        self,
+        url: str,
+        **kwargs,
+    ) -> dict:
+        """Send a POST request and return JSON."""
+
+        response = self.session.post(
+            url,
+            timeout=5,
+            **kwargs,
+        )
+
+        response.raise_for_status()
+
+        return response.json()

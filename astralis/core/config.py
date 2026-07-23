@@ -47,3 +47,9 @@ class Config:
         "OPENAI_MODEL",
         "gpt-5",
     )
+    
+    # Tavily Configuration
+    tavily_api_key: str = os.getenv(
+        "TAVILY_API_KEY",
+        "",
+    )

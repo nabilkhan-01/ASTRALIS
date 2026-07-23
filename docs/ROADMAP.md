@@ -123,6 +123,7 @@ Allow ASTRALIS to interact with the real world.
 - [x] Time capability
 - [x] Calculator capability
 - [x] Weather capability
+- [x] Search capability
 
 #### Planned Capabilities
 
@@ -131,7 +132,6 @@ Allow ASTRALIS to interact with the real world.
 - [ ] Calendar capability
 - [ ] Browser capability
 - [ ] File System capability
-- [ ] Search capability
 - [ ] Email capability
 - [ ] Notes capability
 

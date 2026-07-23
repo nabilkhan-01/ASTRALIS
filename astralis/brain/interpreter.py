@@ -60,6 +60,12 @@ class Interpreter:
         "temperature",
     )
 
+    SEARCH_COMMANDS = (
+        "search",
+        "find",
+        "lookup",
+    )
+
     def interpret(
         self,
         request: Request,
@@ -80,6 +86,15 @@ class Interpreter:
             intent = Intent.MEMORY
             entities.append("memory")
 
+        # Explicit search command
+        elif text.startswith(self.SEARCH_COMMANDS):
+            entities.append("search")
+
+            return Interpretation(
+                intent=intent,
+                entities=entities,
+            )
+
         # Question
         elif (
             text.endswith("?")
@@ -88,12 +103,13 @@ class Interpreter:
             intent = Intent.QUESTION
 
         # Entity extraction
+
         if any(
             keyword in text
             for keyword in self.TIME_KEYWORDS
         ):
             entities.append("time")
-        
+
         if any(
             keyword in text
             for keyword in self.DATE_KEYWORDS

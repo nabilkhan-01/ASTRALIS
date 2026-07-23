@@ -14,3 +14,4 @@ class CapabilityType(Enum):
     CALENDAR = auto()
     EMAIL = auto()
     AUTOMATION = auto()
+    SEARCH = auto()

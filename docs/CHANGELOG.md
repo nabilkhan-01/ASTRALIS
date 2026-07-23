@@ -39,6 +39,19 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 
 ---
 
+#### Search
+
+- Added Search capability
+- Added Tavily Search API integration
+- Added SearchResult model
+- Added POST support to ApiClient
+- Added Search capability tests
+
+---
+
+
+
+
 ## [v0.2.0] - Brain Architecture
 
 ### Added
