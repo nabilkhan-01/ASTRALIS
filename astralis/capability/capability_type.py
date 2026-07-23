@@ -15,3 +15,4 @@ class CapabilityType(Enum):
     EMAIL = auto()
     AUTOMATION = auto()
     SEARCH = auto()
+    NOTES = auto()

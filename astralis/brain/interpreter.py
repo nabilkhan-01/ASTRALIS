@@ -66,6 +66,12 @@ class Interpreter:
         "lookup",
     )
 
+    NOTES_COMMANDS = (
+        "note ",
+        "notes",
+        "delete note",
+    )
+
     def interpret(
         self,
         request: Request,
@@ -89,6 +95,17 @@ class Interpreter:
         # Explicit search command
         elif text.startswith(self.SEARCH_COMMANDS):
             entities.append("search")
+
+            return Interpretation(
+                intent=intent,
+                entities=entities,
+            )
+
+        # Explicit notes command
+        elif text == "notes" or text.startswith(
+            self.NOTES_COMMANDS,
+        ):
+            entities.append("notes")
 
             return Interpretation(
                 intent=intent,

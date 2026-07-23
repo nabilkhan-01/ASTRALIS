@@ -19,6 +19,7 @@ from astralis.capability.calculator import CalculatorCapability
 from astralis.capability.weather import WeatherCapability
 from astralis.capability.search import SearchCapability
 
+from astralis.capability.notes import NotesCapability
 
 class Engine:
     """Coordinates the startup and lifecycle of ASTRALIS."""
@@ -93,6 +94,11 @@ class Engine:
             SearchCapability(
                 self.config,
             ),
+        )
+
+        self.capability_registry.register(
+            CapabilityType.NOTES,
+            NotesCapability(),
         )
 
     def start(

@@ -14,8 +14,13 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 
 - Introduced the API layer for external service integrations
 - Added the reusable `ApiClient`
+- Added GET and POST request support
 - Added the `WeatherApi`
+- Added the `SearchApi`
 - Introduced the `WeatherData` model
+- Introduced the `SearchResult` model
+- Integrated the Open-Meteo API for live weather retrieval
+- Integrated the Tavily Search API for web search
 
 #### Capability Framework
 
@@ -27,25 +32,45 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Added Time capability
 - Added Calculator capability
 - Added Weather capability
+- Added Search capability
+- Added Notes capability
 - Implemented native date and time retrieval
 - Implemented native arithmetic execution
-- Implemented live weather retrieval through Open-Meteo
+- Implemented live weather retrieval
+- Implemented web search
+- Implemented persistent note management
+
+#### Memory
+
+- Introduced the Notes memory component
+- Added persistent local note storage
+- Added note creation
+- Added note listing
+- Added note deletion
 
 #### Brain
 
 - Improved capability routing through entity-based planning
-- Enhanced intent interpretation for weather-related requests
-- Added entity extraction for date, time, calculator, and weather requests
+- Enhanced intent interpretation for weather requests
+- Added explicit command recognition for search requests
+- Added explicit command recognition for notes requests
+- Added entity extraction for:
+  - Date
+  - Time
+  - Calculator
+  - Weather
+  - Search
+  - Notes
 
----
+#### Testing
 
-#### Search
-
-- Added Search capability
-- Added Tavily Search API integration
-- Added SearchResult model
-- Added POST support to ApiClient
+- Added Weather API tests
+- Added Search API tests
+- Added Calculator capability tests
+- Added Time capability tests
+- Added Weather capability tests
 - Added Search capability tests
+- Added Notes capability tests
 
 ---
 
