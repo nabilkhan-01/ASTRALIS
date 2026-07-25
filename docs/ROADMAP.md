@@ -126,12 +126,12 @@ Allow ASTRALIS to interact with the real world.
 - [x] Search capability
 - [x] Notes capability
 - [x] Browser capability
+- [x] File System capability
 
 #### Planned Capabilities
 
 - [ ] Alarm capability
 - [ ] Calendar capability
-- [ ] File System capability
 - [ ] Email capability
 
 ### Success Criteria

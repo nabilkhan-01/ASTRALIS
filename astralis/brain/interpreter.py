@@ -76,6 +76,13 @@ class Interpreter:
         "open",
     )
 
+    FILE_SYSTEM_COMMANDS = (
+        "pwd",
+        "list files",
+        "list folders",
+        "read",
+    )
+
     def interpret(
         self,
         request: Request,
@@ -156,6 +163,12 @@ class Interpreter:
             for keyword in self.WEATHER_KEYWORDS
         ):
             entities.append("weather")
+
+        if any(
+            text.startswith(keyword)
+            for keyword in self.FILE_SYSTEM_COMMANDS
+        ):
+            entities.append("file_system",)
 
         return Interpretation(
             intent=intent,

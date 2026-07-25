@@ -16,3 +16,4 @@ class CapabilityType(Enum):
     AUTOMATION = auto()
     SEARCH = auto()
     NOTES = auto()
+    FILE_SYSTEM = auto()

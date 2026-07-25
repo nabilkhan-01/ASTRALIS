@@ -48,4 +48,7 @@ class Planner:
         if "memory" in interpretation.entities:
             return CapabilityType.LANGUAGE
 
+        if "file_system" in interpretation.entities:
+            return CapabilityType.FILE_SYSTEM
+
         return CapabilityType.LANGUAGE

@@ -34,13 +34,16 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Added Weather capability
 - Added Search capability
 - Added Notes capability
+- Added Browser capability
+- Added File System capability
 - Implemented native date and time retrieval
 - Implemented native arithmetic execution
 - Implemented live weather retrieval
 - Implemented web search
 - Implemented persistent note management
+- Implemented read-only local file system access
 
-#### Memory
+#### Memory System
 
 - Introduced the Notes memory component
 - Added persistent local note storage
@@ -48,12 +51,25 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Added note listing
 - Added note deletion
 
+#### Tools
+
+- Added `BrowserTool`
+- Added `FileSystemTool`
+- Added browser shortcut resolution
+- Added support for:
+  - Retrieving the current working directory
+  - Listing files
+  - Listing folders
+  - Reading local text files
+  - Checking file and directory existence
+
 #### Brain
 
 - Improved capability routing through entity-based planning
 - Enhanced intent interpretation for weather requests
 - Added explicit command recognition for search requests
 - Added explicit command recognition for notes requests
+- Added explicit command recognition for file system requests
 - Added entity extraction for:
   - Date
   - Time
@@ -61,6 +77,7 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
   - Weather
   - Search
   - Notes
+  - File System
 
 #### Testing
 
@@ -71,18 +88,12 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Added Weather capability tests
 - Added Search capability tests
 - Added Notes capability tests
-
-#### Browser
-
-- Added Browser capability
-- Added BrowserTool
-- Added browser shortcut resolution
-- Added browser capability tests
-- Added browser tool tests
+- Added Browser capability tests
+- Added Browser tool tests
+- Added File System capability tests
+- Added File System tool tests
 
 ---
-
-
 
 
 ## [v0.2.0] - Brain Architecture
