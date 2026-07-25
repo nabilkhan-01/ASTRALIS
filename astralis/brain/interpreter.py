@@ -91,6 +91,15 @@ class Interpreter:
         "delete event",
     )
 
+    ALARM_KEYWORDS = (
+        "alarm",
+        "alarms",
+        "enable alarm",
+        "delete alarm",
+        "disable alarm",
+    )
+
+
     def interpret(
         self,
         request: Request,
@@ -183,6 +192,12 @@ class Interpreter:
             for keyword in self.CALENDAR_KEYWORDS
         ):
             entities.append("calendar")
+
+        if any(
+            keyword in text
+            for keyword in self.ALARM_KEYWORDS
+        ):
+            entities.append("alarm")
 
         return Interpretation(
             intent=intent,

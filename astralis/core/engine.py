@@ -22,6 +22,7 @@ from astralis.capability.notes import NotesCapability
 from astralis.capability.browser import BrowserCapability
 from astralis.capability.file_system import FileSystemCapability
 from astralis.capability.calendar import CalendarCapability
+from astralis.capability.alarm import AlarmCapability
 
 class Engine:
     """Coordinates the startup and lifecycle of ASTRALIS."""
@@ -117,7 +118,11 @@ class Engine:
             CapabilityType.FILE_SYSTEM,
             FileSystemCapability(),
         )
-    
+
+        self.capability_registry.register(
+            CapabilityType.ALARM,
+            AlarmCapability(),
+        )
 
     def start(
         self,

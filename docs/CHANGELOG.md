@@ -29,6 +29,7 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Added the `CalendarEvent` model
 - Moved `WeatherData` into the models package
 - Moved `SearchResult` into the models package
+- Added the `Alarm` model
 
 #### Capability Framework
 
@@ -53,6 +54,7 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Implemented persistent calendar event management
 - Implemented local file system navigation and file reading
 - Implemented browser URL and shortcut launching
+- Added Alarm capability
 
 #### Memory System
 
@@ -68,6 +70,12 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Added today's event retrieval
 - Added calendar event deletion
 - Refactored Notes memory to use typed models instead of dictionaries
+- Added the Alarm memory component
+- Added persistent local alarm storage
+- Added alarm creation
+- Added alarm listing
+- Added alarm enable and disable
+- Added alarm deletion
 
 #### Tools
 
@@ -110,6 +118,8 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Added Calendar memory tests
 - Added Browser tool tests
 - Added File System tool tests
+- Added Alarm memory tests
+- Added Alarm capability tests
 
 #### Engineering
 
