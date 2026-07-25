@@ -1,7 +1,7 @@
 from unittest import result
 
 from astralis.api.client import ApiClient
-from astralis.api.search_result import SearchResult
+from astralis.models.search_result import SearchResult
 from astralis.core.config import Config
 
 

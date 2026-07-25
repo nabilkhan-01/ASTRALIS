@@ -42,6 +42,9 @@ class Planner:
         if "notes" in interpretation.entities:
             return CapabilityType.NOTES
 
+        if "calendar" in interpretation.entities:
+            return CapabilityType.CALENDAR
+
         if "browser" in interpretation.entities:
             return CapabilityType.BROWSER
         

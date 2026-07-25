@@ -3,7 +3,7 @@ from astralis.brain.interpretation import Interpretation
 from astralis.brain.request import Request
 from astralis.brain.response import Response
 from astralis.capability.capability import Capability
-from astralis.memory.notes import NotesMemory
+from astralis.memory.note_memory import NotesMemory
 
 
 class NotesCapability(Capability):
@@ -53,12 +53,9 @@ class NotesCapability(Capability):
 
                 lines = []
 
-                for index, note in enumerate(
-                    notes,
-                    start=1,
-                ):
+                for note in notes:
                     lines.append(
-                        f"{index}. {note}"
+                        f"{note.id}. {note.text}",
                     )
 
                 return Response(

@@ -1,5 +1,8 @@
 import json
+from dataclasses import asdict
 from pathlib import Path
+
+from astralis.models.note import Note
 
 
 class NotesMemory:
@@ -7,7 +10,9 @@ class NotesMemory:
 
     DATA_FILE = Path("data/notes.json")
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+    ) -> None:
         self.DATA_FILE.parent.mkdir(
             exist_ok=True,
         )
@@ -26,17 +31,24 @@ class NotesMemory:
 
         notes = self._load()
 
+        note = Note(
+            id=len(notes) + 1,
+            text=text,
+        )
+
         notes.append(
-            text,
+            note,
         )
 
         self._save(
             notes,
         )
 
-        return len(notes)
+        return note.id
 
-    def get_notes(self) -> list[str]:
+    def get_notes(
+        self,
+    ) -> list[Note]:
         """Return all notes."""
 
         return self._load()
@@ -49,35 +61,55 @@ class NotesMemory:
 
         notes = self._load()
 
-        index = note_id - 1
+        new_notes = [
+            note
+            for note in notes
+            if note.id != note_id
+        ]
 
-        if index < 0 or index >= len(notes):
+        if len(new_notes) == len(notes):
             return False
 
-        del notes[index]
+        renumbered = [
+            Note(
+                id=index,
+                text=note.text,
+            )
+            for index, note in enumerate(
+                new_notes,
+                start=1,
+            )
+        ]
 
         self._save(
-            notes, 
+            renumbered,
         )
 
         return True
 
     def _load(
         self,
-    ) -> list[str]:
+    ) -> list[Note]:
         """Load notes."""
 
         with open(
             self.DATA_FILE,
             encoding="utf-8",
         ) as file:
-            return json.load(
+            data = json.load(
                 file,
             )
 
+        return [
+            Note(
+                **note,
+            )
+            for note in data
+        ]
+
     def _save(
         self,
-        notes: list[str],
+        notes: list[Note],
     ) -> None:
         """Save notes."""
 
@@ -87,7 +119,12 @@ class NotesMemory:
             encoding="utf-8",
         ) as file:
             json.dump(
-                notes,
+                [
+                    asdict(
+                        note,
+                    )
+                    for note in notes
+                ],
                 file,
                 indent=4,
             )

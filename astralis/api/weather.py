@@ -1,5 +1,5 @@
 from astralis.api.client import ApiClient
-from astralis.api.weather_data import WeatherData
+from astralis.models.weather_data import WeatherData
 
 
 class WeatherApi(ApiClient):

@@ -22,6 +22,14 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Integrated the Open-Meteo API for live weather retrieval
 - Integrated the Tavily Search API for web search
 
+#### Models
+
+- Introduced the `models` package
+- Added the `Note` model
+- Added the `CalendarEvent` model
+- Moved `WeatherData` into the models package
+- Moved `SearchResult` into the models package
+
 #### Capability Framework
 
 - Finalized the Capability Framework
@@ -36,32 +44,39 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Added Notes capability
 - Added Browser capability
 - Added File System capability
+- Added Calendar capability
 - Implemented native date and time retrieval
 - Implemented native arithmetic execution
 - Implemented live weather retrieval
 - Implemented web search
 - Implemented persistent note management
-- Implemented read-only local file system access
+- Implemented persistent calendar event management
+- Implemented local file system navigation and file reading
+- Implemented browser URL and shortcut launching
 
 #### Memory System
 
 - Introduced the Notes memory component
+- Introduced the Calendar memory component
 - Added persistent local note storage
+- Added persistent local calendar storage
 - Added note creation
 - Added note listing
 - Added note deletion
+- Added calendar event creation
+- Added calendar event listing
+- Added today's event retrieval
+- Added calendar event deletion
+- Refactored Notes memory to use typed models instead of dictionaries
 
 #### Tools
 
-- Added `BrowserTool`
-- Added `FileSystemTool`
+- Added BrowserTool
+- Added FileSystemTool
 - Added browser shortcut resolution
-- Added support for:
-  - Retrieving the current working directory
-  - Listing files
-  - Listing folders
-  - Reading local text files
-  - Checking file and directory existence
+- Added local directory navigation
+- Added local file listing
+- Added local file reading
 
 #### Brain
 
@@ -69,7 +84,7 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Enhanced intent interpretation for weather requests
 - Added explicit command recognition for search requests
 - Added explicit command recognition for notes requests
-- Added explicit command recognition for file system requests
+- Added calendar command recognition
 - Added entity extraction for:
   - Date
   - Time
@@ -77,7 +92,7 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
   - Weather
   - Search
   - Notes
-  - File System
+  - Calendar
 
 #### Testing
 
@@ -89,9 +104,20 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Added Search capability tests
 - Added Notes capability tests
 - Added Browser capability tests
-- Added Browser tool tests
 - Added File System capability tests
+- Added Calendar capability tests
+- Added Notes memory tests
+- Added Calendar memory tests
+- Added Browser tool tests
 - Added File System tool tests
+
+#### Engineering
+
+- Introduced the domain models layer
+- Separated domain models from API implementations
+- Adopted typed models across the Memory layer
+- Established a dedicated memory testing structure
+- Established a dedicated models package for shared domain objects
 
 ---
 

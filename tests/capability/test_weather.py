@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 
-from astralis.api.weather_data import WeatherData
+from astralis.models.weather_data import WeatherData
 from astralis.capability.weather import WeatherCapability
 
 from tests.helpers.conversation_factory import (

@@ -83,6 +83,14 @@ class Interpreter:
         "read",
     )
 
+    CALENDAR_KEYWORDS = (
+        "calendar",
+        "event",
+        "today",
+        "add event",
+        "delete event",
+    )
+
     def interpret(
         self,
         request: Request,
@@ -169,6 +177,12 @@ class Interpreter:
             for keyword in self.FILE_SYSTEM_COMMANDS
         ):
             entities.append("file_system",)
+
+        if any(
+            keyword in text
+            for keyword in self.CALENDAR_KEYWORDS
+        ):
+            entities.append("calendar")
 
         return Interpretation(
             intent=intent,
