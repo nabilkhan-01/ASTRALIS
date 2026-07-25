@@ -1,7 +1,7 @@
 from astralis.brain.conversation import Conversation
 from astralis.brain.request import Request
 from astralis.brain.response import Response
-from astralis.provider.provider import Provider
+from astralis.providers.provider import Provider
 
 
 class MockProvider(Provider):

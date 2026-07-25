@@ -1,4 +1,4 @@
-from astralis.brain.execution_plan import ExecutionPlan
+from astralis.brain.plan import Plan
 from astralis.brain.interpretation import Interpretation
 from astralis.brain.intent import Intent
 from astralis.brain.response import Response
@@ -57,7 +57,7 @@ class TestCapabilityManager:
                 intent=Intent.CONVERSATION,
                 entities=[],
             ),
-            plan=ExecutionPlan(
+            plan=Plan(
                 capability=CapabilityType.LANGUAGE,
             ),
         )

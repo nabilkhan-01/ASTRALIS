@@ -3,7 +3,7 @@ from astralis.brain.interpretation import Interpretation
 from astralis.brain.request import Request
 from astralis.brain.response import Response
 from astralis.capability.capability import Capability
-from astralis.memory.calendar_memory import CalendarMemory
+from astralis.memory.calendar import CalendarMemory
 
 
 class CalendarCapability(Capability):

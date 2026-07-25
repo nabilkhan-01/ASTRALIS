@@ -21,6 +21,8 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Introduced the `SearchResult` model
 - Integrated the Open-Meteo API for live weather retrieval
 - Integrated the Tavily Search API for web search
+- Added the Email API
+- Added email draft support
 
 #### Models
 
@@ -55,6 +57,7 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Implemented local file system navigation and file reading
 - Implemented browser URL and shortcut launching
 - Added Alarm capability
+- Added Email capability
 
 #### Memory System
 
@@ -101,6 +104,8 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
   - Search
   - Notes
   - Calendar
+- Added email intent recognition
+- Added email capability planning
 
 #### Testing
 
@@ -120,6 +125,8 @@ The format is inspired by **Keep a Changelog** and follows **Semantic Versioning
 - Added File System tool tests
 - Added Alarm memory tests
 - Added Alarm capability tests
+- Added Email API tests
+- Added Email capability tests
 
 #### Engineering
 

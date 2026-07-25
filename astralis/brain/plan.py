@@ -4,7 +4,7 @@ from astralis.capability.capability_type import CapabilityType
 
 
 @dataclass
-class ExecutionPlan:
+class Plan:
     """Describes how the Brain intends to process a request."""
 
     capability: CapabilityType

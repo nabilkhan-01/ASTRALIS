@@ -1,10 +1,10 @@
 import pytest
 
 from astralis.core.config import Config
-from astralis.provider.factory import ProviderFactory
-from astralis.provider.gemini import GeminiProvider
-from astralis.provider.mock import MockProvider
-from astralis.provider.openai import OpenAIProvider
+from astralis.providers.factory import ProviderFactory
+from astralis.providers.gemini import GeminiProvider
+from astralis.providers.mock import MockProvider
+from astralis.providers.openai import OpenAIProvider
 
 
 class TestProviderFactory:

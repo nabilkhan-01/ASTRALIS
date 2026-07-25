@@ -4,8 +4,8 @@ from google.genai import types
 from astralis.brain.conversation import Conversation
 from astralis.brain.response import Response
 from astralis.core.config import Config
-from astralis.provider.provider import Provider
-from astralis.provider.prompts import SYSTEM_PROMPT
+from astralis.providers.provider import Provider
+from astralis.providers.prompts import SYSTEM_PROMPT
 
 
 class GeminiProvider(Provider):

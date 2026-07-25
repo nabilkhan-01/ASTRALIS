@@ -1,6 +1,6 @@
 from astralis.brain.conversation import Conversation
 from astralis.brain.interpretation import Interpretation
-from astralis.brain.execution_plan import ExecutionPlan
+from astralis.brain.plan import Plan
 from astralis.brain.request import Request
 from astralis.brain.response import Response
 from astralis.capability.registry import CapabilityRegistry
@@ -20,7 +20,7 @@ class CapabilityManager:
         request: Request,
         conversation: Conversation,
         interpretation: Interpretation,
-        plan: ExecutionPlan,
+        plan: Plan,
     ) -> Response:
         capability = self.registry.get(
             plan.capability,

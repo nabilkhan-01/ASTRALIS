@@ -1,4 +1,4 @@
-from astralis.brain.execution_plan import ExecutionPlan
+from astralis.brain.plan import Plan
 from astralis.brain.interpretation import Interpretation
 from astralis.capability.capability_type import CapabilityType
 
@@ -9,10 +9,10 @@ class Planner:
     def plan(
         self,
         interpretation: Interpretation,
-    ) -> ExecutionPlan:
+    ) -> Plan:
         """Create an execution plan."""
 
-        return ExecutionPlan(
+        return Plan(
             capability=self._select_capability(
                 interpretation,
             ),
@@ -47,6 +47,9 @@ class Planner:
         
         if "calendar" in interpretation.entities:
             return CapabilityType.CALENDAR
+
+        if "email" in interpretation.entities:
+            return CapabilityType.EMAIL
 
 
         if "browser" in interpretation.entities:

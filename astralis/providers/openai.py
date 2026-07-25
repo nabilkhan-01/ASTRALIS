@@ -3,7 +3,7 @@ from openai import OpenAI
 from astralis.brain.conversation import Conversation
 from astralis.brain.response import Response
 from astralis.core.config import Config
-from astralis.provider.provider import Provider
+from astralis.providers.provider import Provider
 
 
 class OpenAIProvider(Provider):

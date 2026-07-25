@@ -1,7 +1,7 @@
 from astralis.brain.conversation import Conversation
 from astralis.brain.interpretation import Interpretation
 from astralis.brain.interpreter import Interpreter
-from astralis.brain.execution_plan import ExecutionPlan
+from astralis.brain.plan import Plan
 from astralis.brain.request import Request
 from astralis.brain.response import Response
 from astralis.brain.role import Role
@@ -33,36 +33,37 @@ class Brain:
     ) -> Response:
         """Process a user request through the Brain pipeline."""
 
-        # validation
+        # Stage 1 - validation
         request = self._validate(request)
 
-        # Conversation
+        # Stage 2 - Conversation
         self.conversation.add(
             Role.USER,
             request.text,
         )
 
-        # Interpretation
+        # Stage 3 - Interpretation
         interpretation = self._interpret(request)
 
-        # Planning
+        # Stage 4 - Planning
         plan = self.planner.plan(
             interpretation,
         )
 
-        # Execution
+        # Stage 5 - Execution
         response = self._execute(
             request,
             interpretation,
             plan,
         )
 
-        # Conversation
+        # Stage 6 - Conversation
         self.conversation.add(
             Role.ASSISTANT,
             response.text,
         )
 
+        # Stage 7 - Response
         return response
 
     def _validate(
@@ -85,7 +86,7 @@ class Brain:
         self,
         request: Request,
         interpretation: Interpretation,
-        plan: ExecutionPlan,
+        plan: Plan,
     ) -> Response:
         """Execute the processing plan."""
 

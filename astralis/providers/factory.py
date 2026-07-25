@@ -1,8 +1,8 @@
 from astralis.core.config import Config
-from astralis.provider.mock import MockProvider
-from astralis.provider.openai import OpenAIProvider
-from astralis.provider.provider import Provider
-from astralis.provider.gemini import GeminiProvider
+from astralis.providers.mock import MockProvider
+from astralis.providers.openai import OpenAIProvider
+from astralis.providers.provider import Provider
+from astralis.providers.gemini import GeminiProvider
 
 class ProviderFactory:
     """Creates AI provider instances."""

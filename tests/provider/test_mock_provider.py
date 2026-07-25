@@ -1,5 +1,5 @@
 from astralis.brain.conversation import Conversation
-from astralis.provider.mock import MockProvider
+from astralis.providers.mock import MockProvider
 
 
 class TestMockProvider:

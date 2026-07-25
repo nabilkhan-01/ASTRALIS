@@ -1,6 +1,6 @@
 from datetime import date
 
-from astralis.memory.calendar_memory import CalendarMemory
+from astralis.memory.calendar import CalendarMemory
 
 
 class TestCalendarMemory:

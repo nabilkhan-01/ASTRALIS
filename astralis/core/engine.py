@@ -14,7 +14,7 @@ from astralis.core.loader import ModuleLoader
 from astralis.core.logger import AstralisLogger
 from astralis.core.registry import ModuleRegistry
 from astralis.interfaces.cli import CommandLineInterface
-from astralis.provider.factory import ProviderFactory
+from astralis.providers.factory import ProviderFactory
 from astralis.capability.calculator import CalculatorCapability
 from astralis.capability.weather import WeatherCapability
 from astralis.capability.search import SearchCapability
@@ -23,6 +23,7 @@ from astralis.capability.browser import BrowserCapability
 from astralis.capability.file_system import FileSystemCapability
 from astralis.capability.calendar import CalendarCapability
 from astralis.capability.alarm import AlarmCapability
+from astralis.capability.email import EmailCapability
 
 class Engine:
     """Coordinates the startup and lifecycle of ASTRALIS."""
@@ -122,6 +123,13 @@ class Engine:
         self.capability_registry.register(
             CapabilityType.ALARM,
             AlarmCapability(),
+        )
+
+        # Communication
+        
+        self.capability_registry.register(
+            CapabilityType.EMAIL,
+            EmailCapability(),
         )
 
     def start(

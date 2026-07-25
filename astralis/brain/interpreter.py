@@ -98,6 +98,11 @@ class Interpreter:
         "delete alarm",
         "disable alarm",
     )
+    EMAIL_KEYWORDS = (
+        "email",
+        "draft email",
+        "send email",
+    )
 
 
     def interpret(
@@ -198,6 +203,12 @@ class Interpreter:
             for keyword in self.ALARM_KEYWORDS
         ):
             entities.append("alarm")
+
+        if any(
+            keyword in text
+            for keyword in self.EMAIL_KEYWORDS
+        ):
+            entities.append("email")
 
         return Interpretation(
             intent=intent,

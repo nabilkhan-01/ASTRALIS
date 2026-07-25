@@ -1,4 +1,4 @@
-from astralis.memory.note_memory import NotesMemory
+from astralis.memory.note import NotesMemory
 
 
 class TestNotesMemory:

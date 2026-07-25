@@ -111,6 +111,26 @@ This supports the project philosophy:
 
 # Brain
 
+## Brain Processing Pipeline
+
+The Brain currently executes a linear request processing pipeline.
+
+Future versions may introduce additional processing stages such as:
+
+- Authorization
+- Memory retrieval
+- Context enrichment
+- Reasoning
+- Post-processing
+- Memory persistence
+
+The overall pipeline structure should remain sequential to preserve readability and simplify debugging.
+
+**Status:** Planned
+
+**Reason:** Enables future intelligence while preserving the existing architecture.
+
+
 ## Provider Abstraction
 
 The Brain communicates only through the Provider interface.
@@ -126,6 +146,8 @@ Possible providers include:
 - Local Models
 
 This abstraction allows new providers to be introduced without modifying the Brain.
+
+Future provider implementations should remain isolated from application logic so that changing providers never requires modifications to the Brain or Capabilities.
 
 **Status:** Implemented
 
@@ -200,15 +222,29 @@ This decision should only be made when the models become genuinely shared.
 
 ## Memory Independence
 
-Memory is responsible for deciding what should be remembered.
+Memory components should never depend on Capabilities, Brain, Providers, or Tools.
 
-Storage is responsible only for persistence.
+Memory is responsible for managing application data.
 
-The Brain should never write directly to storage.
+User interaction and reasoning belong to higher layers.
 
 **Status:** Planned
 
-**Reason:** Maintains separation between reasoning, memory, and persistence.
+**Reason:** Preserves architectural independence and simplifies future storage migration.
+
+---
+
+# Capability Layer
+
+## Capability Independence
+
+Capabilities should execute user requests but should not directly coordinate other capabilities.
+
+Cross-capability workflows belong to higher orchestration layers such as the Brain or future Automation services.
+
+**Status:** Planned
+
+**Reason:** Maintains loose coupling and simplifies testing.
 
 ---
 
@@ -230,6 +266,50 @@ Other components should communicate only with the storage interface.
 **Status:** Planned
 
 ---
+
+## Stable Entity Identity
+
+The current JSON-based implementation uses sequential identifiers for user-facing collections.
+
+When ASTRALIS migrates to a database (such as PostgreSQL), persistent entities should use stable internal identifiers that are never renumbered or reused.
+
+User-facing numbering should remain presentation logic rather than persistent storage.
+
+Examples include:
+
+- Notes
+- Calendar Events
+- Alarms
+- Future Goals
+- Projects
+- Tasks
+
+This separation preserves relationships between entities while maintaining a simple user experience.
+
+**Status:** Planned
+
+**Reason:** Supports relational storage, future knowledge graphs, and long-term data integrity.
+
+## PostgreSQL Migration
+
+JSON storage is intentionally used during early development to simplify implementation.
+
+Future versions should migrate persistent application data to PostgreSQL through the Storage abstraction.
+
+The migration should occur without requiring changes to higher application layers.
+
+Potential benefits include:
+
+- Transactions
+- Relationships
+- Efficient querying
+- Indexing
+- Concurrent access
+- Future synchronization
+
+**Status:** Planned
+
+**Reason:** Provides a scalable persistence layer while preserving architectural separation.
 
 # Security
 
@@ -358,6 +438,85 @@ ASTRALIS should recover from temporary provider failures whenever possible witho
 
 ---
 
+# Automation
+
+## Background Scheduler
+
+Future versions should introduce a scheduler responsible for executing time-based automation.
+
+Examples include:
+
+- Alarms
+- Reminders
+- Scheduled tasks
+- Recurring jobs
+
+Capabilities should manage user data only.
+
+Execution should remain the responsibility of the Automation layer.
+
+**Status:** Planned
+
+**Reason:** Separates user interaction from background execution.
+
+---
+
+# Engineering
+
+## Shared Base Components
+
+As the number of Memory and Capability implementations grows, common behavior may be extracted into shared base classes.
+
+Possible candidates include:
+
+- BaseMemory
+- Shared capability helpers
+- Shared validation helpers
+
+These abstractions should only be introduced after repeated patterns have clearly emerged.
+
+**Status:** Deferred
+
+**Reason:** Avoids premature abstraction while reducing future duplication.
+
+## Service Layer
+
+Future versions may introduce a dedicated Services layer for long-running or application-wide business logic.
+
+Examples include:
+
+- Scheduler
+- Notification Service
+- Knowledge Graph
+- Embedding Service
+- Summarization
+
+Services differ from Capabilities in that they are not directly invoked by users.
+
+**Status:** Deferred
+
+**Reason:** Preserves clear architectural boundaries as the project grows.
+
+---
+
+## Bootstrap Layer
+
+As the number of core services and capabilities grows, application initialization may be extracted into dedicated bootstrap modules.
+
+Examples include:
+
+- Capability registration
+- Provider initialization
+- Service initialization
+- Interface initialization
+
+The Engine should remain responsible for application lifecycle rather than detailed construction of every component.
+
+**Status:** Deferred
+
+**Reason:** Keeps the Engine focused on orchestration while maintaining readability as the project grows.
+
+---
 
 # Documentation Policy
 
