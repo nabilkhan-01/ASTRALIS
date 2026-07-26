@@ -35,15 +35,15 @@ Invalid transitions should be rejected.
 
 ---
 
-## Engine
+# Engine
 
-### Core Service Initialization
+## Keep the Engine Focused
 
-As additional core services are introduced, Engine initialization may eventually be extracted into dedicated helper methods to improve readability.
+As additional core services are introduced, The Engine should remain responsible only for coordinating application lifecycle.
 
-This refactoring should occur only when it meaningfully improves maintainability.
+Object construction belongs to Bootstrap.
 
-**Status:** Deferred
+**Status:** Ongoing
 
 ---
 
@@ -115,43 +115,20 @@ This supports the project philosophy:
 
 The Brain currently executes a linear request processing pipeline.
 
-Future versions may introduce additional processing stages such as:
+Future processing stages may include:
 
-- Authorization
-- Memory retrieval
-- Context enrichment
+- Context retrieval
+- Long-term memory
 - Reasoning
-- Post-processing
+- Reflection
 - Memory persistence
+- Permission checks
 
 The overall pipeline structure should remain sequential to preserve readability and simplify debugging.
 
 **Status:** Planned
 
 **Reason:** Enables future intelligence while preserving the existing architecture.
-
-
-## Provider Abstraction
-
-The Brain communicates only through the Provider interface.
-
-Concrete AI providers remain interchangeable implementations behind this abstraction.
-
-Possible providers include:
-
-- OpenAI
-- Gemini
-- Claude
-- Ollama
-- Local Models
-
-This abstraction allows new providers to be introduced without modifying the Brain.
-
-Future provider implementations should remain isolated from application logic so that changing providers never requires modifications to the Brain or Capabilities.
-
-**Status:** Implemented
-
----
 
 ## Intelligent Provider Selection
 
@@ -250,23 +227,6 @@ Cross-capability workflows belong to higher orchestration layers such as the Bra
 
 # Storage
 
-## Storage Abstraction
-
-Introduce a dedicated storage layer that separates persistence technology from application logic.
-
-Possible implementations may include:
-
-- SQLite
-- PostgreSQL
-- JSON
-- Cloud storage
-
-Other components should communicate only with the storage interface.
-
-**Status:** Planned
-
----
-
 ## Stable Entity Identity
 
 The current JSON-based implementation uses sequential identifiers for user-facing collections.
@@ -333,16 +293,28 @@ Examples:
 
 # Intelligence
 
-## Context-Aware Reasoning
+## Context-Aware Assistance
 
-The Brain should eventually consider conversation history, user preferences, memory, and environmental context before generating a response.
+ASTRALIS should eventually understand and use relevant context before deciding how to assist the user.
 
-Reasoning should not depend solely on the current request.
+Context may include:
+
+- Conversation history
+- Long-term memory
+- User preferences
+- Current project
+- Active application
+- Time and schedule
+- Previous work
+- Environmental context
+
+This context should improve reasoning, planning, and recommendations without becoming intrusive or reducing user autonomy.
+
+Reasoning should not depend solely on the current request, but on the broader context available to ASTRALIS.
 
 **Status:** Planned
 
-**Reason:** Enables coherent long-term assistance and more personalized interactions.
-
+**Reason:** Enables more coherent, personalized, and context-aware assistance while preserving user privacy, transparency, and control.
 
 ## Explainability
 
@@ -393,27 +365,6 @@ External providers should remain optional so users can choose the most appropria
 **Status:** Planned
 
 **Reason:** Reduces dependency on external AI providers while preserving architectural flexibility.
-
----
-
-## Context Awareness
-
-ASTRALIS should eventually understand the user's current context before deciding how to assist.
-
-Context may include:
-
-- Current project
-- Active application
-- Conversation history
-- User preferences
-- Time and schedule
-- Previous work
-
-ASTRALIS should use context to provide relevant assistance without becoming intrusive.
-
-**Status:** Planned
-
-**Reason:** Enables proactive, context-aware assistance while respecting user autonomy and privacy.
 
 ---
 
@@ -499,25 +450,6 @@ Services differ from Capabilities in that they are not directly invoked by users
 
 ---
 
-## Bootstrap Layer
-
-As the number of core services and capabilities grows, application initialization may be extracted into dedicated bootstrap modules.
-
-Examples include:
-
-- Capability registration
-- Provider initialization
-- Service initialization
-- Interface initialization
-
-The Engine should remain responsible for application lifecycle rather than detailed construction of every component.
-
-**Status:** Deferred
-
-**Reason:** Keeps the Engine focused on orchestration while maintaining readability as the project grows.
-
----
-
 # Documentation Policy
 
 Whenever a feature is intentionally postponed, evaluate whether it belongs in this document.
@@ -528,10 +460,27 @@ This document should remain intentionally small and contain only significant arc
 
 ---
 
+## Plugin Framework
+
+Capabilities should eventually support external plugins without requiring modifications to the core application.
+
+Plugins should be:
+
+- Discoverable
+- Independently installable
+- Sandboxed when practical
+- Explicitly enabled by users
+
+Status: Planned
+
+Reason: Enables ecosystem growth while preserving modularity.
+
+---
+
 Project: **ASTRALIS**
 
-Current Release: **v0.2.0 "Brain Architecture"**
+Current Release: **v0.3.0 – Capability Platform**
 
-Current Milestone: **v0.3.0 "Capabilities"**
+Current Milestone: **v0.4.0 "Memory"**
 
 Philosophy: **Assist. Don't Control.**

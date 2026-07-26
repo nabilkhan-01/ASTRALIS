@@ -1,5 +1,4 @@
-from abc import ABC
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
 from astralis.brain.conversation import Conversation
 from astralis.brain.interpretation import Interpretation

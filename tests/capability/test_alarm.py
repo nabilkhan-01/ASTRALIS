@@ -1,5 +1,5 @@
 from astralis.capability.alarm import AlarmCapability
-
+from astralis.memory.alarm import AlarmMemory
 from tests.helpers.conversation_factory import (
     create_conversation,
 )
@@ -17,11 +17,13 @@ class TestAlarmCapability:
     def setup_method(
         self,
     ) -> None:
-        self.capability = AlarmCapability()
 
-        self.capability.alarms._save(
-            [],
+        self.alarm = AlarmMemory()
+        self.capability = AlarmCapability(
+            self.alarm,
         )
+
+        self.capability.alarms.clear()
 
     def test_add_alarm(
         self,

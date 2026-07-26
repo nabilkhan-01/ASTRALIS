@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from astralis.brain.intent import Intent
 from astralis.brain.interpretation import Interpretation
 from astralis.brain.request import Request
@@ -6,7 +8,7 @@ from astralis.brain.request import Request
 class Interpreter:
     """Interprets incoming user requests."""
 
-    GREETINGS = {
+    GREETINGS: ClassVar[set[str]] = {
         "hi",
         "hello",
         "hey",
@@ -50,9 +52,7 @@ class Interpreter:
         "today",
     )
 
-    CALCULATION_KEYWORDS = (
-        "calculate",
-    )
+    CALCULATION_KEYWORDS = ("calculate",)
 
     WEATHER_KEYWORDS = (
         "weather",
@@ -72,9 +72,7 @@ class Interpreter:
         "delete note",
     )
 
-    BROWSER_COMMANDS = (
-        "open",
-    )
+    BROWSER_COMMANDS = ("open",)
 
     FILE_SYSTEM_COMMANDS = (
         "pwd",
@@ -103,7 +101,6 @@ class Interpreter:
         "draft email",
         "send email",
     )
-
 
     def interpret(
         self,
@@ -145,69 +142,46 @@ class Interpreter:
                 entities=entities,
             )
 
-        elif text.startswith(self.BROWSER_COMMANDS,):
+        elif text.startswith(
+            self.BROWSER_COMMANDS,
+        ):
             entities.append("browser")
 
             return Interpretation(
                 intent=intent,
                 entities=entities,
             )
-        
+
         # Question
-        elif (
-            text.endswith("?")
-            or text.startswith(self.QUESTION_PREFIXES)
-        ):
+        elif text.endswith("?") or text.startswith(self.QUESTION_PREFIXES):
             intent = Intent.QUESTION
 
         # Entity extraction
 
-        if any(
-            keyword in text
-            for keyword in self.TIME_KEYWORDS
-        ):
+        if any(keyword in text for keyword in self.TIME_KEYWORDS):
             entities.append("time")
 
-        if any(
-            keyword in text
-            for keyword in self.DATE_KEYWORDS
-        ):
+        if any(keyword in text for keyword in self.DATE_KEYWORDS):
             entities.append("date")
 
-        if any(
-            keyword in text
-            for keyword in self.CALCULATION_KEYWORDS
-        ):
+        if any(keyword in text for keyword in self.CALCULATION_KEYWORDS):
             entities.append("calculator")
 
-        if any(
-            keyword in text
-            for keyword in self.WEATHER_KEYWORDS
-        ):
+        if any(keyword in text for keyword in self.WEATHER_KEYWORDS):
             entities.append("weather")
 
-        if any(
-            text.startswith(keyword)
-            for keyword in self.FILE_SYSTEM_COMMANDS
-        ):
-            entities.append("file_system",)
+        if any(text.startswith(keyword) for keyword in self.FILE_SYSTEM_COMMANDS):
+            entities.append(
+                "file_system",
+            )
 
-        if any(
-            keyword in text
-            for keyword in self.CALENDAR_KEYWORDS
-        ):
+        if any(keyword in text for keyword in self.CALENDAR_KEYWORDS):
             entities.append("calendar")
 
-        if any(
-            keyword in text
-            for keyword in self.ALARM_KEYWORDS
-        ):
+        if any(keyword in text for keyword in self.ALARM_KEYWORDS):
             entities.append("alarm")
 
-        if any(
-            keyword in text
-            for keyword in self.EMAIL_KEYWORDS
-        ):
+        if any(keyword in text for keyword in self.EMAIL_KEYWORDS):
             entities.append("email")
 
         return Interpretation(

@@ -1,5 +1,4 @@
 from astralis.capability.email import EmailCapability
-
 from tests.helpers.conversation_factory import (
     create_conversation,
 )
@@ -47,10 +46,7 @@ class TestEmailCapability:
         )
 
         assert response.success is True
-        assert (
-            response.text
-            == "Draft created for john@example.com."
-        )
+        assert response.text == "Draft created for john@example.com."
 
     def test_send_not_supported(
         self,
@@ -66,10 +62,7 @@ class TestEmailCapability:
         )
 
         assert response.success is False
-        assert (
-            response.text
-            == "Sending emails is not yet supported."
-        )
+        assert response.text == "Sending emails is not yet supported."
 
     def test_unknown_command(
         self,

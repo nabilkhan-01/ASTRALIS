@@ -1,6 +1,6 @@
-from astralis.api.email import EmailApi
-
 import pytest
+
+from astralis.api.email import EmailApi
 
 
 class TestEmailApi:

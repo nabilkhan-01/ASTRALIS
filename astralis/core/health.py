@@ -27,5 +27,3 @@ class HealthChecker:
             "Module Loader": loader is not None,
             "Lifecycle Manager": lifecycle is not None,
         }
-    
-# TODO: Support module-specific health checks.

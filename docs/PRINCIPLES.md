@@ -1,6 +1,6 @@
 # ASTRALIS Engineering Principles
 
-> "Great software is built on great principles."
+> *"Great software is built on great principles."*
 
 These principles guide every architectural decision, feature, and contribution made to ASTRALIS.
 
@@ -18,85 +18,51 @@ It should provide information, guidance, automation, and support while ensuring 
 
 ## 2. Intelligence Belongs to ASTRALIS
 
-The intelligence of ASTRALIS belongs to its own architecture rather than any individual language model.
+The intelligence of ASTRALIS belongs to its own architecture—not to any individual language model.
 
 Language models generate language.
 
-Reasoning, planning, memory, decision-making, and orchestration belong to ASTRALIS.
+ASTRALIS owns reasoning, planning, memory, orchestration, and decision-making.
 
-External AI providers must remain replaceable.
+Providers should always remain replaceable.
 
 ---
 
-## 3. Privacy First
+## 3. Trust Above All
+
+Trust is earned through honesty, reliability, transparency, and respect.
+
+ASTRALIS should never manipulate users, exaggerate its capabilities, or hide important information.
+
+Long-term trust is more valuable than short-term convenience.
+
+---
+
+## 4. Privacy and Security by Default
 
 User data belongs to the user.
 
-ASTRALIS should collect only what is necessary, process locally whenever practical, protect information responsibly, and remain transparent about how data is used.
+Collect only what is necessary.
+
+Process locally whenever practical.
+
+Protect sensitive information responsibly.
+
+Actions affecting user data or external systems should require appropriate permission.
 
 ---
 
-## 4. Honesty Over Confidence
+## 5. Be Honest About Uncertainty
 
-ASTRALIS should never pretend certainty.
+ASTRALIS should never present uncertainty as certainty.
 
-When uncertain, it should communicate uncertainty clearly instead of inventing answers.
-
-Trust is earned through honesty.
+When information is incomplete or unknown, it should communicate that clearly instead of inventing answers.
 
 ---
 
-## 5. User Always Decides
+## 6. Build Modular Systems
 
-The user always has the final decision.
-
-ASTRALIS may recommend, explain, warn, or challenge when appropriate, but it must never manipulate or make important decisions on behalf of the user without permission.
-
----
-
-## 6. Be Present, Never Intrusive
-
-ASTRALIS should feel available whenever the user needs help.
-
-It should avoid unnecessary interruptions and speak only when it can provide genuine value.
-
-Presence is more valuable than constant interaction.
-
----
-
-## 7. Build Trust Before Intelligence
-
-People should trust ASTRALIS because it is honest, respectful, reliable, and predictable.
-
-Intelligence without trust is not enough.
-
----
-
-## 8. Learn Continuously
-
-ASTRALIS should improve through thoughtful engineering, user feedback, and optional learning mechanisms while respecting privacy and user preferences.
-
-Learning must never compromise transparency or user control.
-
----
-
-## 9. Explain Decisions
-
-Whenever practical, ASTRALIS should explain why it made a recommendation or performed an action.
-
-Users should understand:
-
-- Why an action was suggested.
-- Which information influenced the decision.
-- Any assumptions that were made.
-
-Transparency builds trust.
-
----
-
-## 10. Modular by Design
-
-Every major capability should exist as an independent module.
+Every major capability should remain an independent, replaceable module.
 
 Examples include:
 
@@ -104,70 +70,76 @@ Examples include:
 - Voice
 - Vision
 - Browser
-- Email
 - Calendar
+- Email
 - Automation
 
-Modules should communicate through well-defined interfaces to keep ASTRALIS maintainable and extensible.
+Modularity keeps ASTRALIS maintainable, testable, and extensible.
 
 ---
 
-## 11. Security by Default
+## 7. Explain Important Decisions
 
-Actions that affect user data or external systems should require appropriate permission.
+Whenever practical, ASTRALIS should explain:
 
-Security should be designed into every capability from the beginning rather than added later.
+- Why an action was suggested
+- What information influenced the decision
+- Any assumptions that were made
 
----
-
-## 12. Build for the Long Term
-
-Prefer clean architecture over short-term convenience.
-
-Build simple today.
-
-Extend tomorrow.
+Transparency helps users understand and trust the system.
 
 ---
 
-## 13. Respect Every User
+## 8. Design for the Long Term
 
-Every user deserves respect.
+Prefer simple, maintainable architecture over short-term convenience.
 
-ASTRALIS should never insult, manipulate, discriminate against, exploit, or intentionally mislead people.
+Build only what is needed today.
 
-Technology reflects the values of those who build it.
+Design so it can grow tomorrow.
 
 ---
 
-## 14. Make People More Capable
+## 9. Make People More Capable
 
 The purpose of ASTRALIS is not to replace human ability.
 
-Its purpose is to help people think more clearly, learn more effectively, create with confidence, and solve problems while remaining independent.
+Its purpose is to help people learn, think clearly, create confidently, and solve meaningful problems.
 
-Success is measured by how much more capable users become—not by how much they rely on ASTRALIS.
+Success is measured by how much more capable users become—not by how dependent they are on ASTRALIS.
 
 ---
 
-These principles should evolve only with careful consideration.
+## 10. Never Stop Improving
 
-Technology changes.
+ASTRALIS should continuously improve through thoughtful engineering, testing, user feedback, and careful iteration.
+
+Technology evolves.
 
 Architecture evolves.
 
-Models improve.
-
-Our values should remain consistent.
+Values should remain consistent.
 
 ---
 
-Project: **ASTRALIS**
+These principles define the engineering culture of ASTRALIS.
 
-Philosophy:
+Architecture may change.
+
+Models may change.
+
+Implementation will change.
+
+These principles should endure.
+
+---
+
+**Project:** ASTRALIS
+
+**Philosophy:**
 
 > **Assist. Don't Control.**
 
-Vision:
+**Vision:**
 
-> **Build an Intelligence people trust—not just another AI.**
+> **Build an intelligence people trust—not just another AI.**

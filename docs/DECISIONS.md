@@ -579,6 +579,27 @@ The Brain executes requests through a Capability Framework rather than communica
 - The Capability Manager coordinates execution.
 - Language generation becomes one capability among many.
 
+----
+
+## ADR-0024
+
+### Title
+
+Introduce Bootstrap as the Composition Root
+
+### Decision
+
+Object construction and dependency wiring are centralized in Bootstrap.
+
+### Rationale
+
+Keeps the Engine focused on orchestration, improves testability, and simplifies dependency management.
+
+### Consequences
+
+The Engine no longer constructs application-wide dependencies; Bootstrap owns composition.
+
+---
 
 ## ADR Guidelines
 
@@ -600,8 +621,8 @@ The goal is to preserve the reasoning behind major architectural decisions—not
 
 Project: **ASTRALIS**
 
-Current Release: **v0.2.0 "Brain Architecture"**
+Current Release: **v0.3.0 – Capability Platform**
 
-Current Milestone: **v0.3.0 "Capabilities"**
+Current Milestone: **v0.4.0 "Memory"**
 
 Philosophy: **Assist. Don't Control.**

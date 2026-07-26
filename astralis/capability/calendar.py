@@ -11,8 +11,9 @@ class CalendarCapability(Capability):
 
     def __init__(
         self,
+        calendar: CalendarMemory,
     ) -> None:
-        self.calendar = CalendarMemory()
+        self.calendar = calendar
 
     def execute(
         self,
@@ -61,12 +62,9 @@ class CalendarCapability(Capability):
 
         if len(parts) < 5:
             return Response(
-                text=(
-                "Usage: add event "
-                "<title> <date> <time>"
-            ),
-            success=False,
-        )
+                text=("Usage: add event <title> <date> <time>"),
+                success=False,
+            )
 
         title = " ".join(parts[2:-2])
         date = parts[-2]
@@ -82,7 +80,6 @@ class CalendarCapability(Capability):
             text=f"Event {event_id} added.",
             success=True,
         )
-
 
     def _handle_list_events(
         self,
@@ -100,20 +97,13 @@ class CalendarCapability(Capability):
         lines = []
 
         for event in events:
-            lines.append(
-                (
-                    f"{event.id}. "
-                    f"{event.title} | "
-                    f"{event.date} {event.time}"
-            )
-        )
+            lines.append(f"{event.id}. {event.title} | {event.date} {event.time}")
 
         return Response(
             text="\n".join(lines),
             success=True,
         )
 
-    
     def _handle_today(
         self,
     ) -> Response:
@@ -130,13 +120,7 @@ class CalendarCapability(Capability):
         lines = []
 
         for event in events:
-            lines.append(
-                (
-                    f"{event.id}. "
-                    f"{event.title} | "
-                    f"{event.time}"
-            )
-        )
+            lines.append(f"{event.id}. {event.title} | {event.time}")
 
         return Response(
             text="\n".join(lines),
@@ -157,7 +141,9 @@ class CalendarCapability(Capability):
                 success=False,
             )
 
-        event_id = int(parts[2],)
+        event_id = int(
+            parts[2],
+        )
 
         deleted = self.calendar.delete_event(
             event_id,
@@ -165,11 +151,11 @@ class CalendarCapability(Capability):
 
         if not deleted:
             return Response(
-                text=f"Event not found.",
+                text="Event not found.",
                 success=False,
             )
 
         return Response(
-            text=f"Event deleted.",
+            text="Event deleted.",
             success=True,
         )

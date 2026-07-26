@@ -2,24 +2,24 @@
 
 > **Assist. Don't Control.**
 
-**Current Release:** `v0.2.0 "Brain Architecture"`  
-**Current Milestone:** `v0.3.0 "Capabilities"`
+**Current Release:** `v0.3.0 – Capability Platform`  
+**Next Milestone:** `v0.4.0 – Memory`
 
 ASTRALIS is a long-term research and engineering project focused on building a personal AI Operating System that assists people while respecting their autonomy, privacy, and decisions.
 
-Rather than becoming another chatbot, ASTRALIS is designed to become an intelligent companion capable of reasoning, planning, remembering, learning, and helping people accomplish meaningful work while ensuring the user always remains in control.
+Rather than becoming another chatbot, ASTRALIS is designed as a modular AI system capable of reasoning, planning, remembering, and interacting with the world through independent capabilities while ensuring the user always remains in control.
 
 ---
 
 ## Philosophy
 
-ASTRALIS is built on one guiding principle:
+ASTRALIS is built around one guiding principle:
 
 > **Assist. Don't Control.**
 
 Its purpose is to make people more capable—not more dependent.
 
-Every architectural and product decision should support this philosophy.
+Every architectural and engineering decision should reinforce this philosophy.
 
 ---
 
@@ -27,14 +27,14 @@ Every architectural and product decision should support this philosophy.
 
 Build an intelligence that:
 
-- Assists instead of controls.
-- Learns and adapts over time.
-- Protects user privacy.
-- Explains its decisions.
-- Evolves through modular engineering.
-- Respects user autonomy.
+- Assists rather than controls
+- Protects user privacy
+- Explains important decisions
+- Learns and improves over time
+- Evolves through modular engineering
+- Respects user autonomy
 
-Ultimately, ASTRALIS aims to become an AI Operating System that people trust—not just another AI.
+The long-term goal is to build an AI Operating System that people trust—not just another AI.
 
 ---
 
@@ -42,10 +42,24 @@ Ultimately, ASTRALIS aims to become an AI Operating System that people trust—n
 
 🚧 **Active Development**
 
-- **Current Release:** **v0.2.0 — Brain Architecture**
-- **Current Milestone:** **v0.3.0 — Capabilities**
+### Completed
 
-Detailed progress is maintained in **`docs/ROADMAP.md`**.
+- Core Engine
+- Brain Architecture
+- Bootstrap & Dependency Injection
+- Capability Platform
+- Persistent Memory Foundation
+- External API Integrations
+- Gemini & OpenAI Providers
+- Browser and File System Tools
+- Automated Testing
+- Static Analysis (Ruff & MyPy)
+
+### Next Focus
+
+**v0.4.0 – Memory**
+
+The next milestone focuses on long-term memory, context awareness, and personalized assistance.
 
 ---
 
@@ -54,27 +68,32 @@ Detailed progress is maintained in **`docs/ROADMAP.md`**.
 ```text
 ASTRALIS/
 ├── assets/
-│
 ├── astralis/
+│   ├── api/
 │   ├── automation/
+│   ├── bootstrap/
 │   ├── brain/
 │   ├── capability/
 │   ├── core/
 │   ├── interfaces/
 │   ├── memory/
-│   ├── provider/
+│   ├── models/
+│   ├── providers/
 │   ├── security/
-|   ├── tools/
+│   ├── storage/
+│   ├── tools/
 │   ├── utils/
 │   ├── vision/
 │   ├── voice/
 │   └── __init__.py
-│
+├── data/
 ├── docs/
+├── scripts/
 ├── tests/
 ├── .env.example
 ├── main.py
 ├── requirements.txt
+├── requirements-dev.txt
 └── README.md
 ```
 
@@ -82,72 +101,72 @@ ASTRALIS/
 
 ## Documentation
 
-Project documentation is maintained in the `docs/` directory.
+Project documentation is available in the `docs/` directory.
 
-- 🏛️ Architecture
-- 📝 Changelog
-- 🧠 Architecture Decision Records (ADRs)
-- 📖 Founder's Note
-- 🔮 Future Decisions
-- 📜 Engineering Principles
-- 🗺️ Roadmap
-- 🖥️ Interfaces
+- Architecture
+- Changelog
+- Contributing
+- Architecture Decision Records (ADRs)
+- Founder's Note
+- Future
+- History
+- Interfaces
+- Engineering Principles
+- Roadmap
 
 ---
 
-## Engineering Philosophy
+## Engineering Principles
 
 ASTRALIS is developed incrementally.
 
-Every capability is:
+Every feature follows the same engineering workflow:
 
-- Designed
-- Implemented
-- Reviewed
-- Documented
-- Tested
-- Committed
+1. Design
+2. Implement
+3. Test
+4. Review
+5. Document
+6. Release
 
-before moving to the next milestone.
-
-The project values:
+The project emphasizes:
 
 - Clean Architecture
 - Modularity
 - Maintainability
+- Testability
 - Transparency
 - Human-Centered AI
 
 ---
 
-## Long-Term Goal
+## Long-Term Goals
 
-Build an extensible AI Operating System capable of:
+ASTRALIS is being built to:
 
-- Understanding natural language
-- Remembering important information
-- Reasoning through complex tasks
-- Planning before acting
-- Interacting with computers safely
-- Learning from experience
-- Assisting users without replacing their judgment
+- Understand natural language
+- Remember important information
+- Plan before acting
+- Reason through complex problems
+- Interact safely with computers
+- Learn from experience
+- Assist without replacing human judgment
 
----
-
-## Development Philosophy
-
-ASTRALIS is built one carefully engineered capability at a time.
-
-Every architectural decision is documented.
-
-Every feature begins with design.
-
-Every implementation strengthens the existing architecture rather than replacing it.
-
-The objective is not simply to build another AI.
-
-The objective is to build an intelligence people trust.
+Every release should strengthen the existing architecture rather than replace it.
 
 ---
 
-> *"Great software is built one thoughtful decision at a time."*
+## Quality Standards
+
+Every release aims to maintain:
+
+- Automated testing
+- Ruff compliance
+- MyPy compliance
+- Dependency injection
+- Modular architecture
+- Comprehensive documentation
+
+---
+
+> *"Build an intelligence people trust—not just another AI."*

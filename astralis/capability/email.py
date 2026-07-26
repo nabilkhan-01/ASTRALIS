@@ -74,10 +74,7 @@ class EmailCapability(Capability):
 
         if len(parts) != 4:
             return Response(
-                text=(
-                    "Usage: draft email "
-                    "<recipient> <subject>"
-                ),
+                text=("Usage: draft email <recipient> <subject>"),
                 success=False,
             )
 

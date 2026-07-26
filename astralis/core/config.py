@@ -1,5 +1,5 @@
-from dataclasses import dataclass
 import os
+from dataclasses import dataclass
 
 from dotenv import load_dotenv
 
@@ -47,7 +47,7 @@ class Config:
         "OPENAI_MODEL",
         "gpt-5",
     )
-    
+
     # Tavily Configuration
     tavily_api_key: str = os.getenv(
         "TAVILY_API_KEY",

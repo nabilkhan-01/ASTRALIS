@@ -9,9 +9,7 @@ class TestAlarmMemory:
     ) -> None:
         self.memory = AlarmMemory()
 
-        self.memory._save(
-            [],
-        )
+        self.memory._save_models([])
 
     def test_add_alarm(
         self,
@@ -42,9 +40,12 @@ class TestAlarmMemory:
 
         alarms = self.memory.get_alarms()
 
-        assert len(
-            alarms,
-        ) == 2
+        assert (
+            len(
+                alarms,
+            )
+            == 2
+        )
 
         assert alarms[0].id == 1
         assert alarms[0].title == "Wake up"
@@ -98,9 +99,12 @@ class TestAlarmMemory:
 
         alarms = self.memory.get_alarms()
 
-        assert len(
-            alarms,
-        ) == 2
+        assert (
+            len(
+                alarms,
+            )
+            == 2
+        )
 
         assert alarms[0].id == 1
         assert alarms[0].title == "Wake up"

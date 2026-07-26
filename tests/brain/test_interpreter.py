@@ -1,6 +1,5 @@
 from astralis.brain.intent import Intent
 from astralis.brain.interpreter import Interpreter
-
 from tests.helpers.request_factory import create_request
 
 

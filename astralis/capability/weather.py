@@ -42,11 +42,15 @@ class WeatherCapability(Capability):
                 success=True,
             )
 
-        except Exception as error:
+        except (
+            ValueError,
+            requests.RequestException,
+        ) as error:
             return Response(
                 text=str(error),
                 success=False,
             )
+
     def _extract_city(
         self,
         text: str,
@@ -56,9 +60,7 @@ class WeatherCapability(Capability):
         text = text.lower()
 
         if " in " not in text:
-            raise ValueError(
-                "Please specify a city."
-            )
+            raise ValueError("Please specify a city.")
 
         city = text.split(
             " in ",

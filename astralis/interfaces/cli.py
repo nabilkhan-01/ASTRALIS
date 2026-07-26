@@ -4,6 +4,7 @@ from astralis.brain.source import RequestSource
 
 _EXIT_COMMANDS = {"exit", "quit"}
 
+
 class CommandLineInterface:
     """Provides a command-line interface for ASTRALIS."""
 

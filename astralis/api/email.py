@@ -9,9 +9,7 @@ class EmailApi:
     ) -> str:
         """Create an email draft."""
 
-        return (
-            f"Draft created for {recipient}."
-        )
+        return f"Draft created for {recipient}."
 
     def send_email(
         self,

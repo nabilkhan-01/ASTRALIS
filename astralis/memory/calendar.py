@@ -1,13 +1,15 @@
-import json
+from datetime import UTC, datetime
 from pathlib import Path
 
+from astralis.memory.base import BaseMemory
 from astralis.models.calendar_event import CalendarEvent
-from dataclasses import asdict
-from datetime import date
+from astralis.storage.json import JsonStorage
 
 
-class CalendarMemory:
+class CalendarMemory(BaseMemory[CalendarEvent]):
     """Stores and retrieves calendar events."""
+
+    MODEL = CalendarEvent
 
     DATA_FILE = Path(
         "data/calendar.json",
@@ -16,15 +18,11 @@ class CalendarMemory:
     def __init__(
         self,
     ) -> None:
-        self.DATA_FILE.parent.mkdir(
-            exist_ok=True,
+        super().__init__(
+            JsonStorage(
+                self.DATA_FILE,
+            ),
         )
-
-        if not self.DATA_FILE.exists():
-            self.DATA_FILE.write_text(
-                "[]",
-                encoding="utf-8",
-            )
 
     def add_event(
         self,
@@ -34,7 +32,7 @@ class CalendarMemory:
     ) -> int:
         """Add a calendar event."""
 
-        events = self._load()
+        events = self._load_models()
 
         event = CalendarEvent(
             id=len(events) + 1,
@@ -44,7 +42,7 @@ class CalendarMemory:
         )
 
         events.append(event)
-        self._save(events)
+        self._save_models(events)
 
         return event.id
 
@@ -52,35 +50,26 @@ class CalendarMemory:
         self,
     ) -> list[CalendarEvent]:
         """Returns all calendar events."""
-        return self._load()
+        return self._load_models()
 
     def get_today_events(
         self,
     ) -> list[CalendarEvent]:
         """Return today's calendar events."""
 
-        today = date.today().isoformat()
+        today = datetime.now(UTC).date().isoformat()
 
-        return [
-            event
-            for event in self._load()
-            if event.date == today
-        ]
+        return [event for event in self._load_models() if event.date == today]
 
-    
     def delete_event(
         self,
         event_id: int,
     ) -> bool:
         """Delete a calendar event."""
 
-        events = self._load()
+        events = self._load_models()
 
-        new_events = [
-            event
-            for event in events
-            if event.id != event_id
-        ]
+        new_events = [event for event in events if event.id != event_id]
 
         if len(new_events) == len(events):
             return False
@@ -96,40 +85,5 @@ class CalendarMemory:
             for index, event in enumerate(new_events, start=1)
         ]
 
-        self._save(renumbered)
+        self._save_models(renumbered)
         return True
-
-
-    def _load(
-        self,
-    ) -> list[CalendarEvent]:
-        """Load calendar events."""
-
-        with open(
-            self.DATA_FILE,
-            encoding="utf-8",
-        ) as file:
-            data = json.load(file)
-
-        return [
-            CalendarEvent(**event)
-            for event in data
-        ]
-
-    def _save(
-        self,
-        events: list[CalendarEvent],
-    ) -> None:
-        """Save calendar events."""
-
-        with open(
-            self.DATA_FILE,
-            "w",
-            encoding="utf-8",
-        ) as file:
-            json.dump(
-                [asdict(event) 
-                for event in events],
-                file,
-                indent=4,
-            )

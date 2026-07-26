@@ -13,7 +13,7 @@ class AstralisLogger:
 
             log_format = "[%(levelname)s] %(message)s"
 
-            formatter = logging.Formatter(log_format)   
+            formatter = logging.Formatter(log_format)
 
             console_handler.setFormatter(formatter)
             self._logger.addHandler(console_handler)

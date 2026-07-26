@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from astralis.brain.conversation import Conversation
 from astralis.brain.interpretation import Interpretation
 from astralis.brain.request import Request
@@ -9,14 +11,16 @@ from astralis.tools.browser import BrowserTool
 class BrowserCapability(Capability):
     """Opens websites in the default browser."""
 
-    SHORTCUTS = {
+    SHORTCUTS: ClassVar[dict[str, str]] = {
         "google": "https://www.google.com",
         "github": "https://github.com",
         "youtube": "https://www.youtube.com",
         "openai": "https://openai.com",
     }
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+    ) -> None:
         self.browser = BrowserTool()
 
     def execute(
@@ -33,21 +37,26 @@ class BrowserCapability(Capability):
             url = self._extract_url(
                 request.text,
             )
-
-            self.browser.open(
-                url,
-            )
-
-            return Response(
-                text=f"Opening {url}",
-                success=True,
-            )
-
-        except Exception as error:
+        except ValueError as error:
             return Response(
                 text=str(error),
                 success=False,
             )
+
+        opened = self.browser.open(
+            url,
+        )
+
+        if not opened:
+            return Response(
+                text="Failed to open the browser.",
+                success=False,
+            )
+
+        return Response(
+            text=f"Opening {url}",
+            success=True,
+        )
 
     def _extract_url(
         self,
@@ -61,22 +70,24 @@ class BrowserCapability(Capability):
             "open ",
         ):
             raise ValueError(
-                "Please specify a website."
+                "Please specify a website.",
             )
 
         target = text[5:].strip().lower()
 
         if not target:
             raise ValueError(
-                "Please specify a website."
+                "Please specify a website.",
             )
 
         if target in self.SHORTCUTS:
             return self.SHORTCUTS[target]
 
-        if not (
-            target.startswith("http://")
-            or target.startswith("https://")
+        if not target.startswith(
+            (
+                "http://",
+                "https://",
+            ),
         ):
             target = f"https://{target}"
 

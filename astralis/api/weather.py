@@ -5,13 +5,9 @@ from astralis.models.weather_data import WeatherData
 class WeatherApi(ApiClient):
     """Client for retrieving weather data."""
 
-    GEOCODING_URL = (
-        "https://geocoding-api.open-meteo.com/v1/search"
-    )
+    GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search"
 
-    WEATHER_URL = (
-        "https://api.open-meteo.com/v1/forecast"
-    )
+    WEATHER_URL = "https://api.open-meteo.com/v1/forecast"
 
     def get_current_weather(
         self,

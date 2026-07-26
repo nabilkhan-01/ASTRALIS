@@ -1,5 +1,6 @@
-from datetime import datetime
+from datetime import UTC, datetime
 
+from astralis.capability.time import TimeCapability
 from tests.helpers.conversation_factory import (
     create_conversation,
 )
@@ -9,8 +10,6 @@ from tests.helpers.interpretation_factory import (
 from tests.helpers.request_factory import (
     create_request,
 )
-
-from astralis.capability.time import TimeCapability
 
 
 class TestTimeCapability:
@@ -25,6 +24,7 @@ class TestTimeCapability:
             23,
             10,
             30,
+            tzinfo=UTC,
         )
 
         self.conversation = create_conversation()

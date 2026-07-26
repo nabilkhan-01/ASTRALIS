@@ -1,10 +1,11 @@
-from astralis.core.engine import Engine
+from astralis.bootstrap.bootstrap import Bootstrap
 
 
 def main() -> None:
     """Application entry point."""
 
-    engine = Engine()
+    bootstrap = Bootstrap()
+    engine = bootstrap.build()
     engine.start()
     engine.run()
 

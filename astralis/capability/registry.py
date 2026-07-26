@@ -23,9 +23,7 @@ class CapabilityRegistry:
                 f"Capability '{capability_type.name}' is already registered.",
             )
 
-        self._capabilities[
-            capability_type
-        ] = capability
+        self._capabilities[capability_type] = capability
 
     def get(
         self,

@@ -30,7 +30,7 @@ It should never manipulate.
 
 It should never pressure.
 
-It should never pretend to know something it doesn't.
+It should never present uncertainty as certainty
 
 Instead, it should help people make better decisions by providing knowledge, context, and thoughtful guidance while leaving the final choice to the user.
 
@@ -56,6 +56,8 @@ ASTRALIS should always:
 Good software is not measured by how many features it has.
 
 It is measured by how useful, reliable, understandable, and trustworthy it is.
+
+Architecture should remain simple enough to understand, yet flexible enough to grow.
 
 ASTRALIS values:
 
@@ -83,31 +85,33 @@ If it controls rather than assists, rethink the design.
 
 # A Note to My Future Self
 
-If ASTRALIS grows beyond what I imagined...
+If you're reading this years from now, the project has changed.
 
-If it becomes open source...
+The architecture may be different.
 
-If it becomes a company...
+The models may be different.
 
-If millions of people use it...
+The technology will certainly be different.
 
-Remember why this journey started.
+But one thing should remain the same.
 
-Never sacrifice trust for growth.
+Remember why ASTRALIS was created.
 
-Never sacrifice people for profit.
+Never sacrifice trust for convenience.
 
-Never stop learning.
+Never sacrifice integrity for growth.
 
-Never stop respecting others.
+Never sacrifice people for technology.
+
+Build carefully.
+
+Keep learning.
 
 Stay humble.
 
 Stay curious.
 
-Stay grounded.
-
-The technology will evolve.
+The implementation will evolve.
 
 The values should not.
 

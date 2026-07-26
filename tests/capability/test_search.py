@@ -1,9 +1,10 @@
 from unittest.mock import Mock
 
-from astralis.models.search_result import SearchResult
+import requests
+
 from astralis.capability.search import SearchCapability
 from astralis.core.config import Config
-
+from astralis.models.search_result import SearchResult
 from tests.helpers.conversation_factory import (
     create_conversation,
 )
@@ -98,7 +99,7 @@ class TestSearchCapability:
     def test_api_error(self) -> None:
         """Handle API errors."""
 
-        self.capability.api.search.side_effect = RuntimeError(
+        self.capability.api.search.side_effect = requests.RequestException(
             "Search service unavailable.",
         )
 

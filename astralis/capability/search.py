@@ -1,3 +1,5 @@
+import requests
+
 from astralis.api.search import SearchApi
 from astralis.brain.conversation import Conversation
 from astralis.brain.interpretation import Interpretation
@@ -44,7 +46,7 @@ class SearchCapability(Capability):
                 )
 
             lines = [
-                f"Top {len(results)} results for \"{query}\":",
+                f'Top {len(results)} results for "{query}":',
                 "",
             ]
 
@@ -70,8 +72,11 @@ class SearchCapability(Capability):
                 text="\n".join(lines),
                 success=True,
             )
-        
-        except Exception as error:
+
+        except (
+            ValueError,
+            requests.RequestException,
+        ) as error:
             return Response(
                 text=str(error),
                 success=False,
@@ -88,9 +93,7 @@ class SearchCapability(Capability):
         if text.lower().startswith(
             "search ",
         ):
-            query = text[
-                len("search "):
-            ].strip()
+            query = text[len("search ") :].strip()
 
             if query:
                 return query

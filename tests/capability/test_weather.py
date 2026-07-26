@@ -1,8 +1,7 @@
 from unittest.mock import Mock
 
-from astralis.models.weather_data import WeatherData
 from astralis.capability.weather import WeatherCapability
-
+from astralis.models.weather_data import WeatherData
 from tests.helpers.conversation_factory import (
     create_conversation,
 )
@@ -27,12 +26,10 @@ class TestWeatherCapability:
     def test_weather(self) -> None:
         """Return the current weather."""
 
-        self.capability.api.get_current_weather.return_value = (
-            WeatherData(
-                city="Delhi",
-                temperature=31.2,
-                windspeed=7.5,
-            )
+        self.capability.api.get_current_weather.return_value = WeatherData(
+            city="Delhi",
+            temperature=31.2,
+            windspeed=7.5,
         )
 
         response = self.capability.execute(
@@ -55,10 +52,8 @@ class TestWeatherCapability:
     def test_unknown_city(self) -> None:
         """Handle an unknown city."""
 
-        self.capability.api.get_current_weather.side_effect = (
-            ValueError(
-                "Unknown city.",
-            )
+        self.capability.api.get_current_weather.side_effect = ValueError(
+            "Unknown city.",
         )
 
         response = self.capability.execute(

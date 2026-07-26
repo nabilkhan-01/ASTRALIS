@@ -1,136 +1,43 @@
-from astralis.brain.brain import Brain
-from astralis.capability.capability_type import CapabilityType
-from astralis.capability.language import LanguageCapability
-from astralis.capability.manager import CapabilityManager
-from astralis.capability.registry import CapabilityRegistry
-from astralis.capability.time import TimeCapability
-from astralis.core.config import Config
-from astralis.core.health import HealthChecker
-from astralis.core.lifecycle import (
-    LifecycleManager,
-    LifecycleState,
-)
-from astralis.core.loader import ModuleLoader
-from astralis.core.logger import AstralisLogger
-from astralis.core.registry import ModuleRegistry
-from astralis.interfaces.cli import CommandLineInterface
-from astralis.providers.factory import ProviderFactory
-from astralis.capability.calculator import CalculatorCapability
-from astralis.capability.weather import WeatherCapability
-from astralis.capability.search import SearchCapability
-from astralis.capability.notes import NotesCapability
-from astralis.capability.browser import BrowserCapability
-from astralis.capability.file_system import FileSystemCapability
-from astralis.capability.calendar import CalendarCapability
-from astralis.capability.alarm import AlarmCapability
-from astralis.capability.email import EmailCapability
+from astralis.bootstrap import Application
+from astralis.core.lifecycle import LifecycleState
+
 
 class Engine:
     """Coordinates the startup and lifecycle of ASTRALIS."""
 
-    def __init__(self) -> None:
-        self.config = Config()
-        self.logger = AstralisLogger().logger
-        self.health = HealthChecker()
-
-        self.module_registry = ModuleRegistry()
-
-        self.loader = ModuleLoader(
-            self.module_registry,
-            self.logger,
-        )
-
-        self.lifecycle = LifecycleManager()
-
-        # Initialize the language provider.
-        self.provider = ProviderFactory.create(
-            self.config,
-        )
-
-        # Initialize capability framework.
-        self.capability_registry = CapabilityRegistry()
-
-        self._register_capabilities()
-
-        self.capability_manager = CapabilityManager(
-            self.capability_registry,
-        )
-
-        # Initialize the Brain.
-        self.brain = Brain(
-            self.capability_manager,
-        )
-
-        # Initialize the CLI.
-        self.cli = CommandLineInterface(
-            self.brain,
-        )
-
-    def _register_capabilities(
+    def __init__(
         self,
+        app: Application,
     ) -> None:
-        """Register all available capabilities."""
 
-        self.capability_registry.register(
-            CapabilityType.LANGUAGE,
-            LanguageCapability(
-                self.provider,
-            ),
-        )
+        self.app = app
 
-        self.capability_registry.register(
-            CapabilityType.TIME,
-            TimeCapability(),
-        )
+        # Core
+        self.config = app.config
+        self.logger = app.logger
 
-        self.capability_registry.register(
-            CapabilityType.CALCULATOR,
-            CalculatorCapability(),
-        )
+        self.health = app.health
+        self.lifecycle = app.lifecycle
+        self.module_registry = app.module_registry
+        self.loader = app.loader
 
-        self.capability_registry.register(
-            CapabilityType.WEATHER,
-            WeatherCapability(),
-        )
+        # AI
+        self.ai_provider = app.ai_provider
 
-        self.capability_registry.register(
-            CapabilityType.SEARCH,
-            SearchCapability(
-                self.config,
-            ),
-        )
+        # Memory
+        self.notes_memory = app.notes_memory
+        self.calendar_memory = app.calendar_memory
+        self.alarm_memory = app.alarm_memory
 
-        self.capability_registry.register(
-            CapabilityType.NOTES,
-            NotesCapability(),
-        )
+        # Capability framework
+        self.capability_registry = app.capability_registry
+        self.capability_manager = app.capability_manager
 
-        self.capability_registry.register(
-            CapabilityType.CALENDAR,
-            CalendarCapability(),
-        )
-        
-        self.capability_registry.register(
-            CapabilityType.BROWSER,
-            BrowserCapability(),
-        )
+        # Brain
+        self.brain = app.brain
 
-        self.capability_registry.register(
-            CapabilityType.FILE_SYSTEM,
-            FileSystemCapability(),
-        )
-
-        self.capability_registry.register(
-            CapabilityType.ALARM,
-            AlarmCapability(),
-        )
-
-        # Communication
-        
-        self.capability_registry.register(
-            CapabilityType.EMAIL,
-            EmailCapability(),
-        )
+        # Interface
+        self.cli = app.cli
 
     def start(
         self,
@@ -138,15 +45,15 @@ class Engine:
         """Start the ASTRALIS application."""
 
         self.logger.info(
-            f"Starting {self.config.project_name}"
+            f"Starting {self.config.project_name}",
         )
 
         self.logger.info(
-            f'Version {self.config.version} "{self.config.codename}"'
+            f'Version {self.config.version} "{self.config.codename}"',
         )
 
         self.logger.info(
-            f"Philosophy: {self.config.tagline}"
+            f"Philosophy: {self.config.tagline}",
         )
 
         self.lifecycle.transition_to(
@@ -154,7 +61,7 @@ class Engine:
         )
 
         self.logger.info(
-            f"Lifecycle: {self.lifecycle.state.value}"
+            f"Lifecycle: {self.lifecycle.state.value}",
         )
 
         self.loader.load_modules()
@@ -173,19 +80,20 @@ class Engine:
 
         for service, healthy in results.items():
             status = "✓" if healthy else "✗"
+
             self.logger.info(
-                f"{status} {service}"
+                f"{status} {service}",
             )
 
         if not all(
-            results.values()
+            results.values(),
         ):
             raise RuntimeError(
-                "ASTRALIS failed health checks. Startup aborted."
+                "ASTRALIS failed health checks. Startup aborted.",
             )
 
         self.logger.info(
-            "Health checks passed."
+            "Health checks passed.",
         )
 
         self.lifecycle.transition_to(
@@ -193,11 +101,11 @@ class Engine:
         )
 
         self.logger.info(
-            f"Lifecycle: {self.lifecycle.state.value}"
+            f"Lifecycle: {self.lifecycle.state.value}",
         )
 
         self.logger.info(
-            "ASTRALIS is ready."
+            "ASTRALIS is ready.",
         )
 
     def run(

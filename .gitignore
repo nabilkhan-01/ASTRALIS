@@ -1,22 +1,42 @@
-# Byte-compiled files
+# ----------------------------
+# Python
+# ----------------------------
 __pycache__/
 *.py[cod]
 *.pyc
-.pytest_cache/
 
+# ----------------------------
 # Virtual environments
+# ----------------------------
 .venv/
 venv/
 
+# ----------------------------
 # Environment variables
+# ----------------------------
 .env
 .env.*
 !.env.example
 
-# IDE
+# ----------------------------
+# Test & quality tool caches
+# ----------------------------
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+
+# ----------------------------
+# IDEs
+# ----------------------------
 .vscode/
 
-# macOS
+# ----------------------------
+# Operating System
+# ----------------------------
 .DS_Store
 
+# ----------------------------
+# Project data
+# ----------------------------
 data/

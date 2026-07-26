@@ -2,11 +2,11 @@ from astralis.brain.conversation import Conversation
 from astralis.brain.interpretation import Interpretation
 from astralis.brain.interpreter import Interpreter
 from astralis.brain.plan import Plan
+from astralis.brain.planner import Planner
 from astralis.brain.request import Request
 from astralis.brain.response import Response
 from astralis.brain.role import Role
 from astralis.capability.manager import CapabilityManager
-from astralis.brain.planner import Planner
 
 
 class Brain:
@@ -16,7 +16,7 @@ class Brain:
         self,
         capability_manager: CapabilityManager,
     ) -> None:
-        
+
         # Brain components
         self.interpreter = Interpreter()
         self.planner = Planner()

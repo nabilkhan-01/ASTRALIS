@@ -1,5 +1,5 @@
 from astralis.capability.notes import NotesCapability
-
+from astralis.memory.note import NotesMemory
 from tests.helpers.conversation_factory import (
     create_conversation,
 )
@@ -17,10 +17,14 @@ class TestNotesCapability:
     def setup_method(self) -> None:
         """Create a NotesCapability."""
 
-        self.capability = NotesCapability()
+        self.notes = NotesMemory()
+
+        self.capability = NotesCapability(
+            self.notes,
+        )
 
         # Start every test with empty notes
-        self.capability.notes._save([])
+        self.capability.notes.clear()
 
     def test_add_note(self) -> None:
         """Add a note."""

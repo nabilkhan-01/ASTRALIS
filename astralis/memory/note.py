@@ -1,27 +1,27 @@
-import json
-from dataclasses import asdict
 from pathlib import Path
 
+from astralis.memory.base import BaseMemory
 from astralis.models.note import Note
+from astralis.storage import JsonStorage
 
 
-class NotesMemory:
+class NotesMemory(BaseMemory[Note]):
     """Stores and retrieves user notes."""
 
-    DATA_FILE = Path("data/notes.json")
+    MODEL = Note
+
+    DATA_FILE = Path(
+        "data/notes.json",
+    )
 
     def __init__(
         self,
     ) -> None:
-        self.DATA_FILE.parent.mkdir(
-            exist_ok=True,
+        super().__init__(
+            JsonStorage(
+                self.DATA_FILE,
+            ),
         )
-
-        if not self.DATA_FILE.exists():
-            self.DATA_FILE.write_text(
-                "[]",
-                encoding="utf-8",
-            )
 
     def add_note(
         self,
@@ -29,7 +29,7 @@ class NotesMemory:
     ) -> int:
         """Add a note."""
 
-        notes = self._load()
+        notes = self._load_models()
 
         note = Note(
             id=len(notes) + 1,
@@ -40,7 +40,7 @@ class NotesMemory:
             note,
         )
 
-        self._save(
+        self._save_models(
             notes,
         )
 
@@ -51,7 +51,7 @@ class NotesMemory:
     ) -> list[Note]:
         """Return all notes."""
 
-        return self._load()
+        return self._load_models()
 
     def delete_note(
         self,
@@ -59,13 +59,9 @@ class NotesMemory:
     ) -> bool:
         """Delete a note."""
 
-        notes = self._load()
+        notes = self._load_models()
 
-        new_notes = [
-            note
-            for note in notes
-            if note.id != note_id
-        ]
+        new_notes = [note for note in notes if note.id != note_id]
 
         if len(new_notes) == len(notes):
             return False
@@ -81,50 +77,8 @@ class NotesMemory:
             )
         ]
 
-        self._save(
+        self._save_models(
             renumbered,
         )
 
         return True
-
-    def _load(
-        self,
-    ) -> list[Note]:
-        """Load notes."""
-
-        with open(
-            self.DATA_FILE,
-            encoding="utf-8",
-        ) as file:
-            data = json.load(
-                file,
-            )
-
-        return [
-            Note(
-                **note,
-            )
-            for note in data
-        ]
-
-    def _save(
-        self,
-        notes: list[Note],
-    ) -> None:
-        """Save notes."""
-
-        with open(
-            self.DATA_FILE,
-            "w",
-            encoding="utf-8",
-        ) as file:
-            json.dump(
-                [
-                    asdict(
-                        note,
-                    )
-                    for note in notes
-                ],
-                file,
-                indent=4,
-            )

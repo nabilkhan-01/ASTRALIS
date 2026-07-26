@@ -9,9 +9,7 @@ class TestNotesMemory:
     ) -> None:
         self.memory = NotesMemory()
 
-        self.memory._save(
-            [],
-        )
+        self.memory._save_models({})
 
     def test_add_note(
         self,
@@ -39,9 +37,12 @@ class TestNotesMemory:
 
         notes = self.memory.get_notes()
 
-        assert len(
-            notes,
-        ) == 2
+        assert (
+            len(
+                notes,
+            )
+            == 2
+        )
 
         assert notes[0].id == 1
         assert notes[0].text == "Buy milk"
@@ -96,9 +97,12 @@ class TestNotesMemory:
 
         notes = self.memory.get_notes()
 
-        assert len(
-            notes,
-        ) == 2
+        assert (
+            len(
+                notes,
+            )
+            == 2
+        )
 
         assert notes[0].id == 1
         assert notes[0].text == "First"

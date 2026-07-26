@@ -1,5 +1,4 @@
-from unittest.mock import Mock
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from astralis.api.search import SearchApi
 from astralis.core.config import Config

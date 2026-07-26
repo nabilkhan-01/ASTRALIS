@@ -1,4 +1,4 @@
-from openai import OpenAI
+from openai import APIError, OpenAI
 
 from astralis.brain.conversation import Conversation
 from astralis.brain.response import Response
@@ -41,8 +41,8 @@ class OpenAIProvider(Provider):
                 success=True,
             )
 
-        except Exception as exc:
+        except APIError as error:
             return Response(
-                text=f"Provider error: {exc}",
+                text=f"Provider error: {error}",
                 success=False,
             )

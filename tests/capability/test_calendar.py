@@ -1,7 +1,7 @@
-from datetime import date
+from datetime import UTC, datetime
 
 from astralis.capability.calendar import CalendarCapability
-
+from astralis.memory.calendar import CalendarMemory
 from tests.helpers.conversation_factory import (
     create_conversation,
 )
@@ -19,18 +19,21 @@ class TestCalendarCapability:
     def setup_method(
         self,
     ) -> None:
-        self.capability = CalendarCapability()
 
-        self.capability.calendar._save(
-            [],
+        self.calendar = CalendarMemory()
+
+        self.capability = CalendarCapability(
+            self.calendar,
         )
+
+        self.capability.calendar.clear()
 
     def test_add_event(
         self,
     ) -> None:
         """Add an event."""
 
-        today = date.today().isoformat()
+        today = datetime.now(tz=UTC).date().isoformat()
 
         response = self.capability.execute(
             create_request(
@@ -50,7 +53,7 @@ class TestCalendarCapability:
     ) -> None:
         """List events."""
 
-        today = date.today().isoformat()
+        today = datetime.now(UTC).date().isoformat()
 
         self.capability.calendar.add_event(
             "Meeting",
@@ -76,7 +79,7 @@ class TestCalendarCapability:
     ) -> None:
         """List today's events."""
 
-        today = date.today().isoformat()
+        today = datetime.now(UTC).date().isoformat()
 
         self.capability.calendar.add_event(
             "Meeting",
@@ -102,7 +105,7 @@ class TestCalendarCapability:
     ) -> None:
         """Delete an event."""
 
-        today = date.today().isoformat()
+        today = datetime.now(UTC).date().isoformat()
 
         self.capability.calendar.add_event(
             "Meeting",

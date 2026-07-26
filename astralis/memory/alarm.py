@@ -1,12 +1,14 @@
-import json
-from dataclasses import asdict
 from pathlib import Path
 
+from astralis.memory.base import BaseMemory
 from astralis.models.alarm import Alarm
+from astralis.storage.json import JsonStorage
 
 
-class AlarmMemory:
+class AlarmMemory(BaseMemory[Alarm]):
     """Stores and retrieves user alarms."""
+
+    MODEL = Alarm
 
     DATA_FILE = Path(
         "data/alarms.json",
@@ -15,15 +17,11 @@ class AlarmMemory:
     def __init__(
         self,
     ) -> None:
-        self.DATA_FILE.parent.mkdir(
-            exist_ok=True,
+        super().__init__(
+            JsonStorage(
+                self.DATA_FILE,
+            ),
         )
-
-        if not self.DATA_FILE.exists():
-            self.DATA_FILE.write_text(
-                "[]",
-                encoding="utf-8",
-            )
 
     def add_alarm(
         self,
@@ -32,7 +30,7 @@ class AlarmMemory:
     ) -> int:
         """Add an alarm."""
 
-        alarms = self._load()
+        alarms = self._load_models()
 
         alarm = Alarm(
             id=len(alarms) + 1,
@@ -44,7 +42,7 @@ class AlarmMemory:
             alarm,
         )
 
-        self._save(
+        self._save_models(
             alarms,
         )
 
@@ -55,7 +53,7 @@ class AlarmMemory:
     ) -> list[Alarm]:
         """Return all alarms."""
 
-        return self._load()
+        return self._load_models()
 
     def delete_alarm(
         self,
@@ -63,13 +61,9 @@ class AlarmMemory:
     ) -> bool:
         """Delete an alarm."""
 
-        alarms = self._load()
+        alarms = self._load_models()
 
-        new_alarms = [
-            alarm
-            for alarm in alarms
-            if alarm.id != alarm_id
-        ]
+        new_alarms = [alarm for alarm in alarms if alarm.id != alarm_id]
 
         if len(new_alarms) == len(alarms):
             return False
@@ -87,7 +81,7 @@ class AlarmMemory:
             )
         ]
 
-        self._save(
+        self._save_models(
             renumbered,
         )
 
@@ -122,7 +116,7 @@ class AlarmMemory:
     ) -> bool:
         """Enable or disable an alarm."""
 
-        alarms = self._load()
+        alarms = self._load_models()
 
         updated = []
 
@@ -149,50 +143,8 @@ class AlarmMemory:
         if not found:
             return False
 
-        self._save(
+        self._save_models(
             updated,
         )
 
         return True
-
-    def _load(
-        self,
-    ) -> list[Alarm]:
-        """Load alarms."""
-
-        with open(
-            self.DATA_FILE,
-            encoding="utf-8",
-        ) as file:
-            data = json.load(
-                file,
-            )
-
-        return [
-            Alarm(
-                **alarm,
-            )
-            for alarm in data
-        ]
-
-    def _save(
-        self,
-        alarms: list[Alarm],
-    ) -> None:
-        """Save alarms."""
-
-        with open(
-            self.DATA_FILE,
-            "w",
-            encoding="utf-8",
-        ) as file:
-            json.dump(
-                [
-                    asdict(
-                        alarm,
-                    )
-                    for alarm in alarms
-                ],
-                file,
-                indent=4,
-            )

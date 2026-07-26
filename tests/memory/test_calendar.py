@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import UTC, datetime
 
 from astralis.memory.calendar import CalendarMemory
 
@@ -11,7 +11,7 @@ class TestCalendarMemory:
     ) -> None:
         self.memory = CalendarMemory()
 
-        self.memory._save([])
+        self.memory.clear()
 
     def test_add_event(
         self,
@@ -20,7 +20,7 @@ class TestCalendarMemory:
 
         event_id = self.memory.add_event(
             title="Meeting",
-            date=date.today().isoformat(),
+            date=datetime.now(UTC).date().isoformat(),
             time="10:00",
         )
 
@@ -33,7 +33,7 @@ class TestCalendarMemory:
 
         self.memory.add_event(
             "Meeting",
-            date.today().isoformat(),
+            datetime.now(UTC).date().isoformat(),
             "10:00",
         )
 
@@ -47,7 +47,7 @@ class TestCalendarMemory:
     ) -> None:
         """Return today's events."""
 
-        today = date.today().isoformat()
+        today = datetime.now(UTC).date().isoformat()
 
         self.memory.add_event(
             "Meeting",
@@ -66,7 +66,7 @@ class TestCalendarMemory:
 
         self.memory.add_event(
             "Meeting",
-            date.today().isoformat(),
+            datetime.now(UTC).date().isoformat(),
             "10:00",
         )
 
@@ -90,7 +90,7 @@ class TestCalendarMemory:
     ) -> None:
         """Renumber event IDs after deletion."""
 
-        today = date.today().isoformat()
+        today = datetime.now(UTC).date().isoformat()
 
         self.memory.add_event(
             "First",

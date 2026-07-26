@@ -1,11 +1,12 @@
 from google import genai
 from google.genai import types
+from google.genai.errors import APIError
 
 from astralis.brain.conversation import Conversation
 from astralis.brain.response import Response
 from astralis.core.config import Config
-from astralis.providers.provider import Provider
 from astralis.providers.prompts import SYSTEM_PROMPT
+from astralis.providers.provider import Provider
 
 
 class GeminiProvider(Provider):
@@ -20,7 +21,6 @@ class GeminiProvider(Provider):
         self.client = genai.Client(
             api_key=config.gemini_api_key,
         )
-        print(f"Model: {self.config.gemini_model}")
 
     def generate(
         self,
@@ -48,14 +48,14 @@ class GeminiProvider(Provider):
                     text="The language provider returned an empty response.",
                     success=False,
                 )
-            
+
             return Response(
                 text=response.text,
                 success=True,
             )
 
-        except Exception as exc:
-            message = str(exc)
+        except APIError as error:
+            message = str(error)
 
             if "503" in message:
                 return Response(
@@ -83,13 +83,12 @@ class GeminiProvider(Provider):
                     ),
                     success=False,
                 )
-            
+
             return Response(
                 text=f"Provider error: {message}",
                 success=False,
             )
-    
-    
+
     def _build_contents(
         self,
         conversation: Conversation,

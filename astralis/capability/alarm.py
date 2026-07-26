@@ -11,8 +11,9 @@ class AlarmCapability(Capability):
 
     def __init__(
         self,
+        alarms: AlarmMemory,
     ) -> None:
-        self.alarms = AlarmMemory()
+        self.alarms = alarms
 
     def execute(
         self,
@@ -116,20 +117,9 @@ class AlarmCapability(Capability):
         lines = []
 
         for alarm in alarms:
-            status = (
-                "Enabled"
-                if alarm.enabled
-                else "Disabled"
-            )
+            status = "Enabled" if alarm.enabled else "Disabled"
 
-            lines.append(
-                (
-                    f"{alarm.id}. "
-                    f"{alarm.title} | "
-                    f"{alarm.time} | "
-                    f"{status}"
-                )
-            )
+            lines.append(f"{alarm.id}. {alarm.title} | {alarm.time} | {status}")
 
         return Response(
             text="\n".join(
@@ -252,21 +242,15 @@ class AlarmCapability(Capability):
 
         hour, minute = parts
 
-        if not (
-            hour.isdigit()
-            and minute.isdigit()
-        ):
+        if not (hour.isdigit() and minute.isdigit()):
             return False
 
-        hour = int(
+        hour_value = int(
             hour,
         )
 
-        minute = int(
+        minute_value = int(
             minute,
         )
 
-        return (
-            0 <= hour <= 23
-            and 0 <= minute <= 59
-        )
+        return 0 <= hour_value <= 23 and 0 <= minute_value <= 59

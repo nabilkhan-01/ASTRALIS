@@ -23,11 +23,7 @@ class FileSystemTool:
             path,
         )
 
-        return sorted(
-            file.name
-            for file in directory.iterdir()
-            if file.is_file()
-        )
+        return sorted(file.name for file in directory.iterdir() if file.is_file())
 
     def list_folders(
         self,
@@ -39,17 +35,13 @@ class FileSystemTool:
             path,
         )
 
-        return sorted(
-            folder.name
-            for folder in directory.iterdir()
-            if folder.is_dir()
-        )
+        return sorted(folder.name for folder in directory.iterdir() if folder.is_dir())
 
     def exists(
         self,
         path: str,
     ) -> bool:
-        """ Return whether a file or folder exists."""
+        """Return whether a file or folder exists."""
 
         return Path(
             path,

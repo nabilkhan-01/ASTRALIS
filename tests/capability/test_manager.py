@@ -1,12 +1,11 @@
-from astralis.brain.plan import Plan
-from astralis.brain.interpretation import Interpretation
 from astralis.brain.intent import Intent
+from astralis.brain.interpretation import Interpretation
+from astralis.brain.plan import Plan
 from astralis.brain.response import Response
 from astralis.capability.capability import Capability
 from astralis.capability.capability_type import CapabilityType
 from astralis.capability.manager import CapabilityManager
 from astralis.capability.registry import CapabilityRegistry
-
 from tests.helpers.conversation_factory import (
     create_conversation,
 )

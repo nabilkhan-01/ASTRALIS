@@ -1,3 +1,6 @@
+from astralis.capability.calculator import (
+    CalculatorCapability,
+)
 from tests.helpers.conversation_factory import (
     create_conversation,
 )
@@ -6,10 +9,6 @@ from tests.helpers.interpretation_factory import (
 )
 from tests.helpers.request_factory import (
     create_request,
-)
-
-from astralis.capability.calculator import (
-    CalculatorCapability,
 )
 
 

@@ -9,8 +9,11 @@ from astralis.memory.note import NotesMemory
 class NotesCapability(Capability):
     """Manages user notes."""
 
-    def __init__(self) -> None:
-        self.notes = NotesMemory()
+    def __init__(
+        self,
+        notes: NotesMemory,
+    ) -> None:
+        self.notes = notes
 
     def execute(
         self,
@@ -26,15 +29,13 @@ class NotesCapability(Capability):
 
         try:
             if text.lower().startswith("note "):
-                note = text[5:].strip()
+                note_text = text[5:].strip()
 
-                if not note:
-                    raise ValueError(
-                        "Please provide a note."
-                    )
+                if not note_text:
+                    raise ValueError("Please provide a note.")
 
                 number = self.notes.add_note(
-                    note,
+                    note_text,
                 )
 
                 return Response(
@@ -53,9 +54,9 @@ class NotesCapability(Capability):
 
                 lines = []
 
-                for note in notes:
+                for note_model in notes:
                     lines.append(
-                        f"{note.id}. {note.text}",
+                        f"{note_model.id}. {note_model.text}",
                     )
 
                 return Response(
@@ -67,9 +68,7 @@ class NotesCapability(Capability):
                 parts = text.split()
 
                 if len(parts) != 3:
-                    raise ValueError(
-                        "Please specify the note number."
-                    )
+                    raise ValueError("Please specify the note number.")
 
                 number = int(
                     parts[2],
@@ -95,7 +94,7 @@ class NotesCapability(Capability):
                 success=False,
             )
 
-        except Exception as error:
+        except ValueError as error:
             return Response(
                 text=str(error),
                 success=False,

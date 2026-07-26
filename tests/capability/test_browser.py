@@ -1,7 +1,6 @@
 from unittest.mock import Mock
 
 from astralis.capability.browser import BrowserCapability
-
 from tests.helpers.conversation_factory import (
     create_conversation,
 )

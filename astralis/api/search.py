@@ -1,8 +1,6 @@
-from unittest import result
-
 from astralis.api.client import ApiClient
-from astralis.models.search_result import SearchResult
 from astralis.core.config import Config
+from astralis.models.search_result import SearchResult
 
 
 class SearchApi(ApiClient):
@@ -26,7 +24,8 @@ class SearchApi(ApiClient):
         """Search the web."""
 
         if not self.config.tavily_api_key:
-            raise ValueError("Tavily API key is not configured.",
+            raise ValueError(
+                "Tavily API key is not configured.",
             )
         data = self.post(
             self.SEARCH_URL,

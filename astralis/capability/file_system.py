@@ -32,7 +32,6 @@ class FileSystemCapability(Capability):
         text = request.text.strip().lower()
 
         try:
-
             if text == self.PWD_COMMAND:
                 return self._handle_pwd()
 
@@ -54,7 +53,10 @@ class FileSystemCapability(Capability):
                 success=False,
             )
 
-        except Exception as error:
+        except (
+            OSError,
+            UnicodeDecodeError,
+        ) as error:
             return Response(
                 text=str(error),
                 success=False,
@@ -100,9 +102,7 @@ class FileSystemCapability(Capability):
     ) -> Response:
         """Read a text file."""
 
-        path = text[
-            len(self.READ_COMMAND):
-        ].strip()
+        path = text[len(self.READ_COMMAND) :].strip()
 
         if not path:
             return Response(

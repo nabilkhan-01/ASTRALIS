@@ -1,4 +1,6 @@
 import operator
+from collections.abc import Callable
+from typing import ClassVar
 
 from astralis.brain.conversation import Conversation
 from astralis.brain.interpretation import Interpretation
@@ -10,7 +12,7 @@ from astralis.capability.capability import Capability
 class CalculatorCapability(Capability):
     """Performs basic arithmetic calculations."""
 
-    OPERATORS = {
+    OPERATORS: ClassVar[dict[str, Callable]] = {
         "+": operator.add,
         "-": operator.sub,
         "*": operator.mul,
@@ -28,10 +30,10 @@ class CalculatorCapability(Capability):
         expression = (
             request.text.lower()
             .replace("calculate", "")
-            .replace("+"," + ")
-            .replace("-"," - ")
-            .replace("*"," * ")
-            .replace("/"," / ")
+            .replace("+", " + ")
+            .replace("-", " - ")
+            .replace("*", " * ")
+            .replace("/", " / ")
             .strip()
         )
 
