@@ -12,7 +12,7 @@ from astralis.capability.capability import Capability
 class CalculatorCapability(Capability):
     """Performs basic arithmetic calculations."""
 
-    OPERATORS: ClassVar[dict[str, Callable]] = {
+    OPERATORS: ClassVar[dict[str, Callable[[float, float], float]]] = {
         "+": operator.add,
         "-": operator.sub,
         "*": operator.mul,
@@ -27,25 +27,19 @@ class CalculatorCapability(Capability):
     ) -> Response:
         """Evaluate a simple arithmetic expression."""
 
-        expression = (
-            request.text.lower()
-            .replace("calculate", "")
-            .replace("+", " + ")
-            .replace("-", " - ")
-            .replace("*", " * ")
-            .replace("/", " / ")
-            .strip()
-        )
+        _ = conversation, interpretation
 
         try:
-            left, operator_symbol, right = expression.split()
+            left, operator_symbol, right = self._parse_expression(
+                request.text,
+            )
 
             operation = self.OPERATORS.get(
                 operator_symbol,
             )
 
             if operation is None:
-                raise KeyError
+                raise ValueError
 
             result = operation(
                 float(left),
@@ -53,11 +47,12 @@ class CalculatorCapability(Capability):
             )
 
             if result.is_integer():
-                result = int(result)
+                result = int(
+                    result,
+                )
 
             return Response(
                 text=f"The result is {result}.",
-                success=True,
             )
 
         except ZeroDivisionError:
@@ -66,11 +61,28 @@ class CalculatorCapability(Capability):
                 success=False,
             )
 
-        except (
-            ValueError,
-            KeyError,
-        ):
+        except ValueError:
             return Response(
-                text="Invalid calculation.",
+                text=("Invalid calculation. Example: calculate 10 + 5"),
                 success=False,
             )
+
+    def _parse_expression(
+        self,
+        text: str,
+    ) -> tuple[str, str, str]:
+        """Parse an arithmetic expression."""
+
+        expression = (
+            text.lower()
+            .replace("calculate", "")
+            .replace("+", " + ")
+            .replace("-", " - ")
+            .replace("*", " * ")
+            .replace("/", " / ")
+            .strip()
+        )
+
+        return tuple(
+            expression.split(),
+        )  # type: ignore[return-value]

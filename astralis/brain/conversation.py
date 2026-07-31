@@ -1,3 +1,5 @@
+from collections.abc import Sequence
+
 from astralis.brain.message import Message
 from astralis.brain.role import Role
 
@@ -5,7 +7,9 @@ from astralis.brain.role import Role
 class Conversation:
     """Represents an active conversation."""
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+    ) -> None:
         self._messages: list[Message] = []
 
     def add(
@@ -19,13 +23,15 @@ class Conversation:
             Message(
                 role=role,
                 content=content,
-            )
+            ),
         )
 
     @property
     def messages(
         self,
-    ) -> list[Message]:
+    ) -> Sequence[Message]:
         """Return the conversation history."""
 
-        return self._messages
+        return tuple(
+            self._messages,
+        )

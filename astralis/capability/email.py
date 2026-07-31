@@ -11,8 +11,9 @@ class EmailCapability(Capability):
 
     def __init__(
         self,
+        email: EmailApi,
     ) -> None:
-        self.email = EmailApi()
+        self.email = email
 
     def execute(
         self,
@@ -25,18 +26,19 @@ class EmailCapability(Capability):
         _ = conversation, interpretation
 
         text = request.text.strip()
+        lower = text.lower()
 
-        if text.lower() == "email":
+        if lower == "email":
             return self._handle_help()
 
-        if text.lower().startswith(
+        if lower.startswith(
             "draft email",
         ):
             return self._handle_draft(
                 text,
             )
 
-        if text.lower().startswith(
+        if lower.startswith(
             "send email",
         ):
             return self._handle_send(
@@ -59,7 +61,6 @@ class EmailCapability(Capability):
                 "draft email <recipient> <subject>\n"
                 "send email <recipient> <subject>"
             ),
-            success=True,
         )
 
     def _handle_draft(
@@ -74,7 +75,7 @@ class EmailCapability(Capability):
 
         if len(parts) != 4:
             return Response(
-                text=("Usage: draft email <recipient> <subject>"),
+                text="Usage: draft email <recipient> <subject>",
                 success=False,
             )
 
@@ -89,7 +90,6 @@ class EmailCapability(Capability):
 
         return Response(
             text=message,
-            success=True,
         )
 
     def _handle_send(

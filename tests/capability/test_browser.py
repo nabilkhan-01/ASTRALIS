@@ -15,14 +15,27 @@ from tests.helpers.request_factory import (
 class TestBrowserCapability:
     """Tests for BrowserCapability."""
 
-    def setup_method(self) -> None:
-        self.capability = BrowserCapability()
-        self.capability.browser = Mock()
+    @staticmethod
+    def _create_capability() -> tuple[BrowserCapability, Mock]:
+        """Create a browser capability with a mocked browser."""
 
-    def test_open_shortcut(self) -> None:
+        browser = Mock()
+        browser.open.return_value = True
+
+        capability = BrowserCapability(
+            browser,
+        )
+
+        return capability, browser
+
+    def test_open_shortcut(
+        self,
+    ) -> None:
         """Open a shortcut."""
 
-        response = self.capability.execute(
+        capability, browser = self._create_capability()
+
+        response = capability.execute(
             create_request(
                 "open github",
             ),
@@ -32,13 +45,21 @@ class TestBrowserCapability:
             ),
         )
 
-        assert response.success is True
-        assert "https://github.com" in response.text
+        browser.open.assert_called_once_with(
+            "https://github.com",
+        )
 
-    def test_open_url(self) -> None:
+        assert response.success is True
+        assert response.text == "Opening https://github.com"
+
+    def test_open_url(
+        self,
+    ) -> None:
         """Open a URL."""
 
-        response = self.capability.execute(
+        capability, browser = self._create_capability()
+
+        response = capability.execute(
             create_request(
                 "open python.org",
             ),
@@ -48,13 +69,21 @@ class TestBrowserCapability:
             ),
         )
 
+        browser.open.assert_called_once_with(
+            "https://python.org",
+        )
+
         assert response.success is True
-        assert "https://python.org" in response.text
+        assert response.text == "Opening https://python.org"
 
-    def test_missing_url(self) -> None:
-        """Handle missing URL."""
+    def test_missing_url(
+        self,
+    ) -> None:
+        """Handle a missing URL."""
 
-        response = self.capability.execute(
+        capability, _ = self._create_capability()
+
+        response = capability.execute(
             create_request(
                 "open",
             ),

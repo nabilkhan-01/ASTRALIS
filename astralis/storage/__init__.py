@@ -4,8 +4,8 @@ from astralis.storage.postgres import (
     PostgresStorage,
 )
 
-__all__ = [
+__all__ = (
     "JsonStorage",
     "PostgresStorage",
     "Storage",
-]
+)

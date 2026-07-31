@@ -16,28 +16,39 @@ from tests.helpers.request_factory import (
 class TestCalendarCapability:
     """Tests for CalendarCapability."""
 
-    def setup_method(
-        self,
-    ) -> None:
+    @staticmethod
+    def _create_capability() -> CalendarCapability:
+        """Create a clean calendar capability."""
 
-        self.calendar = CalendarMemory()
+        calendar = CalendarMemory()
+        calendar.clear()
 
-        self.capability = CalendarCapability(
-            self.calendar,
+        return CalendarCapability(
+            calendar,
         )
 
-        self.capability.calendar.clear()
+    @staticmethod
+    def _today() -> str:
+        """Return today's date."""
+
+        return (
+            datetime.now(
+                UTC,
+            )
+            .date()
+            .isoformat()
+        )
 
     def test_add_event(
         self,
     ) -> None:
         """Add an event."""
 
-        today = datetime.now(tz=UTC).date().isoformat()
+        capability = self._create_capability()
 
-        response = self.capability.execute(
+        response = capability.execute(
             create_request(
-                f"add event Meeting {today} 10:00",
+                f"add event Meeting {self._today()} 10:00",
             ),
             create_conversation(),
             create_interpretation(
@@ -53,15 +64,15 @@ class TestCalendarCapability:
     ) -> None:
         """List events."""
 
-        today = datetime.now(UTC).date().isoformat()
+        capability = self._create_capability()
 
-        self.capability.calendar.add_event(
+        capability.calendar.add_event(
             "Meeting",
-            today,
+            self._today(),
             "10:00",
         )
 
-        response = self.capability.execute(
+        response = capability.execute(
             create_request(
                 "calendar",
             ),
@@ -79,15 +90,15 @@ class TestCalendarCapability:
     ) -> None:
         """List today's events."""
 
-        today = datetime.now(UTC).date().isoformat()
+        capability = self._create_capability()
 
-        self.capability.calendar.add_event(
+        capability.calendar.add_event(
             "Meeting",
-            today,
+            self._today(),
             "10:00",
         )
 
-        response = self.capability.execute(
+        response = capability.execute(
             create_request(
                 "today",
             ),
@@ -105,15 +116,15 @@ class TestCalendarCapability:
     ) -> None:
         """Delete an event."""
 
-        today = datetime.now(UTC).date().isoformat()
+        capability = self._create_capability()
 
-        self.capability.calendar.add_event(
+        capability.calendar.add_event(
             "Meeting",
-            today,
+            self._today(),
             "10:00",
         )
 
-        response = self.capability.execute(
+        response = capability.execute(
             create_request(
                 "delete event 1",
             ),
@@ -129,9 +140,11 @@ class TestCalendarCapability:
     def test_empty_calendar(
         self,
     ) -> None:
-        """Handle empty calendar."""
+        """Handle an empty calendar."""
 
-        response = self.capability.execute(
+        capability = self._create_capability()
+
+        response = capability.execute(
             create_request(
                 "calendar",
             ),
@@ -149,7 +162,9 @@ class TestCalendarCapability:
     ) -> None:
         """Delete a missing event."""
 
-        response = self.capability.execute(
+        capability = self._create_capability()
+
+        response = capability.execute(
             create_request(
                 "delete event 5",
             ),
@@ -165,9 +180,11 @@ class TestCalendarCapability:
     def test_unknown_command(
         self,
     ) -> None:
-        """Handle unknown calendar command."""
+        """Handle an unknown calendar command."""
 
-        response = self.capability.execute(
+        capability = self._create_capability()
+
+        response = capability.execute(
             create_request(
                 "delete everything",
             ),

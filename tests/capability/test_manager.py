@@ -1,6 +1,8 @@
+from astralis.brain.conversation import Conversation
 from astralis.brain.intent import Intent
 from astralis.brain.interpretation import Interpretation
 from astralis.brain.plan import Plan
+from astralis.brain.request import Request
 from astralis.brain.response import Response
 from astralis.capability.capability import Capability
 from astralis.capability.capability_type import CapabilityType
@@ -19,20 +21,24 @@ class DummyCapability(Capability):
 
     def execute(
         self,
-        request,
-        conversation,
-        interpretation,
+        request: Request,
+        conversation: Conversation,
+        interpretation: Interpretation,
     ) -> Response:
+        """Execute the dummy capability."""
+
+        _ = request, conversation, interpretation
+
         return Response(
             text="Dummy response.",
-            success=True,
         )
 
 
 class TestCapabilityManager:
     """Tests for the CapabilityManager."""
 
-    def setup_method(self) -> None:
+    @staticmethod
+    def _create_manager() -> CapabilityManager:
         """Create a capability manager."""
 
         registry = CapabilityRegistry()
@@ -42,15 +48,21 @@ class TestCapabilityManager:
             DummyCapability(),
         )
 
-        self.manager = CapabilityManager(
+        return CapabilityManager(
             registry,
         )
 
-    def test_execute(self) -> None:
+    def test_execute(
+        self,
+    ) -> None:
         """Execute a registered capability."""
 
-        response = self.manager.execute(
-            request=create_request("hello"),
+        manager = self._create_manager()
+
+        response = manager.execute(
+            request=create_request(
+                "hello",
+            ),
             conversation=create_conversation(),
             interpretation=Interpretation(
                 intent=Intent.CONVERSATION,

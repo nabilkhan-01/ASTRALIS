@@ -6,17 +6,20 @@ from astralis.tools.file_system import FileSystemTool
 class TestFileSystemTool:
     """Tests for the FileSystemTool."""
 
-    def setup_method(
-        self,
-    ) -> None:
-        self.tool = FileSystemTool()
+    @staticmethod
+    def _create_tool() -> FileSystemTool:
+        """Create a file system tool."""
+
+        return FileSystemTool()
 
     def test_current_directory(
         self,
     ) -> None:
         """Return the current working directory."""
 
-        current = self.tool.current_directory()
+        tool = self._create_tool()
+
+        current = tool.current_directory()
 
         assert Path(
             current,
@@ -28,6 +31,8 @@ class TestFileSystemTool:
     ) -> None:
         """Check whether a file exists."""
 
+        tool = self._create_tool()
+
         file = tmp_path / "test.txt"
 
         file.write_text(
@@ -35,8 +40,11 @@ class TestFileSystemTool:
             encoding="utf-8",
         )
 
-        assert self.tool.exists(
-            str(file),
+        assert (
+            tool.exists(
+                str(file),
+            )
+            is True
         )
 
     def test_list_files(
@@ -44,6 +52,8 @@ class TestFileSystemTool:
         tmp_path: Path,
     ) -> None:
         """List files in a directory."""
+
+        tool = self._create_tool()
 
         (tmp_path / "a.txt").write_text(
             "A",
@@ -53,7 +63,7 @@ class TestFileSystemTool:
             "B",
         )
 
-        files = self.tool.list_files(
+        files = tool.list_files(
             str(tmp_path),
         )
 
@@ -68,11 +78,13 @@ class TestFileSystemTool:
     ) -> None:
         """List folders in a directory."""
 
+        tool = self._create_tool()
+
         (tmp_path / "docs").mkdir()
 
         (tmp_path / "tests").mkdir()
 
-        folders = self.tool.list_folders(
+        folders = tool.list_folders(
             str(tmp_path),
         )
 
@@ -87,6 +99,8 @@ class TestFileSystemTool:
     ) -> None:
         """Read a text file."""
 
+        tool = self._create_tool()
+
         file = tmp_path / "notes.txt"
 
         file.write_text(
@@ -94,7 +108,7 @@ class TestFileSystemTool:
             encoding="utf-8",
         )
 
-        content = self.tool.read_file(
+        content = tool.read_file(
             str(file),
         )
 
@@ -106,8 +120,13 @@ class TestFileSystemTool:
     ) -> None:
         """Missing files should not exist."""
 
+        tool = self._create_tool()
+
         file = tmp_path / "missing.txt"
 
-        assert not self.tool.exists(
-            str(file),
+        assert (
+            tool.exists(
+                str(file),
+            )
+            is False
         )

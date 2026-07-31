@@ -1,4 +1,5 @@
 from astralis.capability.file_system import FileSystemCapability
+from astralis.tools.file_system import FileSystemTool
 from tests.helpers.conversation_factory import (
     create_conversation,
 )
@@ -13,23 +14,30 @@ from tests.helpers.request_factory import (
 class TestFileSystemCapability:
     """Tests for the FileSystemCapability."""
 
-    def setup_method(
-        self,
-    ) -> None:
-        self.capability = FileSystemCapability()
+    @staticmethod
+    def _create_capability() -> FileSystemCapability:
+        """Create a file system capability."""
+
+        return FileSystemCapability(
+            FileSystemTool(),
+        )
 
     def test_pwd(
         self,
     ) -> None:
         """Return the current working directory."""
 
-        response = self.capability.execute(
-            create_request("pwd"),
+        capability = self._create_capability()
+
+        response = capability.execute(
+            create_request(
+                "pwd",
+            ),
             create_conversation(),
             create_interpretation(),
         )
 
-        assert response.success
+        assert response.success is True
         assert response.text
 
     def test_list_files(
@@ -37,39 +45,51 @@ class TestFileSystemCapability:
     ) -> None:
         """List files."""
 
-        response = self.capability.execute(
-            create_request("list files"),
+        capability = self._create_capability()
+
+        response = capability.execute(
+            create_request(
+                "list files",
+            ),
             create_conversation(),
             create_interpretation(),
         )
 
-        assert response.success
+        assert response.success is True
 
     def test_list_folders(
         self,
     ) -> None:
         """List folders."""
 
-        response = self.capability.execute(
-            create_request("list folders"),
+        capability = self._create_capability()
+
+        response = capability.execute(
+            create_request(
+                "list folders",
+            ),
             create_conversation(),
             create_interpretation(),
         )
 
-        assert response.success
+        assert response.success is True
 
     def test_read_existing_file(
         self,
     ) -> None:
         """Read an existing file."""
 
-        response = self.capability.execute(
-            create_request("read README.md"),
+        capability = self._create_capability()
+
+        response = capability.execute(
+            create_request(
+                "read README.md",
+            ),
             create_conversation(),
             create_interpretation(),
         )
 
-        assert response.success
+        assert response.success is True
         assert "ASTRALIS" in response.text
 
     def test_read_missing_file(
@@ -77,13 +97,17 @@ class TestFileSystemCapability:
     ) -> None:
         """Handle a missing file."""
 
-        response = self.capability.execute(
-            create_request("read missing.txt"),
+        capability = self._create_capability()
+
+        response = capability.execute(
+            create_request(
+                "read missing.txt",
+            ),
             create_conversation(),
             create_interpretation(),
         )
 
-        assert not response.success
+        assert response.success is False
         assert "does not exist" in response.text
 
     def test_missing_filename(
@@ -91,25 +115,33 @@ class TestFileSystemCapability:
     ) -> None:
         """Handle a missing filename."""
 
-        response = self.capability.execute(
-            create_request("read"),
+        capability = self._create_capability()
+
+        response = capability.execute(
+            create_request(
+                "read",
+            ),
             create_conversation(),
             create_interpretation(),
         )
 
-        assert not response.success
-        assert response.text == "Please specify a file."
+        assert response.success is False
+        assert response.text == "Usage: read <file>"
 
     def test_unknown_command(
         self,
     ) -> None:
         """Handle an unknown command."""
 
-        response = self.capability.execute(
-            create_request("hello"),
+        capability = self._create_capability()
+
+        response = capability.execute(
+            create_request(
+                "hello",
+            ),
             create_conversation(),
             create_interpretation(),
         )
 
-        assert not response.success
+        assert response.success is False
         assert response.text == "Unknown file system command."

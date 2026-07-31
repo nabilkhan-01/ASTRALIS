@@ -12,9 +12,9 @@ class SearchApi(ApiClient):
         self,
         config: Config,
     ) -> None:
-        super().__init__()
-
-        self.config = config
+        super().__init__(
+            config,
+        )
 
     def search(
         self,
@@ -27,13 +27,16 @@ class SearchApi(ApiClient):
             raise ValueError(
                 "Tavily API key is not configured.",
             )
+
+        payload = {
+            "api_key": self.config.tavily_api_key,
+            "query": query,
+            "max_results": max_results,
+        }
+
         data = self.post(
             self.SEARCH_URL,
-            json={
-                "api_key": self.config.tavily_api_key,
-                "query": query,
-                "max_results": max_results,
-            },
+            json=payload,
         )
 
         return [
@@ -42,5 +45,8 @@ class SearchApi(ApiClient):
                 url=result.get("url", ""),
                 content=result.get("content", ""),
             )
-            for result in data.get("results", [])
+            for result in data.get(
+                "results",
+                [],
+            )
         ]

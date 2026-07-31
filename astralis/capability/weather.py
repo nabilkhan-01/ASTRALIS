@@ -11,8 +11,11 @@ from astralis.capability.capability import Capability
 class WeatherCapability(Capability):
     """Provides current weather information."""
 
-    def __init__(self) -> None:
-        self.api = WeatherApi()
+    def __init__(
+        self,
+        api: WeatherApi,
+    ) -> None:
+        self.api = api
 
     def execute(
         self,
@@ -21,6 +24,8 @@ class WeatherCapability(Capability):
         interpretation: Interpretation,
     ) -> Response:
         """Return the current weather."""
+
+        _ = conversation, interpretation
 
         try:
             city = self._extract_city(
@@ -37,9 +42,8 @@ class WeatherCapability(Capability):
                     f"{weather.city} is "
                     f"{weather.temperature}°C "
                     f"with a wind speed of "
-                    f"{weather.windspeed} km/h."
+                    f"{weather.wind_speed} km/h."
                 ),
-                success=True,
             )
 
         except (
@@ -57,14 +61,22 @@ class WeatherCapability(Capability):
     ) -> str:
         """Extract the requested city."""
 
-        text = text.lower()
+        lower = text.lower()
 
-        if " in " not in text:
-            raise ValueError("Please specify a city.")
+        if " in " not in lower:
+            raise ValueError(
+                "Please specify a city.",
+            )
 
-        city = text.split(
+        index = lower.index(
             " in ",
-            maxsplit=1,
-        )[1].strip()
+        )
+
+        city = text[index + 4 :].strip()
+
+        if not city:
+            raise ValueError(
+                "Please specify a city.",
+            )
 
         return city

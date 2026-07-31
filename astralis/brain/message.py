@@ -3,7 +3,10 @@ from dataclasses import dataclass
 from astralis.brain.role import Role
 
 
-@dataclass
+@dataclass(
+    frozen=True,
+    slots=True,
+)
 class Message:
     """Represents a message in a conversation."""
 

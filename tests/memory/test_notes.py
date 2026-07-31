@@ -4,19 +4,23 @@ from astralis.memory.note import NotesMemory
 class TestNotesMemory:
     """Tests for NotesMemory."""
 
-    def setup_method(
-        self,
-    ) -> None:
-        self.memory = NotesMemory()
+    @staticmethod
+    def _create_memory() -> NotesMemory:
+        """Create an empty notes memory."""
 
-        self.memory._save_models({})
+        memory = NotesMemory()
+        memory.clear()
+
+        return memory
 
     def test_add_note(
         self,
     ) -> None:
         """Add a note."""
 
-        note_id = self.memory.add_note(
+        memory = self._create_memory()
+
+        note_id = memory.add_note(
             "Buy milk",
         )
 
@@ -27,22 +31,19 @@ class TestNotesMemory:
     ) -> None:
         """Return all notes."""
 
-        self.memory.add_note(
+        memory = self._create_memory()
+
+        memory.add_note(
             "Buy milk",
         )
 
-        self.memory.add_note(
+        memory.add_note(
             "Complete DSA",
         )
 
-        notes = self.memory.get_notes()
+        notes = memory.get_notes()
 
-        assert (
-            len(
-                notes,
-            )
-            == 2
-        )
+        assert len(notes) == 2
 
         assert notes[0].id == 1
         assert notes[0].text == "Buy milk"
@@ -55,23 +56,33 @@ class TestNotesMemory:
     ) -> None:
         """Delete a note."""
 
-        self.memory.add_note(
+        memory = self._create_memory()
+
+        memory.add_note(
             "Buy milk",
         )
 
-        assert self.memory.delete_note(
-            1,
+        assert (
+            memory.delete_note(
+                1,
+            )
+            is True
         )
 
-        assert self.memory.get_notes() == []
+        assert memory.get_notes() == []
 
     def test_delete_invalid_note(
         self,
     ) -> None:
         """Deleting a missing note returns False."""
 
-        assert not self.memory.delete_note(
-            999,
+        memory = self._create_memory()
+
+        assert (
+            memory.delete_note(
+                999,
+            )
+            is False
         )
 
     def test_note_ids_are_renumbered(
@@ -79,30 +90,27 @@ class TestNotesMemory:
     ) -> None:
         """Renumber note IDs after deletion."""
 
-        self.memory.add_note(
+        memory = self._create_memory()
+
+        memory.add_note(
             "First",
         )
 
-        self.memory.add_note(
+        memory.add_note(
             "Second",
         )
 
-        self.memory.add_note(
+        memory.add_note(
             "Third",
         )
 
-        self.memory.delete_note(
+        memory.delete_note(
             2,
         )
 
-        notes = self.memory.get_notes()
+        notes = memory.get_notes()
 
-        assert (
-            len(
-                notes,
-            )
-            == 2
-        )
+        assert len(notes) == 2
 
         assert notes[0].id == 1
         assert notes[0].text == "First"
@@ -115,4 +123,6 @@ class TestNotesMemory:
     ) -> None:
         """An empty notes list returns no notes."""
 
-        assert self.memory.get_notes() == []
+        memory = self._create_memory()
+
+        assert memory.get_notes() == []

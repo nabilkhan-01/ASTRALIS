@@ -1,6 +1,7 @@
 from unittest.mock import Mock, patch
 
 from astralis.api.weather import WeatherApi
+from astralis.core.config import Config
 
 
 class TestWeatherApi:
@@ -21,8 +22,8 @@ class TestWeatherApi:
                     "name": "Delhi",
                     "latitude": 28.61,
                     "longitude": 77.21,
-                }
-            ]
+                },
+            ],
         }
 
         geocoding_response.raise_for_status.return_value = None
@@ -32,8 +33,8 @@ class TestWeatherApi:
         weather_response.json.return_value = {
             "current_weather": {
                 "temperature": 30.5,
-                "windspeed": 8.2,
-            }
+                "wind_speed": 8.2,
+            },
         }
 
         weather_response.raise_for_status.return_value = None
@@ -43,12 +44,32 @@ class TestWeatherApi:
             weather_response,
         ]
 
-        api = WeatherApi()
+        config = Config()
+
+        api = WeatherApi(
+            config,
+        )
 
         weather = api.get_current_weather(
             "Delhi",
         )
 
+        assert mock_get.call_count == 2
+
+        first_call = mock_get.call_args_list[0]
+        second_call = mock_get.call_args_list[1]
+
+        assert first_call.kwargs["params"] == {
+            "name": "Delhi",
+            "count": 10,
+        }
+
+        assert second_call.kwargs["params"] == {
+            "latitude": 28.61,
+            "longitude": 77.21,
+            "current_weather": True,
+        }
+
         assert weather.city == "Delhi"
         assert weather.temperature == 30.5
-        assert weather.windspeed == 8.2
+        assert weather.wind_speed == 8.2

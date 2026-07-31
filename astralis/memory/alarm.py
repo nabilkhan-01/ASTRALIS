@@ -1,3 +1,4 @@
+from dataclasses import replace
 from pathlib import Path
 
 from astralis.memory.base import BaseMemory
@@ -55,6 +56,15 @@ class AlarmMemory(BaseMemory[Alarm]):
 
         return self._load_models()
 
+    def clear(
+        self,
+    ) -> None:
+        """Remove all stored alarms."""
+
+        self._save_models(
+            [],
+        )
+
     def delete_alarm(
         self,
         alarm_id: int,
@@ -69,11 +79,9 @@ class AlarmMemory(BaseMemory[Alarm]):
             return False
 
         renumbered = [
-            Alarm(
+            replace(
+                alarm,
                 id=index,
-                title=alarm.title,
-                time=alarm.time,
-                enabled=alarm.enabled,
             )
             for index, alarm in enumerate(
                 new_alarms,
@@ -118,25 +126,23 @@ class AlarmMemory(BaseMemory[Alarm]):
 
         alarms = self._load_models()
 
-        updated = []
+        updated_alarms = []
 
         found = False
 
         for alarm in alarms:
             if alarm.id == alarm_id:
-                updated.append(
-                    Alarm(
-                        id=alarm.id,
-                        title=alarm.title,
-                        time=alarm.time,
+                updated_alarms.append(
+                    replace(
+                        alarm,
                         enabled=enabled,
-                    )
+                    ),
                 )
 
                 found = True
 
             else:
-                updated.append(
+                updated_alarms.append(
                     alarm,
                 )
 
@@ -144,7 +150,7 @@ class AlarmMemory(BaseMemory[Alarm]):
             return False
 
         self._save_models(
-            updated,
+            updated_alarms,
         )
 
         return True

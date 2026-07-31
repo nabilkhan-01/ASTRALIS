@@ -31,19 +31,18 @@ class Application:
     module_registry: ModuleRegistry
     loader: ModuleLoader
 
-    # Intelligence
+    # Brain
     ai_provider: Provider
-
     brain: Brain
 
     # Capabilities
     capability_registry: CapabilityRegistry
     capability_manager: CapabilityManager
 
-    # Interfaces
-    cli: CommandLineInterface
-
     # Memory
     notes_memory: NotesMemory
     calendar_memory: CalendarMemory
     alarm_memory: AlarmMemory
+
+    # Interfaces
+    cli: CommandLineInterface

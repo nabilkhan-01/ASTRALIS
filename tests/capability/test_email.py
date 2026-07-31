@@ -1,3 +1,4 @@
+from astralis.api.email import EmailApi
 from astralis.capability.email import EmailCapability
 from tests.helpers.conversation_factory import (
     create_conversation,
@@ -13,16 +14,25 @@ from tests.helpers.request_factory import (
 class TestEmailCapability:
     """Tests for EmailCapability."""
 
-    def setup_method(
-        self,
-    ) -> None:
-        self.capability = EmailCapability()
+    @staticmethod
+    def _create_capability() -> EmailCapability:
+        """Create an email capability."""
+
+        return EmailCapability(
+            EmailApi(),
+        )
 
     def test_help(
         self,
     ) -> None:
-        response = self.capability.execute(
-            create_request("email"),
+        """Display available email commands."""
+
+        capability = self._create_capability()
+
+        response = capability.execute(
+            create_request(
+                "email",
+            ),
             create_conversation(),
             create_interpretation(
                 entities=["email"],
@@ -35,7 +45,11 @@ class TestEmailCapability:
     def test_create_draft(
         self,
     ) -> None:
-        response = self.capability.execute(
+        """Create an email draft."""
+
+        capability = self._create_capability()
+
+        response = capability.execute(
             create_request(
                 "draft email john@example.com Meeting",
             ),
@@ -46,12 +60,19 @@ class TestEmailCapability:
         )
 
         assert response.success is True
-        assert response.text == "Draft created for john@example.com."
+        assert (
+            response.text
+            == "Email draft created for 'Meeting' to john@example.com."
+        )
 
     def test_send_not_supported(
         self,
     ) -> None:
-        response = self.capability.execute(
+        """Sending emails is not yet supported."""
+
+        capability = self._create_capability()
+
+        response = capability.execute(
             create_request(
                 "send email john@example.com Meeting",
             ),
@@ -67,7 +88,11 @@ class TestEmailCapability:
     def test_unknown_command(
         self,
     ) -> None:
-        response = self.capability.execute(
+        """Reject an unknown email command."""
+
+        capability = self._create_capability()
+
+        response = capability.execute(
             create_request(
                 "email everything",
             ),

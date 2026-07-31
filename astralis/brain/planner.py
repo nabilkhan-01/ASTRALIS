@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from astralis.brain.interpretation import Interpretation
 from astralis.brain.plan import Plan
 from astralis.capability.capability_type import CapabilityType
@@ -5,6 +7,21 @@ from astralis.capability.capability_type import CapabilityType
 
 class Planner:
     """Creates execution plans from interpreted requests."""
+
+    CAPABILITY_MAP: ClassVar[dict[str, CapabilityType]] = {
+        "time": CapabilityType.TIME,
+        "date": CapabilityType.TIME,
+        "calculator": CapabilityType.CALCULATOR,
+        "weather": CapabilityType.WEATHER,
+        "search": CapabilityType.SEARCH,
+        "notes": CapabilityType.NOTES,
+        "alarm": CapabilityType.ALARM,
+        "calendar": CapabilityType.CALENDAR,
+        "email": CapabilityType.EMAIL,
+        "browser": CapabilityType.BROWSER,
+        "memory": CapabilityType.LANGUAGE,
+        "file_system": CapabilityType.FILE_SYSTEM,
+    }
 
     def plan(
         self,
@@ -24,37 +41,12 @@ class Planner:
     ) -> CapabilityType:
         """Select the capability required for the request."""
 
-        if "time" in interpretation.entities or "date" in interpretation.entities:
-            return CapabilityType.TIME
+        for entity in interpretation.entities:
+            capability = self.CAPABILITY_MAP.get(
+                entity,
+            )
 
-        if "calculator" in interpretation.entities:
-            return CapabilityType.CALCULATOR
-
-        if "weather" in interpretation.entities:
-            return CapabilityType.WEATHER
-
-        if "search" in interpretation.entities:
-            return CapabilityType.SEARCH
-
-        if "notes" in interpretation.entities:
-            return CapabilityType.NOTES
-
-        if "alarm" in interpretation.entities:
-            return CapabilityType.ALARM
-
-        if "calendar" in interpretation.entities:
-            return CapabilityType.CALENDAR
-
-        if "email" in interpretation.entities:
-            return CapabilityType.EMAIL
-
-        if "browser" in interpretation.entities:
-            return CapabilityType.BROWSER
-
-        if "memory" in interpretation.entities:
-            return CapabilityType.LANGUAGE
-
-        if "file_system" in interpretation.entities:
-            return CapabilityType.FILE_SYSTEM
+            if capability is not None:
+                return capability
 
         return CapabilityType.LANGUAGE

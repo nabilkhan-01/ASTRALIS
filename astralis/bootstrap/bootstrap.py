@@ -1,3 +1,6 @@
+from astralis.api.email import EmailApi
+from astralis.api.search import SearchApi
+from astralis.api.weather import WeatherApi
 from astralis.bootstrap import Application
 from astralis.brain.brain import Brain
 from astralis.capability.alarm import AlarmCapability
@@ -26,6 +29,8 @@ from astralis.memory.alarm import AlarmMemory
 from astralis.memory.calendar import CalendarMemory
 from astralis.memory.note import NotesMemory
 from astralis.providers.factory import ProviderFactory
+from astralis.tools.browser import BrowserTool
+from astralis.tools.file_system import FileSystemTool
 
 
 class Bootstrap:
@@ -36,15 +41,32 @@ class Bootstrap:
     ) -> Engine:
         """Build the application."""
 
+        app = self._build_application()
+
+        self._build_capabilities(
+            app,
+        )
+
+        return Engine(
+            app,
+        )
+
+    def _build_application(
+        self,
+    ) -> Application:
+        """Assemble the application."""
+
         # Core
         config = Config()
         logger = AstralisLogger().logger
         health = HealthChecker()
         module_registry = ModuleRegistry()
+
         loader = ModuleLoader(
             module_registry,
             logger,
         )
+
         lifecycle = LifecycleManager()
 
         # Memory
@@ -52,10 +74,13 @@ class Bootstrap:
         calendar_memory = CalendarMemory()
         alarm_memory = AlarmMemory()
 
+        # AI
         ai_provider = ProviderFactory.create(
             config,
         )
+
         capability_registry = CapabilityRegistry()
+
         capability_manager = CapabilityManager(
             capability_registry,
         )
@@ -63,11 +88,13 @@ class Bootstrap:
         brain = Brain(
             capability_manager,
         )
+
+        # Interface
         cli = CommandLineInterface(
             brain,
         )
 
-        app = Application(
+        return Application(
             config=config,
             logger=logger,
             health=health,
@@ -78,18 +105,10 @@ class Bootstrap:
             capability_registry=capability_registry,
             capability_manager=capability_manager,
             brain=brain,
-            cli=cli,
             notes_memory=notes_memory,
             calendar_memory=calendar_memory,
             alarm_memory=alarm_memory,
-        )
-
-        self._build_capabilities(
-            app,
-        )
-
-        return Engine(
-            app,
+            cli=cli,
         )
 
     def _build_capabilities(
@@ -97,6 +116,17 @@ class Bootstrap:
         app: Application,
     ) -> None:
         """Register all available capabilities."""
+
+        # Shared services
+        browser = BrowserTool()
+        file_system = FileSystemTool()
+        email = EmailApi()
+        search = SearchApi(
+            app.config,
+        )
+        weather = WeatherApi(
+            app.config,
+        )
 
         app.capability_registry.register(
             CapabilityType.LANGUAGE,
@@ -117,13 +147,15 @@ class Bootstrap:
 
         app.capability_registry.register(
             CapabilityType.WEATHER,
-            WeatherCapability(),
+            WeatherCapability(
+                weather,
+            ),
         )
 
         app.capability_registry.register(
             CapabilityType.SEARCH,
             SearchCapability(
-                app.config,
+                search,
             ),
         )
 
@@ -143,12 +175,16 @@ class Bootstrap:
 
         app.capability_registry.register(
             CapabilityType.BROWSER,
-            BrowserCapability(),
+            BrowserCapability(
+                browser,
+            ),
         )
 
         app.capability_registry.register(
             CapabilityType.FILE_SYSTEM,
-            FileSystemCapability(),
+            FileSystemCapability(
+                file_system,
+            ),
         )
 
         app.capability_registry.register(
@@ -160,5 +196,7 @@ class Bootstrap:
 
         app.capability_registry.register(
             CapabilityType.EMAIL,
-            EmailCapability(),
+            EmailCapability(
+                email,
+            ),
         )

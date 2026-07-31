@@ -4,19 +4,23 @@ from astralis.memory.alarm import AlarmMemory
 class TestAlarmMemory:
     """Tests for AlarmMemory."""
 
-    def setup_method(
-        self,
-    ) -> None:
-        self.memory = AlarmMemory()
+    @staticmethod
+    def _create_memory() -> AlarmMemory:
+        """Create an empty alarm memory."""
 
-        self.memory._save_models([])
+        memory = AlarmMemory()
+        memory.clear()
+
+        return memory
 
     def test_add_alarm(
         self,
     ) -> None:
         """Add an alarm."""
 
-        alarm_id = self.memory.add_alarm(
+        memory = self._create_memory()
+
+        alarm_id = memory.add_alarm(
             "Wake up",
             "07:00",
         )
@@ -28,24 +32,21 @@ class TestAlarmMemory:
     ) -> None:
         """Return all alarms."""
 
-        self.memory.add_alarm(
+        memory = self._create_memory()
+
+        memory.add_alarm(
             "Wake up",
             "07:00",
         )
 
-        self.memory.add_alarm(
+        memory.add_alarm(
             "Gym",
             "18:00",
         )
 
-        alarms = self.memory.get_alarms()
+        alarms = memory.get_alarms()
 
-        assert (
-            len(
-                alarms,
-            )
-            == 2
-        )
+        assert len(alarms) == 2
 
         assert alarms[0].id == 1
         assert alarms[0].title == "Wake up"
@@ -62,49 +63,51 @@ class TestAlarmMemory:
     ) -> None:
         """Delete an alarm."""
 
-        self.memory.add_alarm(
+        memory = self._create_memory()
+
+        memory.add_alarm(
             "Wake up",
             "07:00",
         )
 
-        assert self.memory.delete_alarm(
-            1,
+        assert (
+            memory.delete_alarm(
+                1,
+            )
+            is True
         )
 
-        assert self.memory.get_alarms() == []
+        assert memory.get_alarms() == []
 
     def test_alarm_ids_are_renumbered(
         self,
     ) -> None:
         """Renumber alarm IDs after deletion."""
 
-        self.memory.add_alarm(
+        memory = self._create_memory()
+
+        memory.add_alarm(
             "Wake up",
             "07:00",
         )
 
-        self.memory.add_alarm(
+        memory.add_alarm(
             "Gym",
             "18:00",
         )
 
-        self.memory.add_alarm(
+        memory.add_alarm(
             "Study",
             "21:00",
         )
 
-        self.memory.delete_alarm(
+        memory.delete_alarm(
             2,
         )
 
-        alarms = self.memory.get_alarms()
+        alarms = memory.get_alarms()
 
-        assert (
-            len(
-                alarms,
-            )
-            == 2
-        )
+        assert len(alarms) == 2
 
         assert alarms[0].id == 1
         assert alarms[0].title == "Wake up"
@@ -117,20 +120,25 @@ class TestAlarmMemory:
     ) -> None:
         """Enable an alarm."""
 
-        self.memory.add_alarm(
+        memory = self._create_memory()
+
+        memory.add_alarm(
             "Wake up",
             "07:00",
         )
 
-        self.memory.disable_alarm(
+        memory.disable_alarm(
             1,
         )
 
-        assert self.memory.enable_alarm(
-            1,
+        assert (
+            memory.enable_alarm(
+                1,
+            )
+            is True
         )
 
-        alarms = self.memory.get_alarms()
+        alarms = memory.get_alarms()
 
         assert alarms[0].enabled is True
 
@@ -139,16 +147,21 @@ class TestAlarmMemory:
     ) -> None:
         """Disable an alarm."""
 
-        self.memory.add_alarm(
+        memory = self._create_memory()
+
+        memory.add_alarm(
             "Wake up",
             "07:00",
         )
 
-        assert self.memory.disable_alarm(
-            1,
+        assert (
+            memory.disable_alarm(
+                1,
+            )
+            is True
         )
 
-        alarms = self.memory.get_alarms()
+        alarms = memory.get_alarms()
 
         assert alarms[0].enabled is False
 
@@ -157,8 +170,13 @@ class TestAlarmMemory:
     ) -> None:
         """Deleting a missing alarm returns False."""
 
-        assert not self.memory.delete_alarm(
-            999,
+        memory = self._create_memory()
+
+        assert (
+            memory.delete_alarm(
+                999,
+            )
+            is False
         )
 
     def test_enable_missing_alarm(
@@ -166,8 +184,13 @@ class TestAlarmMemory:
     ) -> None:
         """Enabling a missing alarm returns False."""
 
-        assert not self.memory.enable_alarm(
-            999,
+        memory = self._create_memory()
+
+        assert (
+            memory.enable_alarm(
+                999,
+            )
+            is False
         )
 
     def test_disable_missing_alarm(
@@ -175,8 +198,13 @@ class TestAlarmMemory:
     ) -> None:
         """Disabling a missing alarm returns False."""
 
-        assert not self.memory.disable_alarm(
-            999,
+        memory = self._create_memory()
+
+        assert (
+            memory.disable_alarm(
+                999,
+            )
+            is False
         )
 
     def test_empty_alarms(
@@ -184,4 +212,6 @@ class TestAlarmMemory:
     ) -> None:
         """Return an empty alarm list."""
 
-        assert self.memory.get_alarms() == []
+        memory = self._create_memory()
+
+        assert memory.get_alarms() == []

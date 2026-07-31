@@ -16,8 +16,9 @@ class FileSystemCapability(Capability):
 
     def __init__(
         self,
+        file_system: FileSystemTool,
     ) -> None:
-        self.file_system = FileSystemTool()
+        self.file_system = file_system
 
     def execute(
         self,
@@ -29,19 +30,20 @@ class FileSystemCapability(Capability):
 
         _ = conversation, interpretation
 
-        text = request.text.strip().lower()
+        text = request.text.strip()
+        lower = text.lower()
 
         try:
-            if text == self.PWD_COMMAND:
+            if lower == self.PWD_COMMAND:
                 return self._handle_pwd()
 
-            if text == self.LIST_FILES_COMMAND:
+            if lower == self.LIST_FILES_COMMAND:
                 return self._handle_list_files()
 
-            if text == self.LIST_FOLDERS_COMMAND:
+            if lower == self.LIST_FOLDERS_COMMAND:
                 return self._handle_list_folders()
 
-            if text.startswith(
+            if lower.startswith(
                 self.READ_COMMAND,
             ):
                 return self._handle_read_file(
@@ -69,7 +71,6 @@ class FileSystemCapability(Capability):
 
         return Response(
             text=self.file_system.current_directory(),
-            success=True,
         )
 
     def _handle_list_files(
@@ -106,7 +107,7 @@ class FileSystemCapability(Capability):
 
         if not path:
             return Response(
-                text="Please specify a file.",
+                text="Usage: read <file>",
                 success=False,
             )
 
@@ -122,7 +123,6 @@ class FileSystemCapability(Capability):
             text=self.file_system.read_file(
                 path,
             ),
-            success=True,
         )
 
     def _create_list_response(
@@ -135,12 +135,10 @@ class FileSystemCapability(Capability):
         if not items:
             return Response(
                 text=empty_message,
-                success=True,
             )
 
         return Response(
             text="\n".join(
                 items,
             ),
-            success=True,
         )

@@ -1,4 +1,7 @@
 from astralis.brain.brain import Brain
+from astralis.brain.conversation import Conversation
+from astralis.brain.interpretation import Interpretation
+from astralis.brain.request import Request
 from astralis.brain.response import Response
 from astralis.capability.capability import Capability
 from astralis.capability.capability_type import CapabilityType
@@ -14,21 +17,23 @@ class DummyLanguageCapability(Capability):
 
     def execute(
         self,
-        request,
-        conversation,
-        interpretation,
+        request: Request,
+        conversation: Conversation,
+        interpretation: Interpretation,
     ) -> Response:
+        _ = request, conversation, interpretation
+
         return Response(
             text="Hello from the Brain.",
-            success=True,
         )
 
 
 class TestBrain:
     """Integration tests for the Brain."""
 
-    def setup_method(self) -> None:
-        """Create a Brain."""
+    @staticmethod
+    def _create_brain() -> Brain:
+        """Create a Brain for testing."""
 
         registry = CapabilityRegistry()
 
@@ -41,14 +46,18 @@ class TestBrain:
             registry,
         )
 
-        self.brain = Brain(
+        return Brain(
             manager,
         )
 
-    def test_process(self) -> None:
+    def test_process(
+        self,
+    ) -> None:
         """Process a normal conversation."""
 
-        response = self.brain.process(
+        brain = self._create_brain()
+
+        response = brain.process(
             create_request(
                 "hello there",
             ),
@@ -57,19 +66,21 @@ class TestBrain:
         assert response.success is True
         assert response.text == "Hello from the Brain."
 
-    def test_conversation_history(self) -> None:
+    def test_conversation_history(
+        self,
+    ) -> None:
         """Conversation history is updated."""
 
-        self.brain.process(
+        brain = self._create_brain()
+
+        brain.process(
             create_request(
                 "hello",
             ),
         )
 
-        messages = self.brain.conversation.messages
+        messages = brain.conversation.messages
 
         assert len(messages) == 2
-
         assert messages[0].content == "hello"
-
         assert messages[1].content == "Hello from the Brain."

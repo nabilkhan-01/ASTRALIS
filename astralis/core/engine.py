@@ -9,32 +9,15 @@ class Engine:
         self,
         app: Application,
     ) -> None:
-
         self.app = app
 
         # Core
         self.config = app.config
         self.logger = app.logger
-
         self.health = app.health
         self.lifecycle = app.lifecycle
         self.module_registry = app.module_registry
         self.loader = app.loader
-
-        # AI
-        self.ai_provider = app.ai_provider
-
-        # Memory
-        self.notes_memory = app.notes_memory
-        self.calendar_memory = app.calendar_memory
-        self.alarm_memory = app.alarm_memory
-
-        # Capability framework
-        self.capability_registry = app.capability_registry
-        self.capability_manager = app.capability_manager
-
-        # Brain
-        self.brain = app.brain
 
         # Interface
         self.cli = app.cli
@@ -43,6 +26,44 @@ class Engine:
         self,
     ) -> None:
         """Start the ASTRALIS application."""
+
+        self._log_banner()
+
+        self.lifecycle.transition_to(
+            LifecycleState.INITIALIZING,
+        )
+
+        self.logger.info(
+            f"Lifecycle: {self.lifecycle.state.value}",
+        )
+
+        self.loader.load_modules()
+
+        self._run_health_checks()
+
+        self.lifecycle.transition_to(
+            LifecycleState.RUNNING,
+        )
+
+        self.logger.info(
+            f"Lifecycle: {self.lifecycle.state.value}",
+        )
+
+        self.logger.info(
+            "ASTRALIS is ready.",
+        )
+
+    def run(
+        self,
+    ) -> None:
+        """Run the ASTRALIS user interface."""
+
+        self.cli.run()
+
+    def _log_banner(
+        self,
+    ) -> None:
+        """Log application startup information."""
 
         self.logger.info(
             f"Starting {self.config.project_name}",
@@ -56,15 +77,10 @@ class Engine:
             f"Philosophy: {self.config.tagline}",
         )
 
-        self.lifecycle.transition_to(
-            LifecycleState.INITIALIZING,
-        )
-
-        self.logger.info(
-            f"Lifecycle: {self.lifecycle.state.value}",
-        )
-
-        self.loader.load_modules()
+    def _run_health_checks(
+        self,
+    ) -> None:
+        """Run application health checks."""
 
         self.logger.info(
             "Running health checks...",
@@ -95,22 +111,3 @@ class Engine:
         self.logger.info(
             "Health checks passed.",
         )
-
-        self.lifecycle.transition_to(
-            LifecycleState.RUNNING,
-        )
-
-        self.logger.info(
-            f"Lifecycle: {self.lifecycle.state.value}",
-        )
-
-        self.logger.info(
-            "ASTRALIS is ready.",
-        )
-
-    def run(
-        self,
-    ) -> None:
-        """Run the ASTRALIS user interface."""
-
-        self.cli.run()

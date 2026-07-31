@@ -1,10 +1,13 @@
 from dataclasses import dataclass
 
 
-@dataclass(frozen=True)
+@dataclass(
+    frozen=True,
+    slots=True,
+)
 class WeatherData:
     """Represents current weather conditions."""
 
     city: str
     temperature: float
-    windspeed: float
+    wind_speed: float

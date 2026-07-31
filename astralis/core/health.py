@@ -20,10 +20,16 @@ class HealthChecker:
     ) -> dict[str, bool]:
         """Run health checks for core services."""
 
-        return {
-            "Config": config is not None,
-            "Logger": logger is not None,
+        results = {
+            "Config": bool(
+                config.project_name,
+            ),
+            "Logger": bool(
+                logger.name,
+            ),
             "Module Registry": registry is not None,
             "Module Loader": loader is not None,
-            "Lifecycle Manager": lifecycle is not None,
+            "Lifecycle Manager": lifecycle.state is not None,
         }
+
+        return results

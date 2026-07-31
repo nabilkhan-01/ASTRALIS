@@ -23,6 +23,8 @@ class LanguageCapability(Capability):
     ) -> Response:
         """Generate a response using the configured language provider."""
 
+        _ = request, interpretation
+
         return self.provider.generate(
             conversation,
         )

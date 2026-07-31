@@ -5,7 +5,9 @@ from astralis.capability.capability_type import CapabilityType
 class CapabilityRegistry:
     """Stores all registered capabilities."""
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+    ) -> None:
         self._capabilities: dict[
             CapabilityType,
             Capability,
@@ -41,3 +43,11 @@ class CapabilityRegistry:
             )
 
         return capability
+
+    def __contains__(
+        self,
+        capability_type: CapabilityType,
+    ) -> bool:
+        """Return whether a capability is registered."""
+
+        return capability_type in self._capabilities

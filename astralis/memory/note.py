@@ -1,3 +1,4 @@
+from dataclasses import replace
 from pathlib import Path
 
 from astralis.memory.base import BaseMemory
@@ -53,6 +54,15 @@ class NotesMemory(BaseMemory[Note]):
 
         return self._load_models()
 
+    def clear(
+        self,
+    ) -> None:
+        """Remove all stored notes."""
+
+        self._save_models(
+            [],
+        )
+
     def delete_note(
         self,
         note_id: int,
@@ -67,9 +77,9 @@ class NotesMemory(BaseMemory[Note]):
             return False
 
         renumbered = [
-            Note(
+            replace(
+                note,
                 id=index,
-                text=note.text,
             )
             for index, note in enumerate(
                 new_notes,

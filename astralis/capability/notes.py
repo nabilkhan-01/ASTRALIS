@@ -26,76 +26,114 @@ class NotesCapability(Capability):
         _ = conversation, interpretation
 
         text = request.text.strip()
+        lower = text.lower()
 
-        try:
-            if text.lower().startswith("note "):
-                note_text = text[5:].strip()
+        if lower.startswith(
+            "note ",
+        ):
+            return self._handle_add_note(
+                text,
+            )
 
-                if not note_text:
-                    raise ValueError("Please provide a note.")
+        if lower == "notes":
+            return self._handle_list_notes()
 
-                number = self.notes.add_note(
-                    note_text,
-                )
+        if lower.startswith(
+            "delete note",
+        ):
+            return self._handle_delete_note(
+                text,
+            )
 
-                return Response(
-                    text=f"Note {number} saved.",
-                    success=True,
-                )
+        return Response(
+            text="Unknown notes command.",
+            success=False,
+        )
 
-            if text.lower() == "notes":
-                notes = self.notes.get_notes()
+    def _handle_add_note(
+        self,
+        text: str,
+    ) -> Response:
+        """Add a note."""
 
-                if not notes:
-                    return Response(
-                        text="No notes found.",
-                        success=True,
-                    )
+        note_text = text[5:].strip()
 
-                lines = []
-
-                for note_model in notes:
-                    lines.append(
-                        f"{note_model.id}. {note_model.text}",
-                    )
-
-                return Response(
-                    text="\n".join(lines),
-                    success=True,
-                )
-
-            if text.lower().startswith("delete note"):
-                parts = text.split()
-
-                if len(parts) != 3:
-                    raise ValueError("Please specify the note number.")
-
-                number = int(
-                    parts[2],
-                )
-
-                deleted = self.notes.delete_note(
-                    number,
-                )
-
-                if not deleted:
-                    return Response(
-                        text="Note not found.",
-                        success=False,
-                    )
-
-                return Response(
-                    text="Note deleted.",
-                    success=True,
-                )
-
+        if not note_text:
             return Response(
-                text="Unknown notes command.",
+                text="Please provide a note.",
                 success=False,
             )
 
-        except ValueError as error:
+        note_id = self.notes.add_note(
+            note_text,
+        )
+
+        return Response(
+            text=f"Note {note_id} saved.",
+        )
+
+    def _handle_list_notes(
+        self,
+    ) -> Response:
+        """List all notes."""
+
+        notes = self.notes.get_notes()
+
+        if not notes:
             return Response(
-                text=str(error),
+                text="No notes found.",
+            )
+
+        lines = [f"{note.id}. {note.text}" for note in notes]
+
+        return Response(
+            text="\n".join(
+                lines,
+            ),
+        )
+
+    def _handle_delete_note(
+        self,
+        text: str,
+    ) -> Response:
+        """Delete a note."""
+
+        note_id = self._parse_note_id(
+            text,
+        )
+
+        if note_id is None:
+            return Response(
+                text="Usage: delete note <id>",
                 success=False,
             )
+
+        if not self.notes.delete_note(
+            note_id,
+        ):
+            return Response(
+                text="Note not found.",
+                success=False,
+            )
+
+        return Response(
+            text="Note deleted.",
+        )
+
+    def _parse_note_id(
+        self,
+        text: str,
+    ) -> int | None:
+        """Extract a note ID from a command."""
+
+        parts = text.split()
+
+        if len(parts) != 3:
+            return None
+
+        if not parts[2].isdigit():
+            return None
+
+        return int(
+            parts[2],
+        )

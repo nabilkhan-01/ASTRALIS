@@ -1,19 +1,24 @@
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Generic, TypeVar
+
+T = TypeVar("T")
 
 
-class Storage(ABC):
+class Storage(
+    ABC,
+    Generic[T],
+):
     """Defines a storage backend."""
 
     @abstractmethod
     def load(
         self,
-    ) -> Any:
+    ) -> T:
         """Load data."""
 
     @abstractmethod
     def save(
         self,
-        data: Any,
+        data: T,
     ) -> None:
         """Save data."""

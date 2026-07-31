@@ -17,7 +17,7 @@ class Interpreter:
         "good evening",
     }
 
-    QUESTION_PREFIXES = (
+    QUESTION_PREFIXES: ClassVar[tuple[str, ...]] = (
         "what",
         "why",
         "how",
@@ -34,73 +34,69 @@ class Interpreter:
         "does",
     )
 
-    MEMORY_PREFIXES = (
+    MEMORY_PREFIXES: ClassVar[tuple[str, ...]] = (
         "remember",
         "don't forget",
         "my name is",
         "i am",
     )
 
-    TIME_KEYWORDS = (
-        "time",
-        "clock",
-    )
+    EXPLICIT_COMMANDS: ClassVar[dict[str, tuple[str, ...]]] = {
+        "search": (
+            "search",
+            "find",
+            "lookup",
+        ),
+        "notes": (
+            "note ",
+            "notes",
+            "delete note",
+        ),
+        "browser": ("open",),
+    }
 
-    DATE_KEYWORDS = (
-        "date",
-        "day",
-        "today",
-    )
-
-    CALCULATION_KEYWORDS = ("calculate",)
-
-    WEATHER_KEYWORDS = (
-        "weather",
-        "forecast",
-        "temperature",
-    )
-
-    SEARCH_COMMANDS = (
-        "search",
-        "find",
-        "lookup",
-    )
-
-    NOTES_COMMANDS = (
-        "note ",
-        "notes",
-        "delete note",
-    )
-
-    BROWSER_COMMANDS = ("open",)
-
-    FILE_SYSTEM_COMMANDS = (
-        "pwd",
-        "list files",
-        "list folders",
-        "read",
-    )
-
-    CALENDAR_KEYWORDS = (
-        "calendar",
-        "event",
-        "today",
-        "add event",
-        "delete event",
-    )
-
-    ALARM_KEYWORDS = (
-        "alarm",
-        "alarms",
-        "enable alarm",
-        "delete alarm",
-        "disable alarm",
-    )
-    EMAIL_KEYWORDS = (
-        "email",
-        "draft email",
-        "send email",
-    )
+    ENTITY_KEYWORDS: ClassVar[dict[str, tuple[str, ...]]] = {
+        "time": (
+            "time",
+            "clock",
+        ),
+        "date": (
+            "date",
+            "day",
+            "today",
+        ),
+        "calculator": ("calculate",),
+        "weather": (
+            "weather",
+            "forecast",
+            "temperature",
+        ),
+        "file_system": (
+            "pwd",
+            "list files",
+            "list folders",
+            "read",
+        ),
+        "calendar": (
+            "calendar",
+            "event",
+            "today",
+            "add event",
+            "delete event",
+        ),
+        "alarm": (
+            "alarm",
+            "alarms",
+            "enable alarm",
+            "disable alarm",
+            "delete alarm",
+        ),
+        "email": (
+            "email",
+            "draft email",
+            "send email",
+        ),
+    }
 
     def interpret(
         self,
@@ -108,83 +104,100 @@ class Interpreter:
     ) -> Interpretation:
         """Interpret an incoming request."""
 
-        text = request.text.strip().lower()
+        text = self._normalize(
+            request.text,
+        )
 
-        intent = Intent.CONVERSATION
-        entities: list[str] = []
+        intent = self._detect_intent(
+            text,
+        )
 
-        # Greeting
-        if text in self.GREETINGS:
-            intent = Intent.GREETING
+        explicit_entity = self._detect_explicit_command(
+            text,
+        )
 
-        # Memory
-        elif text.startswith(self.MEMORY_PREFIXES):
-            intent = Intent.MEMORY
-            entities.append("memory")
-
-        # Explicit search command
-        elif text.startswith(self.SEARCH_COMMANDS):
-            entities.append("search")
-
+        if explicit_entity is not None:
             return Interpretation(
                 intent=intent,
-                entities=entities,
+                entities=[
+                    explicit_entity,
+                ],
             )
-
-        # Explicit notes command
-        elif text == "notes" or text.startswith(
-            self.NOTES_COMMANDS,
-        ):
-            entities.append("notes")
-
-            return Interpretation(
-                intent=intent,
-                entities=entities,
-            )
-
-        elif text.startswith(
-            self.BROWSER_COMMANDS,
-        ):
-            entities.append("browser")
-
-            return Interpretation(
-                intent=intent,
-                entities=entities,
-            )
-
-        # Question
-        elif text.endswith("?") or text.startswith(self.QUESTION_PREFIXES):
-            intent = Intent.QUESTION
-
-        # Entity extraction
-
-        if any(keyword in text for keyword in self.TIME_KEYWORDS):
-            entities.append("time")
-
-        if any(keyword in text for keyword in self.DATE_KEYWORDS):
-            entities.append("date")
-
-        if any(keyword in text for keyword in self.CALCULATION_KEYWORDS):
-            entities.append("calculator")
-
-        if any(keyword in text for keyword in self.WEATHER_KEYWORDS):
-            entities.append("weather")
-
-        if any(text.startswith(keyword) for keyword in self.FILE_SYSTEM_COMMANDS):
-            entities.append(
-                "file_system",
-            )
-
-        if any(keyword in text for keyword in self.CALENDAR_KEYWORDS):
-            entities.append("calendar")
-
-        if any(keyword in text for keyword in self.ALARM_KEYWORDS):
-            entities.append("alarm")
-
-        if any(keyword in text for keyword in self.EMAIL_KEYWORDS):
-            entities.append("email")
 
         return Interpretation(
             intent=intent,
-            entities=entities,
+            entities=self._extract_entities(
+                text,
+            ),
         )
+
+    def _normalize(
+        self,
+        text: str,
+    ) -> str:
+        """Normalize user input."""
+
+        return text.strip().lower()
+
+    def _detect_intent(
+        self,
+        text: str,
+    ) -> Intent:
+        """Determine the user's intent."""
+
+        if text in self.GREETINGS:
+            return Intent.GREETING
+
+        if text.startswith(
+            self.MEMORY_PREFIXES,
+        ):
+            return Intent.MEMORY
+
+        if text.endswith("?") or text.startswith(
+            self.QUESTION_PREFIXES,
+        ):
+            return Intent.QUESTION
+
+        return Intent.CONVERSATION
+
+    def _detect_explicit_command(
+        self,
+        text: str,
+    ) -> str | None:
+        """Detect commands that map directly to a capability."""
+
+        for entity, commands in self.EXPLICIT_COMMANDS.items():
+            if entity == "notes":
+                if text == "notes" or text.startswith(commands):
+                    return entity
+
+            elif text.startswith(commands):
+                return entity
+
+        return None
+
+    def _extract_entities(
+        self,
+        text: str,
+    ) -> list[str]:
+        """Extract entities from user input."""
+
+        entities: list[str] = []
+
+        for entity, keywords in self.ENTITY_KEYWORDS.items():
+            if entity == "file_system":
+                matched = any(text.startswith(keyword) for keyword in keywords)
+            else:
+                matched = any(keyword in text for keyword in keywords)
+
+            if matched:
+                entities.append(
+                    entity,
+                )
+
+        if self._detect_intent(text) is Intent.MEMORY:
+            entities.append(
+                "memory",
+            )
+
+        return entities

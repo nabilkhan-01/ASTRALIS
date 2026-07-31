@@ -6,6 +6,8 @@ from astralis.storage import Storage
 
 T = TypeVar("T")
 
+JSON = list[dict[str, object]]
+
 
 class BaseMemory(
     ABC,
@@ -17,7 +19,7 @@ class BaseMemory(
 
     def __init__(
         self,
-        storage: Storage,
+        storage: Storage[JSON],
     ) -> None:
         self.storage = storage
 
@@ -39,7 +41,10 @@ class BaseMemory(
         self.storage.save(
             [
                 asdict(
-                    cast(Any, model),
+                    cast(
+                        Any,
+                        model,
+                    ),
                 )
                 for model in models
             ],
@@ -50,4 +55,6 @@ class BaseMemory(
     ) -> None:
         """Remove all stored models."""
 
-        self.storage.save([])
+        self.storage.save(
+            [],
+        )

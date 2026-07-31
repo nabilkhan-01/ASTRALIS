@@ -5,27 +5,34 @@ from astralis.providers.mock import MockProvider
 class TestMockProvider:
     """Tests for the MockProvider."""
 
-    def setup_method(self) -> None:
+    @staticmethod
+    def _create_provider() -> MockProvider:
         """Create a mock provider."""
 
-        self.provider = MockProvider()
+        return MockProvider()
 
-    def test_generate(self) -> None:
+    def test_generate(
+        self,
+    ) -> None:
         """Generate a mock response."""
 
-        conversation = Conversation()
+        provider = self._create_provider()
 
-        response = self.provider.generate(
-            conversation,
+        response = provider.generate(
+            Conversation(),
         )
 
         assert response.success is True
         assert response.text == "Mock provider response."
 
-    def test_empty_conversation(self) -> None:
+    def test_empty_conversation(
+        self,
+    ) -> None:
         """Support empty conversations."""
 
-        response = self.provider.generate(
+        provider = self._create_provider()
+
+        response = provider.generate(
             Conversation(),
         )
 

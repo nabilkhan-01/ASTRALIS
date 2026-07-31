@@ -3,7 +3,10 @@ from dataclasses import dataclass
 from astralis.brain.source import RequestSource
 
 
-@dataclass
+@dataclass(
+    frozen=True,
+    slots=True,
+)
 class Request:
     """Represents a request received by ASTRALIS."""
 

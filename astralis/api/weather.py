@@ -1,4 +1,7 @@
+from typing import Any
+
 from astralis.api.client import ApiClient
+from astralis.core.config import Config
 from astralis.models.weather_data import WeatherData
 
 
@@ -8,6 +11,14 @@ class WeatherApi(ApiClient):
     GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search"
 
     WEATHER_URL = "https://api.open-meteo.com/v1/forecast"
+
+    def __init__(
+        self,
+        config: Config,
+    ) -> None:
+        super().__init__(
+            config,
+        )
 
     def get_current_weather(
         self,
@@ -27,17 +38,16 @@ class WeatherApi(ApiClient):
         return WeatherData(
             city=location["name"],
             temperature=current["temperature"],
-            windspeed=current["windspeed"],
+            wind_speed=current["wind_speed"],
         )
 
     def _get_location(
         self,
         city: str,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """Resolve a city into coordinates."""
 
         search_name = city
-
         country = None
 
         if "," in city:
@@ -83,7 +93,7 @@ class WeatherApi(ApiClient):
         self,
         latitude: float,
         longitude: float,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """Retrieve current weather."""
 
         data = self.get(

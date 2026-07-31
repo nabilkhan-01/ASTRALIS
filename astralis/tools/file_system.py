@@ -23,6 +23,9 @@ class FileSystemTool:
             path,
         )
 
+        if not directory.is_dir():
+            return []
+
         return sorted(file.name for file in directory.iterdir() if file.is_file())
 
     def list_folders(
@@ -34,6 +37,9 @@ class FileSystemTool:
         directory = Path(
             path,
         )
+
+        if not directory.is_dir():
+            return []
 
         return sorted(folder.name for folder in directory.iterdir() if folder.is_dir())
 
@@ -51,11 +57,16 @@ class FileSystemTool:
         self,
         path: str,
     ) -> str:
-        """Read a text file."""
+        """Read a UTF-8 text file."""
 
         file = Path(
             path,
         )
+
+        if not file.is_file():
+            raise FileNotFoundError(
+                f"'{path}' is not a file.",
+            )
 
         return file.read_text(
             encoding="utf-8",

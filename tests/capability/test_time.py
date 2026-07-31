@@ -15,10 +15,13 @@ from tests.helpers.request_factory import (
 class TestTimeCapability:
     """Tests for the TimeCapability."""
 
-    def setup_method(self) -> None:
-        self.capability = TimeCapability()
+    @staticmethod
+    def _create_capability() -> TimeCapability:
+        """Create a time capability with a fixed clock."""
 
-        self.capability._clock = lambda: datetime(
+        capability = TimeCapability()
+
+        capability._clock = lambda: datetime(
             2026,
             7,
             23,
@@ -27,14 +30,20 @@ class TestTimeCapability:
             tzinfo=UTC,
         )
 
-        self.conversation = create_conversation()
+        return capability
 
-    def test_time(self) -> None:
-        """Returns the current time."""
+    def test_time(
+        self,
+    ) -> None:
+        """Return the current time."""
 
-        response = self.capability.execute(
-            create_request("time"),
-            self.conversation,
+        capability = self._create_capability()
+
+        response = capability.execute(
+            create_request(
+                "time",
+            ),
+            create_conversation(),
             create_interpretation(
                 entities=["time"],
             ),
@@ -43,12 +52,18 @@ class TestTimeCapability:
         assert response.success is True
         assert response.text == "The current time is 10:30 AM."
 
-    def test_date(self) -> None:
-        """Returns the current date."""
+    def test_date(
+        self,
+    ) -> None:
+        """Return the current date."""
 
-        response = self.capability.execute(
-            create_request("date"),
-            self.conversation,
+        capability = self._create_capability()
+
+        response = capability.execute(
+            create_request(
+                "date",
+            ),
+            create_conversation(),
             create_interpretation(
                 entities=["date"],
             ),
@@ -57,17 +72,23 @@ class TestTimeCapability:
         assert response.success is True
         assert response.text == "Today is Thursday, 23 July 2026."
 
-    def test_date_and_time(self) -> None:
-        """Returns both date and time."""
+    def test_date_and_time(
+        self,
+    ) -> None:
+        """Return both the current date and time."""
 
-        response = self.capability.execute(
-            create_request("today"),
-            self.conversation,
+        capability = self._create_capability()
+
+        response = capability.execute(
+            create_request(
+                "today",
+            ),
+            create_conversation(),
             create_interpretation(),
         )
 
         assert response.success is True
         assert (
-            response.text
-            == "Today is Thursday, 23 July 2026 and the current time is 10:30 AM."
+            response.text == "Today is Thursday, 23 July 2026 "
+            "and the current time is 10:30 AM."
         )

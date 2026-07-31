@@ -1,3 +1,4 @@
+from dataclasses import replace
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -41,23 +42,44 @@ class CalendarMemory(BaseMemory[CalendarEvent]):
             time=time,
         )
 
-        events.append(event)
-        self._save_models(events)
+        events.append(
+            event,
+        )
+
+        self._save_models(
+            events,
+        )
 
         return event.id
 
     def get_events(
         self,
     ) -> list[CalendarEvent]:
-        """Returns all calendar events."""
+        """Return all calendar events."""
+
         return self._load_models()
+
+    def clear(
+        self,
+    ) -> None:
+        """Remove all stored calendar events."""
+
+        self._save_models(
+            [],
+        )
 
     def get_today_events(
         self,
     ) -> list[CalendarEvent]:
         """Return today's calendar events."""
 
-        today = datetime.now(UTC).date().isoformat()
+        today = (
+            datetime.now(
+                UTC,
+            )
+            .date()
+            .isoformat()
+        )
 
         return [event for event in self._load_models() if event.date == today]
 
@@ -75,15 +97,18 @@ class CalendarMemory(BaseMemory[CalendarEvent]):
             return False
 
         renumbered = [
-            CalendarEvent(
+            replace(
+                event,
                 id=index,
-                title=event.title,
-                date=event.date,
-                time=event.time,
-                completed=event.completed,
             )
-            for index, event in enumerate(new_events, start=1)
+            for index, event in enumerate(
+                new_events,
+                start=1,
+            )
         ]
 
-        self._save_models(renumbered)
+        self._save_models(
+            renumbered,
+        )
+
         return True

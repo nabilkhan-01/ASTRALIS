@@ -20,8 +20,9 @@ class BrowserCapability(Capability):
 
     def __init__(
         self,
+        browser: BrowserTool,
     ) -> None:
-        self.browser = BrowserTool()
+        self.browser = browser
 
     def execute(
         self,
@@ -37,17 +38,16 @@ class BrowserCapability(Capability):
             url = self._extract_url(
                 request.text,
             )
+
         except ValueError as error:
             return Response(
                 text=str(error),
                 success=False,
             )
 
-        opened = self.browser.open(
+        if not self.browser.open(
             url,
-        )
-
-        if not opened:
+        ):
             return Response(
                 text="Failed to open the browser.",
                 success=False,
@@ -55,7 +55,6 @@ class BrowserCapability(Capability):
 
         return Response(
             text=f"Opening {url}",
-            success=True,
         )
 
     def _extract_url(

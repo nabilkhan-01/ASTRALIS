@@ -6,7 +6,6 @@ from astralis.brain.interpretation import Interpretation
 from astralis.brain.request import Request
 from astralis.brain.response import Response
 from astralis.capability.capability import Capability
-from astralis.core.config import Config
 
 
 class SearchCapability(Capability):
@@ -14,11 +13,9 @@ class SearchCapability(Capability):
 
     def __init__(
         self,
-        config: Config,
+        api: SearchApi,
     ) -> None:
-        self.api = SearchApi(
-            config,
-        )
+        self.api = api
 
     def execute(
         self,
@@ -42,35 +39,13 @@ class SearchCapability(Capability):
             if not results:
                 return Response(
                     text="No results found.",
-                    success=True,
-                )
-
-            lines = [
-                f'Top {len(results)} results for "{query}":',
-                "",
-            ]
-
-            for index, result in enumerate(
-                results,
-                start=1,
-            ):
-                content = result.content.strip()
-
-                if len(content) > 200:
-                    content = content[:200] + "..."
-
-                lines.extend(
-                    [
-                        f"{index}. {result.title}",
-                        result.url,
-                        content,
-                        "",
-                    ]
                 )
 
             return Response(
-                text="\n".join(lines),
-                success=True,
+                text=self._format_results(
+                    query,
+                    results,
+                ),
             )
 
         except (
@@ -100,4 +75,38 @@ class SearchCapability(Capability):
 
         raise ValueError(
             "Please specify a search query.",
+        )
+
+    def _format_results(
+        self,
+        query: str,
+        results,
+    ) -> str:
+        """Format search results for display."""
+
+        lines = [
+            f'Top {len(results)} results for "{query}":',
+            "",
+        ]
+
+        for index, result in enumerate(
+            results,
+            start=1,
+        ):
+            content = result.content.strip()
+
+            if len(content) > 200:
+                content = content[:200] + "..."
+
+            lines.extend(
+                [
+                    f"{index}. {result.title}",
+                    result.url,
+                    content,
+                    "",
+                ],
+            )
+
+        return "\n".join(
+            lines,
         )

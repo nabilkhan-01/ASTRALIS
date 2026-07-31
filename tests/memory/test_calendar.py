@@ -6,21 +6,37 @@ from astralis.memory.calendar import CalendarMemory
 class TestCalendarMemory:
     """Tests for CalendarMemory."""
 
-    def setup_method(
-        self,
-    ) -> None:
-        self.memory = CalendarMemory()
+    @staticmethod
+    def _create_memory() -> CalendarMemory:
+        """Create an empty calendar memory."""
 
-        self.memory.clear()
+        memory = CalendarMemory()
+        memory.clear()
+
+        return memory
+
+    @staticmethod
+    def _today() -> str:
+        """Return today's date."""
+
+        return (
+            datetime.now(
+                UTC,
+            )
+            .date()
+            .isoformat()
+        )
 
     def test_add_event(
         self,
     ) -> None:
         """Add a calendar event."""
 
-        event_id = self.memory.add_event(
+        memory = self._create_memory()
+
+        event_id = memory.add_event(
             title="Meeting",
-            date=datetime.now(UTC).date().isoformat(),
+            date=self._today(),
             time="10:00",
         )
 
@@ -31,13 +47,15 @@ class TestCalendarMemory:
     ) -> None:
         """Return all events."""
 
-        self.memory.add_event(
+        memory = self._create_memory()
+
+        memory.add_event(
             "Meeting",
-            datetime.now(UTC).date().isoformat(),
+            self._today(),
             "10:00",
         )
 
-        events = self.memory.get_events()
+        events = memory.get_events()
 
         assert len(events) == 1
         assert events[0].title == "Meeting"
@@ -47,15 +65,15 @@ class TestCalendarMemory:
     ) -> None:
         """Return today's events."""
 
-        today = datetime.now(UTC).date().isoformat()
+        memory = self._create_memory()
 
-        self.memory.add_event(
+        memory.add_event(
             "Meeting",
-            today,
+            self._today(),
             "10:00",
         )
 
-        events = self.memory.get_today_events()
+        events = memory.get_today_events()
 
         assert len(events) == 1
 
@@ -64,25 +82,35 @@ class TestCalendarMemory:
     ) -> None:
         """Delete an event."""
 
-        self.memory.add_event(
+        memory = self._create_memory()
+
+        memory.add_event(
             "Meeting",
-            datetime.now(UTC).date().isoformat(),
+            self._today(),
             "10:00",
         )
 
-        assert self.memory.delete_event(
-            1,
+        assert (
+            memory.delete_event(
+                1,
+            )
+            is True
         )
 
-        assert self.memory.get_events() == []
+        assert memory.get_events() == []
 
     def test_delete_invalid_event(
         self,
     ) -> None:
         """Deleting a missing event returns False."""
 
-        assert not self.memory.delete_event(
-            999,
+        memory = self._create_memory()
+
+        assert (
+            memory.delete_event(
+                999,
+            )
+            is False
         )
 
     def test_event_ids_are_renumbered(
@@ -90,34 +118,37 @@ class TestCalendarMemory:
     ) -> None:
         """Renumber event IDs after deletion."""
 
-        today = datetime.now(UTC).date().isoformat()
+        memory = self._create_memory()
 
-        self.memory.add_event(
+        memory.add_event(
             "First",
-            today,
+            self._today(),
             "10:00",
         )
 
-        self.memory.add_event(
+        memory.add_event(
             "Second",
-            today,
+            self._today(),
             "11:00",
         )
 
-        self.memory.add_event(
+        memory.add_event(
             "Third",
-            today,
+            self._today(),
             "12:00",
         )
 
-        self.memory.delete_event(
+        memory.delete_event(
             2,
         )
 
-        events = self.memory.get_events()
+        events = memory.get_events()
 
         assert len(events) == 2
+
         assert events[0].id == 1
+        assert events[0].title == "First"
+
         assert events[1].id == 2
         assert events[1].title == "Third"
 
@@ -126,4 +157,6 @@ class TestCalendarMemory:
     ) -> None:
         """An empty calendar returns no events."""
 
-        assert self.memory.get_events() == []
+        memory = self._create_memory()
+
+        assert memory.get_events() == []

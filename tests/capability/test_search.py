@@ -2,8 +2,8 @@ from unittest.mock import Mock
 
 import requests
 
+from astralis.api.search import SearchApi
 from astralis.capability.search import SearchCapability
-from astralis.core.config import Config
 from astralis.models.search_result import SearchResult
 from tests.helpers.conversation_factory import (
     create_conversation,
@@ -19,21 +19,28 @@ from tests.helpers.request_factory import (
 class TestSearchCapability:
     """Tests for the SearchCapability."""
 
-    def setup_method(self) -> None:
-        """Create a SearchCapability."""
+    @staticmethod
+    def _create_capability() -> tuple[SearchCapability, Mock]:
+        """Create a search capability with a mocked API."""
 
-        self.capability = SearchCapability(
-            Config(
-                tavily_api_key="dummy-key",
-            ),
+        api = Mock(
+            spec=SearchApi,
         )
 
-        self.capability.api = Mock()
+        capability = SearchCapability(
+            api,
+        )
 
-    def test_search(self) -> None:
+        return capability, api
+
+    def test_search(
+        self,
+    ) -> None:
         """Search the web."""
 
-        self.capability.api.search.return_value = [
+        capability, api = self._create_capability()
+
+        api.search.return_value = [
             SearchResult(
                 title="Python",
                 url="https://python.org",
@@ -46,7 +53,7 @@ class TestSearchCapability:
             ),
         ]
 
-        response = self.capability.execute(
+        response = capability.execute(
             create_request(
                 "search python",
             ),
@@ -56,18 +63,25 @@ class TestSearchCapability:
             ),
         )
 
-        assert response.success is True
+        api.search.assert_called_once_with(
+            "python",
+        )
 
+        assert response.success is True
         assert "Python" in response.text
         assert "https://python.org" in response.text
         assert "Real Python" in response.text
 
-    def test_no_results(self) -> None:
+    def test_no_results(
+        self,
+    ) -> None:
         """Handle no search results."""
 
-        self.capability.api.search.return_value = []
+        capability, api = self._create_capability()
 
-        response = self.capability.execute(
+        api.search.return_value = []
+
+        response = capability.execute(
             create_request(
                 "search python",
             ),
@@ -75,15 +89,23 @@ class TestSearchCapability:
             create_interpretation(
                 entities=["search"],
             ),
+        )
+
+        api.search.assert_called_once_with(
+            "python",
         )
 
         assert response.success is True
         assert response.text == "No results found."
 
-    def test_missing_query(self) -> None:
+    def test_missing_query(
+        self,
+    ) -> None:
         """Handle a missing search query."""
 
-        response = self.capability.execute(
+        capability, _ = self._create_capability()
+
+        response = capability.execute(
             create_request(
                 "search",
             ),
@@ -96,14 +118,18 @@ class TestSearchCapability:
         assert response.success is False
         assert response.text == "Please specify a search query."
 
-    def test_api_error(self) -> None:
+    def test_api_error(
+        self,
+    ) -> None:
         """Handle API errors."""
 
-        self.capability.api.search.side_effect = requests.RequestException(
+        capability, api = self._create_capability()
+
+        api.search.side_effect = requests.RequestException(
             "Search service unavailable.",
         )
 
-        response = self.capability.execute(
+        response = capability.execute(
             create_request(
                 "search python",
             ),
@@ -111,6 +137,10 @@ class TestSearchCapability:
             create_interpretation(
                 entities=["search"],
             ),
+        )
+
+        api.search.assert_called_once_with(
+            "python",
         )
 
         assert response.success is False

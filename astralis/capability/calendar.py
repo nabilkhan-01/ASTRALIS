@@ -26,23 +26,20 @@ class CalendarCapability(Capability):
         _ = conversation, interpretation
 
         text = request.text.strip()
+        lower = text.lower()
 
-        if text.lower().startswith(
-            "add event",
-        ):
+        if lower.startswith("add event"):
             return self._handle_add_event(
                 text,
             )
 
-        if text.lower() == "calendar":
+        if lower == "calendar":
             return self._handle_list_events()
 
-        if text.lower() == "today":
+        if lower == "today":
             return self._handle_today()
 
-        if text.lower().startswith(
-            "delete event",
-        ):
+        if lower.startswith("delete event"):
             return self._handle_delete_event(
                 text,
             )
@@ -62,11 +59,13 @@ class CalendarCapability(Capability):
 
         if len(parts) < 5:
             return Response(
-                text=("Usage: add event <title> <date> <time>"),
+                text="Usage: add event <title> <date> <time>",
                 success=False,
             )
 
-        title = " ".join(parts[2:-2])
+        title = " ".join(
+            parts[2:-2],
+        )
         date = parts[-2]
         time = parts[-1]
 
@@ -78,7 +77,6 @@ class CalendarCapability(Capability):
 
         return Response(
             text=f"Event {event_id} added.",
-            success=True,
         )
 
     def _handle_list_events(
@@ -91,17 +89,16 @@ class CalendarCapability(Capability):
         if not events:
             return Response(
                 text="No events found.",
-                success=True,
             )
 
-        lines = []
-
-        for event in events:
-            lines.append(f"{event.id}. {event.title} | {event.date} {event.time}")
+        lines = [
+            f"{event.id}. {event.title} | {event.date} {event.time}" for event in events
+        ]
 
         return Response(
-            text="\n".join(lines),
-            success=True,
+            text="\n".join(
+                lines,
+            ),
         )
 
     def _handle_today(
@@ -114,17 +111,14 @@ class CalendarCapability(Capability):
         if not events:
             return Response(
                 text="No events for today.",
-                success=True,
             )
 
-        lines = []
-
-        for event in events:
-            lines.append(f"{event.id}. {event.title} | {event.time}")
+        lines = [f"{event.id}. {event.title} | {event.time}" for event in events]
 
         return Response(
-            text="\n".join(lines),
-            success=True,
+            text="\n".join(
+                lines,
+            ),
         )
 
     def _handle_delete_event(
@@ -133,23 +127,19 @@ class CalendarCapability(Capability):
     ) -> Response:
         """Delete a calendar event."""
 
-        parts = text.split()
+        event_id = self._parse_event_id(
+            text,
+        )
 
-        if len(parts) != 3:
+        if event_id is None:
             return Response(
-                text="Please specify the event number",
+                text="Usage: delete event <id>",
                 success=False,
             )
 
-        event_id = int(
-            parts[2],
-        )
-
-        deleted = self.calendar.delete_event(
+        if not self.calendar.delete_event(
             event_id,
-        )
-
-        if not deleted:
+        ):
             return Response(
                 text="Event not found.",
                 success=False,
@@ -157,5 +147,22 @@ class CalendarCapability(Capability):
 
         return Response(
             text="Event deleted.",
-            success=True,
+        )
+
+    def _parse_event_id(
+        self,
+        text: str,
+    ) -> int | None:
+        """Extract an event ID from a command."""
+
+        parts = text.split()
+
+        if len(parts) != 3:
+            return None
+
+        if not parts[2].isdigit():
+            return None
+
+        return int(
+            parts[2],
         )

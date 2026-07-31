@@ -26,37 +26,22 @@ class AlarmCapability(Capability):
         _ = conversation, interpretation
 
         text = request.text.strip()
+        lower = text.lower()
 
-        if text.lower().startswith(
-            "alarm ",
-        ):
-            return self._handle_add_alarm(
-                text,
-            )
+        if lower.startswith("alarm "):
+            return self._handle_add_alarm(text)
 
-        if text.lower() == "alarms":
+        if lower == "alarms":
             return self._handle_list_alarms()
 
-        if text.lower().startswith(
-            "enable alarm",
-        ):
-            return self._handle_enable_alarm(
-                text,
-            )
+        if lower.startswith("enable alarm"):
+            return self._handle_enable_alarm(text)
 
-        if text.lower().startswith(
-            "disable alarm",
-        ):
-            return self._handle_disable_alarm(
-                text,
-            )
+        if lower.startswith("disable alarm"):
+            return self._handle_disable_alarm(text)
 
-        if text.lower().startswith(
-            "delete alarm",
-        ):
-            return self._handle_delete_alarm(
-                text,
-            )
+        if lower.startswith("delete alarm"):
+            return self._handle_delete_alarm(text)
 
         return Response(
             text="Unknown alarm command.",
@@ -73,23 +58,19 @@ class AlarmCapability(Capability):
 
         if len(parts) < 3:
             return Response(
-                text="Usage: alarm <time> <title>",
+                text="Usage: alarm <HH:MM> <title>",
                 success=False,
             )
 
         time = parts[1]
 
-        if not self._is_valid_time(
-            time,
-        ):
+        if not self._is_valid_time(time):
             return Response(
-                text="Invalid time. Use HH:MM.",
+                text="Invalid time. Use HH:MM (24-hour format).",
                 success=False,
             )
 
-        title = " ".join(
-            parts[2:],
-        )
+        title = " ".join(parts[2:])
 
         alarm_id = self.alarms.add_alarm(
             title=title,
@@ -98,7 +79,6 @@ class AlarmCapability(Capability):
 
         return Response(
             text=f"Alarm {alarm_id} added.",
-            success=True,
         )
 
     def _handle_list_alarms(
@@ -111,21 +91,16 @@ class AlarmCapability(Capability):
         if not alarms:
             return Response(
                 text="No alarms found.",
-                success=True,
             )
 
-        lines = []
-
-        for alarm in alarms:
-            status = "Enabled" if alarm.enabled else "Disabled"
-
-            lines.append(f"{alarm.id}. {alarm.title} | {alarm.time} | {status}")
+        lines = [
+            f"{alarm.id}. {alarm.title} | {alarm.time} | "
+            f"{'Enabled' if alarm.enabled else 'Disabled'}"
+            for alarm in alarms
+        ]
 
         return Response(
-            text="\n".join(
-                lines,
-            ),
-            success=True,
+            text="\n".join(lines),
         )
 
     def _handle_enable_alarm(
@@ -134,23 +109,15 @@ class AlarmCapability(Capability):
     ) -> Response:
         """Enable an alarm."""
 
-        parts = text.split()
+        alarm_id = self._parse_alarm_id(text)
 
-        if len(parts) != 3:
+        if alarm_id is None:
             return Response(
-                text="Please specify the alarm number.",
+                text="Usage: enable alarm <id>",
                 success=False,
             )
 
-        alarm_id = int(
-            parts[2],
-        )
-
-        enabled = self.alarms.enable_alarm(
-            alarm_id,
-        )
-
-        if not enabled:
+        if not self.alarms.enable_alarm(alarm_id):
             return Response(
                 text="Alarm not found.",
                 success=False,
@@ -158,7 +125,6 @@ class AlarmCapability(Capability):
 
         return Response(
             text="Alarm enabled.",
-            success=True,
         )
 
     def _handle_disable_alarm(
@@ -167,23 +133,15 @@ class AlarmCapability(Capability):
     ) -> Response:
         """Disable an alarm."""
 
-        parts = text.split()
+        alarm_id = self._parse_alarm_id(text)
 
-        if len(parts) != 3:
+        if alarm_id is None:
             return Response(
-                text="Please specify the alarm number.",
+                text="Usage: disable alarm <id>",
                 success=False,
             )
 
-        alarm_id = int(
-            parts[2],
-        )
-
-        disabled = self.alarms.disable_alarm(
-            alarm_id,
-        )
-
-        if not disabled:
+        if not self.alarms.disable_alarm(alarm_id):
             return Response(
                 text="Alarm not found.",
                 success=False,
@@ -191,7 +149,6 @@ class AlarmCapability(Capability):
 
         return Response(
             text="Alarm disabled.",
-            success=True,
         )
 
     def _handle_delete_alarm(
@@ -200,23 +157,15 @@ class AlarmCapability(Capability):
     ) -> Response:
         """Delete an alarm."""
 
-        parts = text.split()
+        alarm_id = self._parse_alarm_id(text)
 
-        if len(parts) != 3:
+        if alarm_id is None:
             return Response(
-                text="Please specify the alarm number.",
+                text="Usage: delete alarm <id>",
                 success=False,
             )
 
-        alarm_id = int(
-            parts[2],
-        )
-
-        deleted = self.alarms.delete_alarm(
-            alarm_id,
-        )
-
-        if not deleted:
+        if not self.alarms.delete_alarm(alarm_id):
             return Response(
                 text="Alarm not found.",
                 success=False,
@@ -224,8 +173,23 @@ class AlarmCapability(Capability):
 
         return Response(
             text="Alarm deleted.",
-            success=True,
         )
+
+    def _parse_alarm_id(
+        self,
+        text: str,
+    ) -> int | None:
+        """Extract an alarm ID from a command."""
+
+        parts = text.split()
+
+        if len(parts) != 3:
+            return None
+
+        if not parts[2].isdigit():
+            return None
+
+        return int(parts[2])
 
     def _is_valid_time(
         self,
@@ -233,9 +197,7 @@ class AlarmCapability(Capability):
     ) -> bool:
         """Validate a 24-hour time."""
 
-        parts = time.split(
-            ":",
-        )
+        parts = time.split(":")
 
         if len(parts) != 2:
             return False
@@ -245,12 +207,7 @@ class AlarmCapability(Capability):
         if not (hour.isdigit() and minute.isdigit()):
             return False
 
-        hour_value = int(
-            hour,
-        )
-
-        minute_value = int(
-            minute,
-        )
+        hour_value = int(hour)
+        minute_value = int(minute)
 
         return 0 <= hour_value <= 23 and 0 <= minute_value <= 59

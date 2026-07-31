@@ -14,21 +14,25 @@ from tests.helpers.request_factory import (
 class TestAlarmCapability:
     """Tests for AlarmCapability."""
 
-    def setup_method(
-        self,
-    ) -> None:
+    @staticmethod
+    def _create_capability() -> AlarmCapability:
+        """Create a clean alarm capability."""
 
-        self.alarm = AlarmMemory()
-        self.capability = AlarmCapability(
-            self.alarm,
+        alarms = AlarmMemory()
+        alarms.clear()
+
+        return AlarmCapability(
+            alarms,
         )
-
-        self.capability.alarms.clear()
 
     def test_add_alarm(
         self,
     ) -> None:
-        response = self.capability.execute(
+        """Add an alarm."""
+
+        capability = self._create_capability()
+
+        response = capability.execute(
             create_request(
                 "alarm 07:00 Wake up",
             ),
@@ -44,12 +48,16 @@ class TestAlarmCapability:
     def test_list_alarms(
         self,
     ) -> None:
-        self.capability.alarms.add_alarm(
+        """List alarms."""
+
+        capability = self._create_capability()
+
+        capability.alarms.add_alarm(
             "Wake up",
             "07:00",
         )
 
-        response = self.capability.execute(
+        response = capability.execute(
             create_request(
                 "alarms",
             ),
@@ -66,16 +74,20 @@ class TestAlarmCapability:
     def test_enable_alarm(
         self,
     ) -> None:
-        self.capability.alarms.add_alarm(
+        """Enable an alarm."""
+
+        capability = self._create_capability()
+
+        capability.alarms.add_alarm(
             "Wake up",
             "07:00",
         )
 
-        self.capability.alarms.disable_alarm(
+        capability.alarms.disable_alarm(
             1,
         )
 
-        response = self.capability.execute(
+        response = capability.execute(
             create_request(
                 "enable alarm 1",
             ),
@@ -91,12 +103,16 @@ class TestAlarmCapability:
     def test_disable_alarm(
         self,
     ) -> None:
-        self.capability.alarms.add_alarm(
+        """Disable an alarm."""
+
+        capability = self._create_capability()
+
+        capability.alarms.add_alarm(
             "Wake up",
             "07:00",
         )
 
-        response = self.capability.execute(
+        response = capability.execute(
             create_request(
                 "disable alarm 1",
             ),
@@ -112,12 +128,16 @@ class TestAlarmCapability:
     def test_delete_alarm(
         self,
     ) -> None:
-        self.capability.alarms.add_alarm(
+        """Delete an alarm."""
+
+        capability = self._create_capability()
+
+        capability.alarms.add_alarm(
             "Wake up",
             "07:00",
         )
 
-        response = self.capability.execute(
+        response = capability.execute(
             create_request(
                 "delete alarm 1",
             ),
@@ -133,7 +153,11 @@ class TestAlarmCapability:
     def test_empty_alarms(
         self,
     ) -> None:
-        response = self.capability.execute(
+        """List alarms when none exist."""
+
+        capability = self._create_capability()
+
+        response = capability.execute(
             create_request(
                 "alarms",
             ),
@@ -149,7 +173,11 @@ class TestAlarmCapability:
     def test_invalid_time(
         self,
     ) -> None:
-        response = self.capability.execute(
+        """Reject an invalid time."""
+
+        capability = self._create_capability()
+
+        response = capability.execute(
             create_request(
                 "alarm 25:99 Wake up",
             ),
@@ -160,12 +188,19 @@ class TestAlarmCapability:
         )
 
         assert response.success is False
-        assert response.text == "Invalid time. Use HH:MM."
+        assert (
+            response.text
+            == "Invalid time. Use HH:MM (24-hour format)."
+        )
 
     def test_missing_alarm_number(
         self,
     ) -> None:
-        response = self.capability.execute(
+        """Reject a missing alarm number."""
+
+        capability = self._create_capability()
+
+        response = capability.execute(
             create_request(
                 "delete alarm",
             ),
@@ -176,11 +211,16 @@ class TestAlarmCapability:
         )
 
         assert response.success is False
+        assert response.text == "Usage: delete alarm <id>"
 
     def test_alarm_not_found(
         self,
     ) -> None:
-        response = self.capability.execute(
+        """Reject an unknown alarm."""
+
+        capability = self._create_capability()
+
+        response = capability.execute(
             create_request(
                 "enable alarm 5",
             ),
@@ -196,7 +236,11 @@ class TestAlarmCapability:
     def test_unknown_command(
         self,
     ) -> None:
-        response = self.capability.execute(
+        """Reject an unknown alarm command."""
+
+        capability = self._create_capability()
+
+        response = capability.execute(
             create_request(
                 "alarm delete everything",
             ),
@@ -207,3 +251,7 @@ class TestAlarmCapability:
         )
 
         assert response.success is False
+        assert (
+            response.text
+            == "Invalid time. Use HH:MM (24-hour format)."
+        )

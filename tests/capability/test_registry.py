@@ -1,5 +1,9 @@
 import pytest
 
+from astralis.brain.conversation import Conversation
+from astralis.brain.interpretation import Interpretation
+from astralis.brain.request import Request
+from astralis.brain.response import Response
 from astralis.capability.capability import Capability
 from astralis.capability.capability_type import CapabilityType
 from astralis.capability.registry import CapabilityRegistry
@@ -10,58 +14,95 @@ class DummyCapability(Capability):
 
     def execute(
         self,
-        request,
-        conversation,
-        interpretation,
-    ):
-        return None
+        request: Request,
+        conversation: Conversation,
+        interpretation: Interpretation,
+    ) -> Response:
+        """Execute the dummy capability."""
+
+        _ = request, conversation, interpretation
+
+        return Response(
+            text="Dummy response.",
+        )
 
 
 class TestCapabilityRegistry:
     """Tests for the CapabilityRegistry."""
 
-    def setup_method(self) -> None:
-        """Create a fresh registry."""
+    @staticmethod
+    def _create_registry() -> CapabilityRegistry:
+        """Create a fresh capability registry."""
 
-        self.registry = CapabilityRegistry()
+        return CapabilityRegistry()
 
-    def test_register_and_get(self) -> None:
+    def test_register_and_get(
+        self,
+    ) -> None:
         """Register and retrieve a capability."""
+
+        registry = self._create_registry()
 
         capability = DummyCapability()
 
-        self.registry.register(
+        registry.register(
             CapabilityType.LANGUAGE,
             capability,
         )
 
         assert (
-            self.registry.get(
+            registry.get(
                 CapabilityType.LANGUAGE,
             )
             is capability
         )
 
-    def test_duplicate_registration(self) -> None:
+    def test_duplicate_registration(
+        self,
+    ) -> None:
         """Registering the same capability twice raises an error."""
 
-        capability = DummyCapability()
+        registry = self._create_registry()
 
-        self.registry.register(
+        registry.register(
             CapabilityType.LANGUAGE,
-            capability,
+            DummyCapability(),
         )
 
-        with pytest.raises(ValueError):
-            self.registry.register(
+        with pytest.raises(
+            ValueError,
+        ):
+            registry.register(
                 CapabilityType.LANGUAGE,
                 DummyCapability(),
             )
 
-    def test_missing_capability(self) -> None:
+    def test_missing_capability(
+        self,
+    ) -> None:
         """Requesting an unknown capability raises an error."""
 
-        with pytest.raises(ValueError):
-            self.registry.get(
+        registry = self._create_registry()
+
+        with pytest.raises(
+            ValueError,
+        ):
+            registry.get(
                 CapabilityType.LANGUAGE,
             )
+
+    def test_contains(
+        self,
+    ) -> None:
+        """Check whether a capability is registered."""
+
+        registry = self._create_registry()
+
+        assert CapabilityType.LANGUAGE not in registry
+
+        registry.register(
+            CapabilityType.LANGUAGE,
+            DummyCapability(),
+        )
+
+        assert CapabilityType.LANGUAGE in registry

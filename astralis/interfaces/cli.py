@@ -14,23 +14,31 @@ class CommandLineInterface:
     ) -> None:
         self.brain = brain
 
-    def run(self) -> None:
+    def run(
+        self,
+    ) -> None:
         """Start the interactive command-line session."""
 
-        print()
-        print("Welcome to ASTRALIS.")
-        print("Type 'exit' or 'quit' to quit.")
-        print()
+        self._print_welcome()
 
         while True:
-            text = input("> ").strip()
+            try:
+                text = input("> ").strip()
+
+            except (
+                KeyboardInterrupt,
+                EOFError,
+            ):
+                print()
+                print("Thank you for using ASTRALIS.")
+                break
 
             if not text:
                 continue
 
             if text.lower() in _EXIT_COMMANDS:
                 print()
-                print("Thank you for using ASTRALIS.\n Goodbye.")
+                print("Thank you for using ASTRALIS.")
                 break
 
             request = Request(
@@ -38,8 +46,22 @@ class CommandLineInterface:
                 source=RequestSource.CLI,
             )
 
-            response = self.brain.process(request)
+            response = self.brain.process(
+                request,
+            )
 
             print()
-            print(f"ASTRALIS: {response.text}")
+            print(
+                f"ASTRALIS: {response.text}",
+            )
             print()
+
+    def _print_welcome(
+        self,
+    ) -> None:
+        """Display the startup banner."""
+
+        print()
+        print("Welcome to ASTRALIS.")
+        print("Type 'exit' or 'quit' to quit.")
+        print()

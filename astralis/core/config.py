@@ -1,5 +1,6 @@
 import os
 from dataclasses import dataclass
+from typing import ClassVar
 
 from dotenv import load_dotenv
 
@@ -12,18 +13,28 @@ class Config:
 
     # Application Information
     project_name: str = "ASTRALIS"
-    version: str = "0.2.0"
-    codename: str = "Brain Architecture"
+    version: str = "0.3.0"
+    codename: str = "Capability Platform"
     tagline: str = "Assist. Don't Control."
 
     # Runtime Settings
     language: str = "en"
-    debug: bool = True
+
+    debug: bool = (
+        os.getenv(
+            "DEBUG",
+            "false",
+        ).lower()
+        == "true"
+    )
+
+    # Default AI Provider
+    DEFAULT_PROVIDER: ClassVar[str] = "gemini"
 
     # Active AI Provider
     provider: str = os.getenv(
         "DEFAULT_PROVIDER",
-        "gemini",
+        DEFAULT_PROVIDER,
     )
 
     # Gemini Configuration
@@ -53,3 +64,17 @@ class Config:
         "TAVILY_API_KEY",
         "",
     )
+
+    # HTTP Configuration
+    api_timeout: int = int(
+        os.getenv(
+            "API_TIMEOUT",
+            "5",
+        )
+    )
+
+    user_agent: str = f"ASTRALIS/{version}"
+
+    # Voice Settings
+    voice_enabled: bool = False
+    wake_word: str = "Astralis"

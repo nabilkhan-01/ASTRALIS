@@ -28,11 +28,10 @@ class TestSearchApi:
                     "url": "https://realpython.com",
                     "content": "Python tutorials.",
                 },
-            ]
+            ],
         }
 
         response.raise_for_status.return_value = None
-
         mock_post.return_value = response
 
         config = Config(
@@ -45,6 +44,16 @@ class TestSearchApi:
 
         results = api.search(
             "python",
+        )
+
+        mock_post.assert_called_once_with(
+            SearchApi.SEARCH_URL,
+            timeout=config.api_timeout,
+            json={
+                "api_key": "dummy-key",
+                "query": "python",
+                "max_results": 5,
+            },
         )
 
         assert len(results) == 2

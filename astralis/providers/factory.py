@@ -1,3 +1,6 @@
+from collections.abc import Callable
+from typing import ClassVar
+
 from astralis.core.config import Config
 from astralis.providers.gemini import GeminiProvider
 from astralis.providers.mock import MockProvider
@@ -8,19 +11,27 @@ from astralis.providers.provider import Provider
 class ProviderFactory:
     """Creates AI provider instances."""
 
+    _PROVIDERS: ClassVar[dict[str, Callable[[Config], Provider]]] = {
+        "gemini": GeminiProvider,
+        "openai": OpenAIProvider,
+        "mock": lambda _config: MockProvider(),
+    }
+
     @staticmethod
     def create(
         config: Config,
     ) -> Provider:
         """Create the configured AI provider."""
 
-        if config.provider == "gemini":
-            return GeminiProvider(config)
+        provider = ProviderFactory._PROVIDERS.get(
+            config.provider,
+        )
 
-        if config.provider == "mock":
-            return MockProvider()
+        if provider is None:
+            raise ValueError(
+                f"Unsupported provider: {config.provider}",
+            )
 
-        if config.provider == "openai":
-            return OpenAIProvider(config)
-
-        raise ValueError(f"Unsupported provider: {config.provider}")
+        return provider(
+            config,
+        )

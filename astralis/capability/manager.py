@@ -22,6 +22,8 @@ class CapabilityManager:
         interpretation: Interpretation,
         plan: Plan,
     ) -> Response:
+        """Execute the capability selected by the planner."""
+
         capability = self.registry.get(
             plan.capability,
         )

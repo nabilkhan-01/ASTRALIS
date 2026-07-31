@@ -1,11 +1,13 @@
 import json
 from pathlib import Path
-from typing import Any
+from typing import TypeVar
 
 from astralis.storage.base import Storage
 
+T = TypeVar("T")
 
-class JsonStorage(Storage):
+
+class JsonStorage(Storage[T]):
     """Stores data in JSON files."""
 
     def __init__(
@@ -15,6 +17,7 @@ class JsonStorage(Storage):
         self.file_path = file_path
 
         self.file_path.parent.mkdir(
+            parents=True,
             exist_ok=True,
         )
 
@@ -26,25 +29,21 @@ class JsonStorage(Storage):
 
     def load(
         self,
-    ) -> Any:
+    ) -> T:
         """Load data."""
 
-        with open(
-            self.file_path,
+        with self.file_path.open(
             encoding="utf-8",
         ) as file:
-            return json.load(
-                file,
-            )
+            return json.load(file)
 
     def save(
         self,
-        data: Any,
+        data: T,
     ) -> None:
         """Save data."""
 
-        with open(
-            self.file_path,
+        with self.file_path.open(
             "w",
             encoding="utf-8",
         ) as file:
