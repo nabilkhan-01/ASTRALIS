@@ -116,6 +116,14 @@ Teach ASTRALIS to remember.
 
 ### Planned
 
+#### Architecture
+
+- Request Pipeline
+- Monitoring infrastructure
+- Improved request processing architecture
+
+#### Memory
+
 - Long-term memory
 - User profile
 - Memory retrieval
@@ -127,7 +135,7 @@ Teach ASTRALIS to remember.
 
 ASTRALIS remembers useful information while keeping users in complete control of their data.
 
----
+The Request Pipeline provides a unified entry point for request processing, preparing the platform for future monitoring, automation, and additional interfaces.
 
 # v0.5.0 — Voice
 
@@ -243,7 +251,7 @@ Extend tomorrow.
 
 ---
 
-**Current Release:** **v0.3.0 – Capability Platform**
+**Current Release:** **v0.3.1 – Engineering Stability**
 
 **Next Milestone:** **v0.4.0 – Memory**
 

@@ -6,70 +6,59 @@
 
 ASTRALIS is a modular AI Operating System designed around separation of responsibilities, dependency injection, and extensibility.
 
-Every major subsystem has a single responsibility and communicates through well-defined interfaces.
+Every subsystem has a clearly defined responsibility and communicates through explicit dependencies.
 
 The architecture follows one guiding principle:
 
 > **Assist. Don't Control.**
 
-The Brain owns intelligence.
-
-Capabilities perform work.
-
-Providers generate language.
-
-Memory stores information.
-
-The Engine coordinates the application.
+- The Engine coordinates the application.
+- The Pipeline coordinates request processing.
+- The Brain owns intelligence.
+- Capabilities perform actions.
+- Providers generate language.
+- Memory manages state.
+- Storage manages persistence.
 
 ---
 
 # High-Level Architecture
 
 ```text
-                           User
-                             │
-                 ┌───────────┴───────────┐
-                 │                       │
-                CLI             Future Interfaces
-                                         │
-                                         ▼
-                                   Bootstrap
-                                         │
-                                         ▼
-                                  Application
-                                         │
-                                         ▼
-                                   Core Engine
-                                         │
-      ┌───────────────┬──────────────────┬──────────────────┐
-      │               │                  │                  │
-   Lifecycle       Health            Brain          Capability System
-      │                                 │                  │
-      │                                 │                  ▼
-      │                           Interpreter      Capability Manager
-      │                                 │                  │
-      │                             Planner               ▼
-      │                                 │          Capability Registry
-      │                                 │                  │
-      │                                 └──────────┬───────┘
-      │                                            │
-      ▼                                            ▼
- Module Loader                               Capabilities
-      │                                            │
- Module Registry                                  │
-                                                   ▼
-                                               Providers
-                                                   │
-                                                   ▼
-                                           External Services
+                     User
+                       │
+                       ▼
+          Command Line Interface (CLI)
+                       │
+                       ▼
+              Request Pipeline
+                       │
+                       ▼
+                    Brain
+        ┌──────────────┼──────────────┐
+        │              │              │
+        ▼              ▼              ▼
+ Interpreter      Planner     Capability Manager
+                                       │
+                                       ▼
+                              Capability Registry
+                                       │
+                                       ▼
+                                 Capabilities
+                              ┌──────┼──────┐
+                              │      │      │
+                              ▼      ▼      ▼
+                           Memory  Tools Providers
+                                       │
+                                       ▼
+                                External Services
 ```
 
 ---
 
 # Composition Root
 
-ASTRALIS uses a composition root.
+ASTRALIS uses a composition root to construct the application.
 
 ```text
 main.py
@@ -84,14 +73,7 @@ Application
 Engine
 ```
 
-Bootstrap is responsible for:
-
-- Constructing application components
-- Injecting dependencies
-- Registering capabilities
-- Returning a fully configured application
-
-No other component should create application-wide dependencies.
+Bootstrap constructs every shared dependency and assembles a complete application before execution begins.
 
 ---
 
@@ -113,10 +95,26 @@ Engine.start()
     ├── Load modules
     ├── Run health checks
     ├── Transition to RUNNING
-    └── Start user interface
+    └── Start CLI
 ```
 
-Startup is deterministic and centralized.
+Once startup completes:
+
+```text
+CLI
+ │
+ ▼
+RequestPipeline
+ │
+ ▼
+Brain
+ │
+ ▼
+Capability Manager
+ │
+ ▼
+Capability
+```
 
 ---
 
@@ -124,15 +122,15 @@ Startup is deterministic and centralized.
 
 ## Engine
 
-Coordinates the application's lifecycle.
+Coordinates the application lifecycle.
 
-Responsibilities include:
+Responsibilities:
 
 - Startup
-- Shutdown
 - Lifecycle transitions
 - Health checks
 - Module loading
+- Starting the user interface
 
 The Engine contains no business logic.
 
@@ -146,9 +144,10 @@ Responsibilities:
 
 - Create shared services
 - Create providers
-- Create memories
+- Create memory components
 - Create the Brain
-- Create the CLI
+- Create the Request Pipeline
+- Create the user interface
 - Register capabilities
 - Assemble the Application
 
@@ -158,25 +157,44 @@ Bootstrap owns dependency construction.
 
 ## Application
 
-Application is a lightweight container that groups all shared dependencies.
+Application is a lightweight dependency container.
 
-It allows the Engine to receive a fully configured application rather than constructing objects itself.
+It stores shared application components that are constructed during bootstrap and used throughout the system.
+
+Application performs no logic.
+
+---
+
+## Request Pipeline
+
+The Request Pipeline is the single entry point for every request.
+
+Responsibilities:
+
+- Receive requests from interfaces
+- Coordinate request processing
+- Delegate execution to the Brain
+
+The pipeline contains no intelligence.
+
+It exists to isolate cross-cutting concerns from the Brain and user interfaces.
 
 ---
 
 ## Brain
 
-The Brain coordinates intelligence.
+The Brain coordinates intelligent request processing.
 
-Responsibilities include:
+Responsibilities:
 
+- Request validation
 - Conversation management
 - Request interpretation
 - Planning
-- Capability selection
+- Capability execution
 - Response generation
 
-The Brain never directly accesses external services.
+The Brain never directly communicates with external services.
 
 ---
 
@@ -194,99 +212,111 @@ Capability Registry
    ▼
 Capability
    │
-   ▼
-Tool / Memory / Provider
+   ├── Memory
+   ├── Tool
+   └── Provider
 ```
 
 Capabilities represent everything ASTRALIS can do.
 
-Current capabilities include:
+Current capabilities:
 
 - Language
-- Search
-- Weather
-- Browser
+- Time
 - Calculator
+- Weather
+- Search
 - Notes
 - Calendar
-- Alarm
+- Browser
 - File System
+- Alarm
 - Email
-- Time
 
-Every capability implements the same interface and can be independently tested.
+Every capability implements the same interface and is independently testable.
 
 ---
 
 # Provider Layer
 
-Providers generate language.
+Providers generate natural language.
 
 Current providers:
 
 - Gemini
 - OpenAI
-- Mock Provider
+- Mock
 
-Providers never:
+Providers:
 
-- store memory
-- make decisions
-- coordinate execution
+- do not store memory
+- do not plan requests
+- do not execute capabilities
 
-They only generate language.
+Their only responsibility is language generation.
 
 ---
 
 # Memory
 
-Memory manages persistent information.
+Memory manages persistent user information.
 
-Current memories:
+Current memory modules:
 
 - Notes
 - Calendar
 - Alarm
 
-Memory decides **what** is remembered.
+Memory determines what is stored.
 
-Storage decides **where** it is stored.
+Storage determines where it is stored.
 
 ---
 
 # Storage
 
-Storage provides persistence.
+Storage provides persistence for memory modules.
 
-Memory components remain independent of the underlying storage implementation.
+Current implementation:
+
+- JSON Storage
+
+Storage is independent from memory implementations.
 
 ---
 
-# User Interfaces
+# Interfaces
 
-Interfaces remain independent from application logic.
+Interfaces communicate with users.
 
-Current:
+Current interface:
 
-- Command-Line Interface (CLI)
+- Command Line Interface (CLI)
 
-Future:
+Interfaces never contain business logic or intelligence.
 
-- Desktop
-- Voice
-- Mobile
-- Web
-- API
+They forward requests to the Request Pipeline.
 
-Changing the interface should never require changes to the Brain.
+---
+
+# Monitoring
+
+ASTRALIS includes a monitoring module.
+
+Current components:
+
+- Timer
+- Monitor
+
+Monitoring is implemented independently from the Brain and capabilities.
 
 ---
 
 # Design Principles
 
-The architecture follows these principles.
+ASTRALIS is designed around:
 
-- Single Responsibility
+- Single Responsibility Principle
 - Dependency Injection
 - Composition over Inheritance
 - Low Coupling
@@ -304,39 +334,28 @@ The architecture follows these principles.
 Every architectural decision should reinforce these rules.
 
 - Bootstrap owns object construction.
+- Application stores shared dependencies.
 - Engine coordinates the application.
+- Request Pipeline coordinates request processing.
 - Brain owns intelligence.
 - Capabilities perform actions.
 - Providers generate language.
 - Memory manages state.
 - Storage manages persistence.
+- Interfaces remain thin.
+- Prefer composition over inheritance.
 - Keep modules independent.
 - Catch specific exceptions.
-- Prefer composition over inheritance.
 - Design before implementation.
 - Keep documentation synchronized with the code.
 
 ---
 
-# Future Evolution
-
-Future milestones may introduce:
-
-- Voice Interface
-- Vision System
-- Plugin Framework
-- Event Bus
-- Context Engine
-- Multi-Agent Coordination
-- Local Language Models
-
-Each addition should extend the existing architecture rather than replace it.
-
----
-
 Project: **ASTRALIS**
 
-Release: **v0.3.0 – Capability Platform**
+Release: **v0.3.1**
+
+Codename: **Engineering Stability**
 
 Philosophy:
 

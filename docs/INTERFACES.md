@@ -4,7 +4,7 @@
 
 Interfaces define how users and external systems interact with ASTRALIS.
 
-Regardless of where a request originates, it follows the same processing pipeline and reaches the same Brain.
+Regardless of where a request originates, it enters the Request Pipeline before being processed by the Brain.
 
 The interface changes.
 
@@ -15,10 +15,11 @@ The intelligence does not.
 ## Design Principles
 
 - The Brain must remain completely interface-independent.
-- Interfaces communicate through the Application.
-- Every request is represented by a `Request`.
-- Every response is represented by a `Response`.
+- Interfaces communicate through the Request Pipeline.
+- Every request is represented by a Request.
+- Every response is represented by a Response.
 - Interfaces must never contain business logic.
+- Interfaces should remain thin.
 - New interfaces should be added without modifying the Brain.
 - Users should experience consistent behavior across every interface.
 
@@ -104,7 +105,7 @@ Provides a stable interface for:
 
 ### Web
 
-**Status:** Future
+**Status:** Planned
 
 Provides browser-based access without requiring local installation.
 
@@ -128,7 +129,7 @@ Changing the interface should never change how ASTRALIS thinks.
 
 ---
 
-**Current Release:** **v0.3.0 – Capability Platform**
+**Current Release:** **v0.3.1 – Engineering Stability**
 
 **Next Milestone:** **v0.4.0 – Memory**
 

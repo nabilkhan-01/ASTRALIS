@@ -13,12 +13,15 @@ class Config:
 
     # Application Information
     project_name: str = "ASTRALIS"
-    version: str = "0.3.0"
-    codename: str = "Capability Platform"
+    version: str = "0.3.1"
+    codename: str = "Engineering Stability"
     tagline: str = "Assist. Don't Control."
 
     # Runtime Settings
     language: str = "en"
+
+    # Monitoring Settings
+    monitoring_enabled: bool = False
 
     debug: bool = (
         os.getenv(

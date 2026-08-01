@@ -176,21 +176,24 @@ Incremental development improves software quality, reduces complexity, simplifie
 
 ### Title
 
-Core Engine Owns Core Services
+Bootstrap Constructs Core Services
 
 ### Decision
 
-The Core Engine creates and coordinates shared application services including Configuration, Logging, Module Registry, and Module Loader.
+Bootstrap constructs shared application services and assembles the Application container.
+
+The Engine coordinates these services but does not construct them.
 
 ### Rationale
 
-Centralizing ownership provides a predictable startup sequence while avoiding unnecessary duplication of shared services.
+Separating dependency construction from application orchestration keeps the Engine lightweight, improves testability, and centralizes dependency injection.
 
 ### Consequences
 
-- A single Engine instance manages application startup.
-- Shared services are initialized once.
-- Responsibilities remain clearly separated.
+- Bootstrap becomes the application's composition root.
+- Shared services are initialized exactly once.
+- Application stores shared dependencies.
+- Engine focuses exclusively on orchestration.
 
 ---
 
@@ -336,29 +339,9 @@ Separating intelligence coordination from application orchestration keeps respon
 
 ---
 
+
+
 ## ADR-0015
-
-### Title
-
-Core Engine Owns the Brain
-
-### Decision
-
-The Core Engine owns and initializes the Brain during application startup.
-
-### Rationale
-
-Centralizing ownership of the Brain keeps startup orchestration within the Engine and maintains a single point of coordination for core application services.
-
-### Consequences
-
-- The Engine becomes the entry point to intelligence.
-- Other components interact with the Brain through the Engine.
-- The Brain remains independent of the application lifecycle.
-
----
-
-## ADR-0016
 
 ### Title
 
@@ -380,7 +363,7 @@ Using a dedicated request model creates a stable interface between user-facing c
 
 ---
 
-## ADR-0017
+## ADR-0016
 
 ### Title
 
@@ -406,7 +389,7 @@ This distinction improves readability, reduces boilerplate, and keeps responsibi
 
 ---
 
-## ADR-0018
+## ADR-0017
 
 ### Title
 
@@ -428,7 +411,7 @@ Separating the Brain from provider implementations preserves modularity and allo
 
 ---
 
-## ADR-0019
+## ADR-0018
 
 ### Title
 
@@ -461,7 +444,7 @@ The Engine requests a provider from the factory instead of instantiating provide
 
 ---
 
-## ADR-0020
+## ADR-0019
 
 ### Title
 
@@ -469,7 +452,7 @@ Delegate Execution Planning to the Planner
 
 ### Decision
 
-The Brain delegates execution planning to a dedicated Planner component. The Planner produces an ExecutionPlan, allowing the Brain to remain focused on orchestration.
+The Brain delegates execution planning to a dedicated Planner component. The Planner produces an Plan, allowing the Brain to remain focused on orchestration.
 
 ### Rationale
 
@@ -485,7 +468,7 @@ The Brain delegates execution planning to a dedicated Planner component. The Pla
 
 ---
 
-## ADR-0021
+## ADR-0020
 
 ### Title
 
@@ -518,7 +501,7 @@ The `Interpreter` produces an `Interpretation` object representing the Brain's u
 
 ---
 
-## ADR-0022
+## ADR-0021
 
 ### Title
 
@@ -557,7 +540,7 @@ Providers remain stateless and never own conversation history.
 
 ---
 
-## ADR-0023
+## ADR-0022
 
 ### Title
 
@@ -581,7 +564,7 @@ The Brain executes requests through a Capability Framework rather than communica
 
 ----
 
-## ADR-0024
+## ADR-0023
 
 ### Title
 
@@ -598,6 +581,33 @@ Keeps the Engine focused on orchestration, improves testability, and simplifies 
 ### Consequences
 
 The Engine no longer constructs application-wide dependencies; Bootstrap owns composition.
+
+---
+
+## ADR-0024
+
+### Title
+
+Introduce a Request Pipeline
+
+### Decision
+
+ASTRALIS introduces a dedicated Request Pipeline positioned between user interfaces and the Brain.
+
+Every user request passes through the Request Pipeline before reaching the Brain.
+
+### Rationale
+
+Separating request processing from both interfaces and the Brain provides a dedicated location for cross-cutting concerns without increasing the responsibilities of either component.
+
+The Brain remains focused exclusively on intelligent request processing, while interfaces remain focused on user interaction.
+
+### Consequences
+
+- User interfaces communicate with the Request Pipeline instead of the Brain.
+- The Brain remains independent of interface-specific concerns.
+- Cross-cutting concerns can be introduced without modifying Brain logic.
+- The request flow becomes consistent across all interfaces.
 
 ---
 
@@ -621,7 +631,7 @@ The goal is to preserve the reasoning behind major architectural decisions—not
 
 Project: **ASTRALIS**
 
-Current Release: **v0.3.0 – Capability Platform**
+Current Release: **v0.3.1 – Engineering Stability**
 
 Current Milestone: **v0.4.0 "Memory"**
 

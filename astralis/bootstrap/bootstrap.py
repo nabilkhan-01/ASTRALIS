@@ -28,6 +28,8 @@ from astralis.interfaces.cli import CommandLineInterface
 from astralis.memory.alarm import AlarmMemory
 from astralis.memory.calendar import CalendarMemory
 from astralis.memory.note import NotesMemory
+from astralis.monitoring.monitor import Monitor
+from astralis.pipeline.request_pipeline import RequestPipeline
 from astralis.providers.factory import ProviderFactory
 from astralis.tools.browser import BrowserTool
 from astralis.tools.file_system import FileSystemTool
@@ -89,9 +91,18 @@ class Bootstrap:
             capability_manager,
         )
 
+        monitor = Monitor(
+            enabled=config.monitoring_enabled,
+        )
+
+        pipeline = RequestPipeline(
+            brain=brain,
+            monitor=monitor,
+        )
+
         # Interface
         cli = CommandLineInterface(
-            brain,
+            pipeline,
         )
 
         return Application(
@@ -109,6 +120,7 @@ class Bootstrap:
             calendar_memory=calendar_memory,
             alarm_memory=alarm_memory,
             cli=cli,
+            pipeline=pipeline,
         )
 
     def _build_capabilities(

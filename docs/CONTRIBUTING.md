@@ -2,17 +2,26 @@
 
 Thank you for contributing to ASTRALIS.
 
-## Development Setup
+Please read this guide before making changes.
 
-1. Clone the repository.
+---
 
-2. Create a virtual environment.
+# Development Setup
+
+## 1. Clone the repository
+
+```bash
+git clone <repository-url>
+cd ASTRALIS
+```
+
+## 2. Create a virtual environment
 
 ```bash
 python -m venv .venv
 ```
 
-3. Activate the virtual environment.
+## 3. Activate the virtual environment
 
 ### Windows
 
@@ -20,13 +29,13 @@ python -m venv .venv
 .venv\Scripts\Activate.ps1
 ```
 
-### Linux/macOS
+### Linux / macOS
 
 ```bash
 source .venv/bin/activate
 ```
 
-4. Install development dependencies.
+## 4. Install development dependencies
 
 ```bash
 pip install -r requirements-dev.txt
@@ -34,62 +43,108 @@ pip install -r requirements-dev.txt
 
 ---
 
-## Before Every Commit
+# Quality Checks
 
-Run the project quality checks.
+Before every commit, run:
 
 ```bash
 python scripts/check.py
 ```
 
-This verifies:
+This executes:
 
 - Ruff
 - MyPy
 - Pytest
 
-All checks must pass before committing changes.
+Every check must pass before code is committed.
 
 ---
 
-## Project Architecture
+# Architecture
 
-Follow these architectural principles.
+ASTRALIS follows a modular architecture built around clearly separated responsibilities.
 
-- Bootstrap owns object creation.
+## Core Responsibilities
+
+- Bootstrap constructs application dependencies.
+- Application stores shared dependencies.
 - Engine coordinates the application lifecycle.
-- Capabilities implement application features.
-- Memory stores and retrieves data.
-- Providers communicate with external AI services.
-- Tools perform system-level operations.
-- Models are immutable data objects whenever possible.
+- Request Pipeline coordinates request processing.
+- Brain owns intelligence.
+- Capability Manager executes capabilities.
+- Capability Registry manages capability registration.
+- Capabilities perform actions.
+- Providers generate language.
+- Memory manages persistent state.
+- Storage provides persistence.
+- Interfaces communicate with users.
+
+Every component should have a single responsibility.
 
 ---
 
-## Coding Standards
+# Dependency Injection
+
+Dependencies should be injected through constructors.
+
+Prefer:
+
+```python
+class SearchCapability:
+    def __init__(
+        self,
+        api: SearchApi,
+    ) -> None:
+        self.api = api
+```
+
+Avoid:
+
+```python
+class SearchCapability:
+    def __init__(
+        self,
+    ) -> None:
+        self.api = SearchApi()
+```
+
+Bootstrap is responsible for constructing shared dependencies.
+
+---
+
+# Coding Standards
 
 - Follow PEP 8.
-- Format and lint using Ruff.
+- Use Ruff for formatting and linting.
+- Use MyPy type annotations.
 - Public classes and methods should include docstrings.
-- Prefer dependency injection over creating dependencies inside classes.
-- Prefer composition over inheritance.
 - Keep functions focused on a single responsibility.
-- Avoid global state.
+- Prefer composition over inheritance.
+- Prefer explicit dependencies over global state.
+- Keep modules independent.
 
 ---
 
-## Error Handling
+# Error Handling
 
-- Never use broad `except Exception` unless there is a strong reason.
 - Catch the most specific exception possible.
+- Never silently ignore exceptions.
 - Return meaningful error messages.
-- Do not silently ignore errors.
+- Avoid broad `except Exception` unless absolutely necessary.
 
 ---
 
-## Testing
+# Testing
 
-Every new feature should include appropriate tests.
+Every new feature should include tests.
+
+Tests should be:
+
+- Independent
+- Deterministic
+- Fast
+- Readable
 
 Run tests with:
 
@@ -99,21 +154,50 @@ pytest -v
 
 ---
 
-## Pull Requests
+# Documentation
+
+Whenever behavior or architecture changes:
+
+- Update relevant documentation.
+- Keep architectural diagrams synchronized with the implementation.
+- Update the CHANGELOG for user-visible changes.
+
+Documentation should always describe the current implementation.
+
+---
+
+# Pull Requests
 
 Before opening a pull request, ensure:
 
 - All quality checks pass.
-- Tests pass.
-- Documentation is updated when behavior changes.
-- CHANGELOG.md is updated for user-facing changes.
+- All tests pass.
+- Documentation has been updated where necessary.
+- CHANGELOG.md has been updated for user-facing changes.
 
 ---
 
-## Project Philosophy
+# Design Principles
 
-ASTRALIS is built around one core principle:
+ASTRALIS is built around these engineering principles:
+
+- Single Responsibility Principle
+- Dependency Injection
+- Composition over Inheritance
+- Low Coupling
+- High Cohesion
+- Modularity
+- Extensibility
+- Testability
+- Interface Independence
+- User Autonomy
+
+---
+
+# Philosophy
+
+ASTRALIS is built around one guiding principle:
 
 > **Assist. Don't Control.**
 
-Every feature should respect user autonomy, remain transparent, and prioritize reliability over unnecessary complexity.
+Every contribution should prioritize simplicity, transparency, reliability, and respect for user autonomy.

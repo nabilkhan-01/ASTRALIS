@@ -1,6 +1,6 @@
-from astralis.brain.brain import Brain
 from astralis.brain.request import Request
 from astralis.brain.source import RequestSource
+from astralis.pipeline.request_pipeline import RequestPipeline
 
 _EXIT_COMMANDS = {"exit", "quit"}
 
@@ -10,9 +10,9 @@ class CommandLineInterface:
 
     def __init__(
         self,
-        brain: Brain,
+        pipeline: RequestPipeline,
     ) -> None:
-        self.brain = brain
+        self.pipeline = pipeline
 
     def run(
         self,
@@ -46,7 +46,7 @@ class CommandLineInterface:
                 source=RequestSource.CLI,
             )
 
-            response = self.brain.process(
+            response = self.pipeline.process(
                 request,
             )
 

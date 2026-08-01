@@ -13,6 +13,7 @@ from astralis.interfaces.cli import CommandLineInterface
 from astralis.memory.alarm import AlarmMemory
 from astralis.memory.calendar import CalendarMemory
 from astralis.memory.note import NotesMemory
+from astralis.pipeline.request_pipeline import RequestPipeline
 from astralis.providers.provider import Provider
 
 
@@ -34,6 +35,9 @@ class Application:
     # Brain
     ai_provider: Provider
     brain: Brain
+
+    # Pipeline
+    pipeline: RequestPipeline
 
     # Capabilities
     capability_registry: CapabilityRegistry

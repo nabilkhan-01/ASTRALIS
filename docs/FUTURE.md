@@ -12,40 +12,7 @@ Following the principle:
 
 ---
 
-# Core
-
-## Lifecycle Manager
-
-### Validate Lifecycle Transitions
-
-Current implementation allows any lifecycle transition.
-
-Future versions should validate transitions such as:
-
-- STOPPED → INITIALIZING ✅
-- INITIALIZING → RUNNING ✅
-- RUNNING → STOPPING ✅
-- STOPPING → STOPPED ✅
-
-Invalid transitions should be rejected.
-
-**Status:** Deferred
-
-**Reason:** The current implementation is intentionally simple.
-
----
-
 # Engine
-
-## Keep the Engine Focused
-
-As additional core services are introduced, The Engine should remain responsible only for coordinating application lifecycle.
-
-Object construction belongs to Bootstrap.
-
-**Status:** Ongoing
-
----
 
 ## Health System
 
@@ -85,50 +52,7 @@ modules:
 
 ---
 
-## Plugin Discovery
-
-Future versions should automatically discover available plugins.
-
-Discovery should remain separate from activation.
-
-**Status:** Deferred
-
----
-
-## User-Controlled Plugin Activation
-
-Discovered plugins should never be activated automatically.
-
-Users must explicitly enable new capabilities.
-
-This supports the project philosophy:
-
-> **Assist. Don't Control.**
-
-**Status:** Deferred
-
----
-
 # Brain
-
-## Brain Processing Pipeline
-
-The Brain currently executes a linear request processing pipeline.
-
-Future processing stages may include:
-
-- Context retrieval
-- Long-term memory
-- Reasoning
-- Reflection
-- Memory persistence
-- Permission checks
-
-The overall pipeline structure should remain sequential to preserve readability and simplify debugging.
-
-**Status:** Planned
-
-**Reason:** Enables future intelligence while preserving the existing architecture.
 
 ## Intelligent Provider Selection
 
@@ -147,14 +71,10 @@ Provider selection may consider:
 - Latency
 - Local versus cloud execution
 - Model availability
-- Automatic retries
-- Fallback models
 
 Users should always be able to override the selected provider when desired.
 
 Until this capability is implemented, ASTRALIS falls back to the configured default provider.
-
-Future implementations should transparently retry temporary provider failures and fall back to another compatible model or provider whenever practical.
 
 Users should interact with ASTRALIS rather than managing provider availability themselves.
 
@@ -192,36 +112,6 @@ This decision should only be made when the models become genuinely shared.
 **Status:** Deferred
 
 **Reason:** Avoid introducing shared abstractions before they are necessary.
-
----
-
-# Memory
-
-## Memory Independence
-
-Memory components should never depend on Capabilities, Brain, Providers, or Tools.
-
-Memory is responsible for managing application data.
-
-User interaction and reasoning belong to higher layers.
-
-**Status:** Planned
-
-**Reason:** Preserves architectural independence and simplifies future storage migration.
-
----
-
-# Capability Layer
-
-## Capability Independence
-
-Capabilities should execute user requests but should not directly coordinate other capabilities.
-
-Cross-capability workflows belong to higher orchestration layers such as the Brain or future Automation services.
-
-**Status:** Planned
-
-**Reason:** Maintains loose coupling and simplifies testing.
 
 ---
 
@@ -332,18 +222,6 @@ Users should understand:
 
 ---
 
-## Local-First Design
-
-Whenever practical, ASTRALIS should process and store information locally before relying on cloud services.
-
-Cloud providers should remain optional rather than mandatory.
-
-**Status:** Planned
-
-**Reason:** Improves privacy, reliability, and user control.
-
---- 
-
 ## Conversation Window
 
 The Conversation currently stores every message in the active session.
@@ -418,11 +296,7 @@ Execution should remain the responsibility of the Automation layer.
 
 As the number of Memory and Capability implementations grows, common behavior may be extracted into shared base classes.
 
-Possible candidates include:
-
-- BaseMemory
-- Shared capability helpers
-- Shared validation helpers
+Future shared abstractions should only be introduced after repeated implementation patterns emerge.
 
 These abstractions should only be introduced after repeated patterns have clearly emerged.
 
@@ -479,7 +353,7 @@ Reason: Enables ecosystem growth while preserving modularity.
 
 Project: **ASTRALIS**
 
-Current Release: **v0.3.0 – Capability Platform**
+Current Release: **v0.3.1 – Engineering Stability**
 
 Current Milestone: **v0.4.0 "Memory"**
 
