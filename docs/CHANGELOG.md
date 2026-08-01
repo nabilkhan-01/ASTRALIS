@@ -6,6 +6,45 @@ This project follows Semantic Versioning.
 
 ---
 
+# Not Released
+
+## Added
+
+### Brain
+
+- Introduced `BrainContext` as the unified reasoning context for the Brain.
+- Updated the Brain to consume contextual information instead of raw requests.
+- Established a stable Brain API for future context expansion.
+
+### Memory
+
+- Introduced the Entity-based Memory architecture.
+- Added EntityStore abstraction.
+- Added JSON-backed EntityStore implementation.
+- Added MemoryManager.
+- Added MemoryRetriever.
+- Integrated Memory into the application bootstrap.
+- Integrated Memory Retrieval into the Request Pipeline.
+
+### Pipeline
+
+- Request Pipeline now retrieves relevant memory before reasoning.
+- Request Pipeline now assembles the BrainContext.
+
+### Architecture
+
+- Introduced contextual reasoning architecture.
+- Brain no longer retrieves persistent memory directly.
+- Established separation between reasoning and persistence.
+- Updated architecture and engineering documentation.
+
+### Testing
+
+- Expanded unit test coverage for the Memory subsystem.
+- Updated Brain and Pipeline tests for BrainContext integration.
+
+---
+
 # [v0.3.0] - Capability Platform
 
 ## 🚀 Highlights
@@ -50,7 +89,7 @@ This release introduces the Capability Platform, transforming ASTRALIS from a co
 
 # [v0.2.0] - Brain Architecture
 
-## Highlights
+## 🚀 Highlights
 
 - Introduced the Brain architecture
 - Added Request, Response, Conversation, Planner, and Interpreter models
@@ -64,7 +103,7 @@ This release introduces the Capability Platform, transforming ASTRALIS from a co
 
 # [v0.1.0] - Foundation
 
-## Highlights
+## 🚀 Highlights
 
 - Initialized the project
 - Established the project structure
@@ -75,8 +114,10 @@ This release introduces the Capability Platform, transforming ASTRALIS from a co
 
 ---
 
-**Current Release:** v0.3.0 – Capability Platform
+**Current Release:** **v0.3.1 – Engineering Stability**
 
-**Next Milestone:** v0.4.0 – Memory
+**Next Milestone:** **v0.4.0 – Memory**
 
-**Philosophy:** *Assist. Don't Control.*
+**Philosophy:**
+
+> **Assist. Don't Control.**

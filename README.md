@@ -2,16 +2,16 @@
 
 > **Assist. Don't Control.**
 
-**Current Release:** `v0.3.0 – Capability Platform`  
-**Next Milestone:** `v0.4.0 – Memory`
+**Current Release:** `v0.3.1 – Engineering Stability`  
+**Current Milestone:** `v0.4.0 – Memory`
 
-ASTRALIS is a long-term research and engineering project focused on building a personal AI Operating System that assists people while respecting their autonomy, privacy, and decisions.
+ASTRALIS is an research and engineering project focused on building a personal AI Operating System that assists people while respecting their autonomy, privacy, and decisions.
 
 Rather than becoming another chatbot, ASTRALIS is designed as a modular AI system capable of reasoning, planning, remembering, and interacting with the world through independent capabilities while ensuring the user always remains in control.
 
 ---
 
-## Philosophy
+# Philosophy
 
 ASTRALIS is built around one guiding principle:
 
@@ -23,14 +23,14 @@ Every architectural and engineering decision should reinforce this philosophy.
 
 ---
 
-## Vision
+# Vision
 
 Build an intelligence that:
 
 - Assists rather than controls
 - Protects user privacy
 - Explains important decisions
-- Learns and improves over time
+- Learns responsibly over time
 - Evolves through modular engineering
 - Respects user autonomy
 
@@ -38,32 +38,85 @@ The long-term goal is to build an AI Operating System that people trust—not ju
 
 ---
 
-## Current Status
+# Current Status
 
 🚧 **Active Development**
 
-### Completed
+## Completed
 
-- Core Engine
-- Brain Architecture
-- Bootstrap & Dependency Injection
-- Capability Platform
-- Persistent Memory Foundation
-- External API Integrations
-- Gemini & OpenAI Providers
-- Browser and File System Tools
-- Automated Testing
-- Static Analysis (Ruff & MyPy)
+- ✅ Core Engine
+- ✅ Brain Architecture
+- ✅ Bootstrap & Dependency Injection
+- ✅ Capability Platform
+- ✅ Memory Foundation
+- ✅ Contextual Reasoning Pipeline
+- ✅ BrainContext
+- ✅ Entity-based Memory
+- ✅ External API Integrations
+- ✅ Gemini, OpenAI & Mock Providers
+- ✅ Browser & File System Tools
+- ✅ Automated Testing
+- ✅ Static Analysis (Ruff & MyPy)
+- ✅ Project Documentation
 
-### Next Focus
+## Current Focus
 
-**v0.4.0 – Memory**
+### v0.4.0 — Memory
 
-The next milestone focuses on long-term memory, context awareness, and personalized assistance.
+Current work includes:
+
+- [x] Entity-based Memory
+- [x] MemoryManager
+- [x] MemoryRetriever
+- [x] BrainContext
+- [x] Contextual reasoning pipeline
+- [ ] Working Memory
+- [ ] Long-Term Memory
+- [ ] Memory Policy
+- [ ] User Profile
+- [ ] Context-aware reasoning
+- [ ] Preference learning
+- [ ] Explainable memory
 
 ---
 
-## Project Structure
+# Architecture
+
+ASTRALIS follows a modular architecture built around clearly separated responsibilities.
+
+```text
+User
+ │
+ ▼
+Interface
+ │
+ ▼
+Request Pipeline
+ │
+ ▼
+Memory Retrieval
+ │
+ ▼
+Brain Context
+ │
+ ▼
+Brain
+ │
+ ▼
+Capability Manager
+ │
+ ▼
+Capabilities
+ │
+ ▼
+Providers / Tools / External Services
+```
+
+For a detailed overview, see **docs/architecture.md**.
+
+---
+
+# Project Structure
 
 ```text
 ASTRALIS/
@@ -77,7 +130,8 @@ ASTRALIS/
 │   ├── core/
 │   ├── interfaces/
 │   ├── memory/
-│   ├── models/
+│   ├── monitoring/
+│   ├── pipeline/
 │   ├── providers/
 │   ├── security/
 │   ├── storage/
@@ -99,16 +153,16 @@ ASTRALIS/
 
 ---
 
-## Documentation
+# Documentation
 
-Project documentation is available in the `docs/` directory.
+Documentation is available in the **docs/** directory.
 
 - Architecture
 - Changelog
-- Contributing
+- Contributing Guide
 - Architecture Decision Records (ADRs)
 - Founder's Note
-- Future
+- Future Decisions
 - History
 - Interfaces
 - Engineering Principles
@@ -116,11 +170,9 @@ Project documentation is available in the `docs/` directory.
 
 ---
 
-## Engineering Principles
+# Engineering Workflow
 
-ASTRALIS is developed incrementally.
-
-Every feature follows the same engineering workflow:
+Every feature follows the same workflow:
 
 1. Design
 2. Implement
@@ -129,10 +181,18 @@ Every feature follows the same engineering workflow:
 5. Document
 6. Release
 
-The project emphasizes:
+Design decisions always precede implementation.
+
+---
+
+# Engineering Principles
+
+ASTRALIS emphasizes:
 
 - Clean Architecture
 - Modularity
+- Dependency Injection
+- Separation of Responsibilities
 - Maintainability
 - Testability
 - Transparency
@@ -140,32 +200,59 @@ The project emphasizes:
 
 ---
 
-## Long-Term Goals
+# Long-Term Goals
 
 ASTRALIS is being built to:
 
 - Understand natural language
 - Remember important information
+- Learn responsibly from user interactions
 - Plan before acting
 - Reason through complex problems
 - Interact safely with computers
-- Learn from experience
+- Respect privacy by design
 - Assist without replacing human judgment
 
 Every release should strengthen the existing architecture rather than replace it.
 
 ---
 
-## Quality Standards
+# Quality Standards
 
-Every release aims to maintain:
+Every contribution should maintain:
 
-- Automated testing
-- Ruff compliance
-- MyPy compliance
-- Dependency injection
-- Modular architecture
-- Comprehensive documentation
+- ✅ Automated testing
+- ✅ Ruff compliance
+- ✅ MyPy compliance
+- ✅ Modular architecture
+- ✅ Dependency Injection
+- ✅ Comprehensive documentation
+
+Run all quality checks before committing:
+
+```bash
+python scripts/check.py
+```
+
+---
+
+# Roadmap
+
+Current milestone:
+
+**v0.4.0 — Memory**
+
+Upcoming milestones:
+
+- Memory
+- Automation
+- Voice
+- Vision
+- Context
+- Reasoning
+- AI Operating System
+
+See **docs/roadmap.md** for the complete roadmap.
 
 ---
 

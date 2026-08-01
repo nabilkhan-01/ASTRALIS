@@ -4,7 +4,7 @@ This document records architectural decisions that have been intentionally defer
 
 These are **not bugs** or **technical debt**.
 
-They represent improvements or capabilities that will be implemented when the project reaches the appropriate stage.
+They represent architectural improvements that should be implemented when the project reaches the appropriate stage.
 
 Following the principle:
 
@@ -58,12 +58,12 @@ modules:
 
 The current implementation uses a default AI provider selected through configuration.
 
-In future versions, ASTRALIS should determine the most appropriate provider for each request instead of relying solely on a predefined default.
+Future versions should determine the most appropriate provider for each request rather than relying solely on a predefined default.
 
 Provider selection may consider:
 
 - Task complexity
-- Required capabilities (reasoning, vision, coding, etc.)
+- Required capabilities
 - Privacy requirements
 - User preferences
 - Provider availability
@@ -72,20 +72,17 @@ Provider selection may consider:
 - Local versus cloud execution
 - Model availability
 
-Users should always be able to override the selected provider when desired.
-
-Until this capability is implemented, ASTRALIS falls back to the configured default provider.
-
-Users should interact with ASTRALIS rather than managing provider availability themselves.
+Users should always be able to override the selected provider.
 
 **Status:** Planned
 
-**Reason:** Enables intelligent provider selection while preserving user autonomy.
+**Reason:** Improves flexibility while preserving user autonomy.
 
+---
 
 ## Response Model Expansion
 
-The initial Response model intentionally remains minimal.
+The current Response model intentionally remains minimal.
 
 Future versions may include:
 
@@ -105,13 +102,132 @@ These additions should only be introduced when required by real functionality.
 
 Request and Response currently belong to the Brain module.
 
-If these models become shared across multiple modules, they may be extracted into a common package.
+If these models become shared across multiple subsystems, they may be extracted into a common package.
 
-This decision should only be made when the models become genuinely shared.
+This should only occur when they become genuinely shared.
 
 **Status:** Deferred
 
-**Reason:** Avoid introducing shared abstractions before they are necessary.
+**Reason:** Avoids premature abstraction.
+
+---
+
+## BrainContext Evolution
+
+BrainContext currently contains only the information required by the Brain for reasoning.
+
+Future versions may extend BrainContext with additional context such as:
+
+- Working Memory
+- Active Project
+- Vision Context
+- Environmental Context
+- User Context
+
+The Brain's public API should evolve by extending BrainContext rather than by expanding the `Brain.process()` method signature.
+
+**Status:** Planned
+
+**Reason:** Preserves a stable Brain interface while allowing contextual reasoning to evolve.
+
+---
+
+# Memory
+
+## Entity-Based Memory Model
+
+Persistent memory should be represented using a unified entity model.
+
+Every piece of information remembered by ASTRALIS should be represented as an Entity.
+
+Examples include:
+
+- User
+- Project
+- Note
+- Calendar Event
+- Alarm
+- Preference
+- Goal
+
+Each entity owns its own properties.
+
+Future capabilities may introduce additional entity types without changing the memory architecture.
+
+Relationships between entities should only be introduced when they become necessary.
+
+**Status:** Deferred
+
+**Reason:** Provides a unified, extensible representation for persistent knowledge.
+
+---
+
+## Working and Long-Term Memory
+
+Memory should eventually consist of two distinct layers.
+
+### Working Memory
+
+Temporary information used while reasoning.
+
+Examples include:
+
+- Current conversation
+- Active project
+- Current task
+- Recently referenced information
+
+Working memory should naturally expire as context changes.
+
+### Long-Term Memory
+
+Persistent information that remains useful across conversations.
+
+Examples include:
+
+- User preferences
+- Projects
+- Goals
+- Frequently used technologies
+- Important relationships
+- Personal profile
+
+Long-term memory should remain user-visible and user-editable.
+
+**Status:** Planned
+
+**Reason:** Mirrors natural human memory while preserving user control.
+
+---
+
+## Memory Policy
+
+The Brain should identify observations but should not directly decide what becomes long-term memory.
+
+Future versions should introduce a Memory Policy responsible for determining whether information should be:
+
+- Ignored
+- Remembered
+- Updated
+- Strengthened
+- Forgotten
+
+The policy may consider:
+
+- Frequency
+- Confidence
+- Importance
+- User feedback
+- Recency
+- Explicit user instructions
+
+The Brain should emit observations.
+
+The Memory Policy should decide what is ultimately stored.
+
+**Status:** Planned
+
+**Reason:** Separates reasoning from persistence while enabling intelligent long-term learning.
 
 ---
 
@@ -119,34 +235,30 @@ This decision should only be made when the models become genuinely shared.
 
 ## Stable Entity Identity
 
-The current JSON-based implementation uses sequential identifiers for user-facing collections.
+Persistent entities should use stable internal identifiers that never change.
 
-When ASTRALIS migrates to a database (such as PostgreSQL), persistent entities should use stable internal identifiers that are never renumbered or reused.
+Future implementations should migrate from human-readable identifiers to generated UUIDs to support:
 
-User-facing numbering should remain presentation logic rather than persistent storage.
+- Relationships
+- Synchronization
+- Database storage
+- Distributed systems
 
-Examples include:
+User-facing names should remain presentation data rather than persistent identity.
 
-- Notes
-- Calendar Events
-- Alarms
-- Future Goals
-- Projects
-- Tasks
+**Status:** Deferred
 
-This separation preserves relationships between entities while maintaining a simple user experience.
+**Reason:** Enables future scalability while preserving stable references.
 
-**Status:** Planned
-
-**Reason:** Supports relational storage, future knowledge graphs, and long-term data integrity.
+---
 
 ## PostgreSQL Migration
 
-JSON storage is intentionally used during early development to simplify implementation.
+JSON storage is intentionally used during early development.
 
-Future versions should migrate persistent application data to PostgreSQL through the Storage abstraction.
+Future versions should migrate persistent storage to PostgreSQL through the Storage abstraction.
 
-The migration should occur without requiring changes to higher application layers.
+Higher application layers should remain unchanged.
 
 Potential benefits include:
 
@@ -155,19 +267,21 @@ Potential benefits include:
 - Efficient querying
 - Indexing
 - Concurrent access
-- Future synchronization
+- Synchronization
 
 **Status:** Planned
 
-**Reason:** Provides a scalable persistence layer while preserving architectural separation.
+**Reason:** Provides scalable persistence while preserving architectural separation.
+
+---
 
 # Security
 
 ## Permission System
 
-Every action capable of changing user data or interacting with external systems should pass through a centralized Permission Manager.
+Every action capable of modifying user data or interacting with external systems should pass through a centralized Permission Manager.
 
-Examples:
+Examples include:
 
 - File deletion
 - Sending emails
@@ -177,7 +291,7 @@ Examples:
 
 **Status:** Planned
 
-**Reason:** Required to preserve user autonomy.
+**Reason:** Preserves user autonomy.
 
 ---
 
@@ -185,11 +299,12 @@ Examples:
 
 ## Context-Aware Assistance
 
-ASTRALIS should eventually understand and use relevant context before deciding how to assist the user.
+ASTRALIS should eventually reason using relevant context rather than only the current request.
 
 Context may include:
 
 - Conversation history
+- Working memory
 - Long-term memory
 - User preferences
 - Current project
@@ -198,35 +313,35 @@ Context may include:
 - Previous work
 - Environmental context
 
-This context should improve reasoning, planning, and recommendations without becoming intrusive or reducing user autonomy.
-
-Reasoning should not depend solely on the current request, but on the broader context available to ASTRALIS.
-
 **Status:** Planned
 
-**Reason:** Enables more coherent, personalized, and context-aware assistance while preserving user privacy, transparency, and control.
+**Reason:** Enables coherent, personalized assistance while preserving transparency and user control.
+
+---
 
 ## Explainability
 
-ASTRALIS should be able to explain significant decisions and recommendations.
+ASTRALIS should explain significant decisions and recommendations.
 
 Users should understand:
 
-- Why an action was suggested.
-- Which information influenced the decision.
-- Any assumptions made.
+- Why an action was suggested
+- Which information influenced the decision
+- Why information was remembered
+- Why information was forgotten
+- Any assumptions made
 
 **Status:** Planned
 
-**Reason:** Supports transparency and trust.
+**Reason:** Improves transparency and trust.
 
 ---
 
 ## Conversation Window
 
-The Conversation currently stores every message in the active session.
+The current Conversation stores every message in the active session.
 
-Future versions should support configurable context windows, summarization, and pruning to prevent unbounded conversation growth while preserving important context.
+Future versions should support configurable context windows, summarization, and pruning to prevent unbounded growth.
 
 **Status:** Planned
 
@@ -234,21 +349,21 @@ Future versions should support configurable context windows, summarization, and 
 
 ## ASTRALIS Language Model
 
-ASTRALIS currently relies on external language models through interchangeable providers.
+ASTRALIS currently relies on interchangeable external language providers.
 
-Future versions should support one or more language models developed specifically for ASTRALIS while preserving the existing provider abstraction.
+Future versions should support one or more language models developed specifically for ASTRALIS while preserving the provider abstraction.
 
-External providers should remain optional so users can choose the most appropriate language engine for their needs.
+External providers should remain optional.
 
 **Status:** Planned
 
-**Reason:** Reduces dependency on external AI providers while preserving architectural flexibility.
+**Reason:** Reduces dependence on external providers while preserving flexibility.
 
 ---
 
 ## Provider Resilience
 
-Language providers should remain resilient to temporary service failures.
+Language providers should tolerate temporary failures.
 
 Future implementations may include:
 
@@ -259,11 +374,9 @@ Future implementations may include:
 - Health monitoring
 - Cached provider availability
 
-ASTRALIS should recover from temporary provider failures whenever possible without requiring user intervention.
-
 **Status:** Planned
 
-**Reason:** Improves reliability while allowing users to interact with ASTRALIS instead of individual AI providers.
+**Reason:** Improves reliability.
 
 ---
 
@@ -280,9 +393,9 @@ Examples include:
 - Scheduled tasks
 - Recurring jobs
 
-Capabilities should manage user data only.
+Capabilities should manage user data.
 
-Execution should remain the responsibility of the Automation layer.
+Execution belongs to the Automation layer.
 
 **Status:** Planned
 
@@ -292,45 +405,65 @@ Execution should remain the responsibility of the Automation layer.
 
 # Engineering
 
+## Application Services
+
+As ASTRALIS grows, application-wide subsystems should be grouped into an Application Services layer rather than being injected individually throughout the application.
+
+Future structure:
+
+```text
+Application
+├── Core
+├── Brain
+├── Services
+│   ├── Memory
+│   ├── Monitoring
+│   ├── Automation
+│   ├── Permissions
+│   └── ...
+├── Capabilities
+└── Interfaces
+```
+
+This refactor should only occur when multiple cross-cutting services justify the additional abstraction.
+
+**Status:** Deferred
+
+**Reason:** Prevents Application and RequestPipeline from accumulating excessive dependencies while avoiding premature abstraction.
+
+---
+
+## Pipeline Stages
+
+If the request pipeline grows beyond a small number of responsibilities, it should evolve into a stage-based architecture.
+
+Possible stages include:
+
+- Monitoring
+- Memory Retrieval
+- Brain Processing
+- Memory Policy
+- Memory Update
+- Permissions
+- Automation
+
+The current pipeline should remain intentionally simple until this abstraction becomes justified.
+
+**Status:** Deferred
+
+**Reason:** Prevents unnecessary complexity while providing a clear evolution path.
+
+---
+
 ## Shared Base Components
 
 As the number of Memory and Capability implementations grows, common behavior may be extracted into shared base classes.
 
-Future shared abstractions should only be introduced after repeated implementation patterns emerge.
-
-These abstractions should only be introduced after repeated patterns have clearly emerged.
+These abstractions should only be introduced after repeated implementation patterns clearly emerge.
 
 **Status:** Deferred
 
-**Reason:** Avoids premature abstraction while reducing future duplication.
-
-## Service Layer
-
-Future versions may introduce a dedicated Services layer for long-running or application-wide business logic.
-
-Examples include:
-
-- Scheduler
-- Notification Service
-- Knowledge Graph
-- Embedding Service
-- Summarization
-
-Services differ from Capabilities in that they are not directly invoked by users.
-
-**Status:** Deferred
-
-**Reason:** Preserves clear architectural boundaries as the project grows.
-
----
-
-# Documentation Policy
-
-Whenever a feature is intentionally postponed, evaluate whether it belongs in this document.
-
-Only record items that would meaningfully affect the future architecture if forgotten.
-
-This document should remain intentionally small and contain only significant architectural decisions that have been deliberately deferred.
+**Reason:** Avoids premature abstraction.
 
 ---
 
@@ -345,9 +478,19 @@ Plugins should be:
 - Sandboxed when practical
 - Explicitly enabled by users
 
-Status: Planned
+**Status:** Planned
 
-Reason: Enables ecosystem growth while preserving modularity.
+**Reason:** Enables ecosystem growth while preserving modularity.
+
+---
+
+# Documentation Policy
+
+Whenever a feature is intentionally postponed, evaluate whether it belongs in this document.
+
+Only record architectural decisions that would be difficult to reconstruct later.
+
+This document should remain intentionally small and focused on significant deferred architectural decisions.
 
 ---
 
@@ -357,4 +500,6 @@ Current Release: **v0.3.1 – Engineering Stability**
 
 Current Milestone: **v0.4.0 "Memory"**
 
-Philosophy: **Assist. Don't Control.**
+Philosophy:
+
+> **Assist. Don't Control.**

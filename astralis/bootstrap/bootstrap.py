@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from astralis.api.email import EmailApi
 from astralis.api.search import SearchApi
 from astralis.api.weather import WeatherApi
@@ -27,7 +29,10 @@ from astralis.core.registry import ModuleRegistry
 from astralis.interfaces.cli import CommandLineInterface
 from astralis.memory.alarm import AlarmMemory
 from astralis.memory.calendar import CalendarMemory
+from astralis.memory.json_store import JsonEntityStore
+from astralis.memory.manager import MemoryManager
 from astralis.memory.note import NotesMemory
+from astralis.memory.retriever import MemoryRetriever
 from astralis.monitoring.monitor import Monitor
 from astralis.pipeline.request_pipeline import RequestPipeline
 from astralis.providers.factory import ProviderFactory
@@ -95,10 +100,26 @@ class Bootstrap:
             enabled=config.monitoring_enabled,
         )
 
+        memory_store = JsonEntityStore(
+            Path(
+                "data/memory.json",
+            ),
+        )
+
+        memory_manager = MemoryManager(
+            memory_store,
+        )
+
+        memory_retriever = MemoryRetriever(
+            memory_manager,
+        )
+        
         pipeline = RequestPipeline(
             brain=brain,
+            retriever=memory_retriever,
             monitor=monitor,
         )
+
 
         # Interface
         cli = CommandLineInterface(
@@ -121,6 +142,8 @@ class Bootstrap:
             alarm_memory=alarm_memory,
             cli=cli,
             pipeline=pipeline,
+            memory_manager=memory_manager,
+            memory_retriever=memory_retriever,
         )
 
     def _build_capabilities(

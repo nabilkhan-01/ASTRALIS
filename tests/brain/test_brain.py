@@ -1,4 +1,5 @@
 from astralis.brain.brain import Brain
+from astralis.brain.context import BrainContext
 from astralis.brain.conversation import Conversation
 from astralis.brain.interpretation import Interpretation
 from astralis.brain.request import Request
@@ -58,8 +59,11 @@ class TestBrain:
         brain = self._create_brain()
 
         response = brain.process(
-            create_request(
-                "hello there",
+            BrainContext(
+                request=create_request(
+                    "hello there",
+                ),
+                memory=[],
             ),
         )
 
@@ -74,12 +78,15 @@ class TestBrain:
         brain = self._create_brain()
 
         brain.process(
-            create_request(
-                "hello",
+            BrainContext(
+                request=create_request(
+                    "hello",
+                ),
+                memory=[],
             ),
         )
 
-        messages = brain.conversation.messages
+        messages = brain._conversation.messages
 
         assert len(messages) == 2
         assert messages[0].content == "hello"

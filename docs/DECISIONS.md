@@ -611,6 +611,80 @@ The Brain remains focused exclusively on intelligent request processing, while i
 
 ---
 
+## ADR-0025
+
+### Title
+
+The Brain Consumes Context Rather Than Raw Requests
+
+### Decision
+
+The Brain receives a BrainContext instead of a raw Request.
+
+BrainContext represents all information available for reasoning while remaining independent of how that information was collected.
+
+The Request Pipeline is responsible for constructing the BrainContext.
+
+### Rationale
+
+As ASTRALIS evolves, the Brain requires more than the current user request.
+
+Future reasoning may depend on:
+
+- Retrieved memory
+- Working memory
+- Active project
+- Vision
+- Environmental context
+- User preferences
+
+Passing these independently would continually expand the Brain API.
+
+A dedicated BrainContext provides a stable interface that can evolve without changing the Brain's public contract.
+
+### Consequences
+
+- The Brain consumes a single immutable reasoning context.
+- Request Pipeline assembles reasoning context.
+- Future contextual information can be added without redesigning the Brain API.
+- The Brain remains independent from memory retrieval and other context providers.
+
+---
+
+## ADR-0026
+
+### Title
+
+Separate Memory Retrieval from Memory Persistence
+
+### Decision
+
+Memory retrieval and memory persistence are separate responsibilities.
+
+The Brain never retrieves or persists memory directly.
+
+Memory retrieval occurs before reasoning.
+
+Memory persistence occurs after reasoning through a dedicated Memory Policy.
+
+### Rationale
+
+Reasoning and persistence evolve independently.
+
+The Brain should focus exclusively on understanding requests and coordinating intelligent behavior.
+
+Determining what should become long-term memory is a separate concern requiring different policies and heuristics.
+
+Separating these responsibilities preserves modularity and aligns with the project philosophy.
+
+### Consequences
+
+- Memory retrieval becomes part of the request pipeline.
+- The Brain remains independent of storage implementations.
+- Future Memory Policies can evolve without modifying Brain logic.
+- Automatic learning and explicit user memory can coexist through a common persistence policy.
+
+
 ## ADR Guidelines
 
 Architecture Decision Records (ADRs) document significant architectural decisions that have a long-term impact on ASTRALIS.
@@ -622,7 +696,10 @@ An ADR should be created only when a decision:
 - Establishes a long-term engineering principle.
 - Affects multiple modules or future development.
 
-Implementation details, internal algorithms, logging changes, helper classes, and other low-level design choices should be documented through code, commit history, or project documentation rather than ADRs.
+Implementation details, helper classes, refactorings, naming changes, and other low-level design decisions should be documented through code, commit history, or project documentation rather than ADRs.
+
+ADRs should record why the architecture is the way it is, not how individual components are implemented.
+
 When in doubt, prefer documenting the decision in code or project documentation rather than creating a new ADR.
 
 The goal is to preserve the reasoning behind major architectural decisions—not to record every implementation detail.

@@ -34,6 +34,12 @@ The architecture follows one guiding principle:
               Request Pipeline
                        │
                        ▼
+              Memory Retrieval
+                       │
+                       ▼
+                 Brain Context
+                       │
+                       ▼
                     Brain
         ┌──────────────┼──────────────┐
         │              │              │
@@ -107,13 +113,16 @@ CLI
 RequestPipeline
  │
  ▼
+MemoryRetriever
+ │
+ ▼
+BrainContext
+ │
+ ▼
 Brain
  │
  ▼
 Capability Manager
- │
- ▼
-Capability
 ```
 
 ---
@@ -172,12 +181,14 @@ The Request Pipeline is the single entry point for every request.
 Responsibilities:
 
 - Receive requests from interfaces
+- Retrieve relevant memory
+- Build the BrainContext
 - Coordinate request processing
 - Delegate execution to the Brain
 
 The pipeline contains no intelligence.
 
-It exists to isolate cross-cutting concerns from the Brain and user interfaces.
+It assembles the context required for reasoning while isolating cross-cutting concerns from the Brain and user interfaces.
 
 ---
 
@@ -187,6 +198,7 @@ The Brain coordinates intelligent request processing.
 
 Responsibilities:
 
+- Consume BrainContext
 - Request validation
 - Conversation management
 - Request interpretation
@@ -194,7 +206,30 @@ Responsibilities:
 - Capability execution
 - Response generation
 
-The Brain never directly communicates with external services.
+The Brain receives all information required for reasoning through a BrainContext.
+
+It never retrieves persistent memory directly.
+
+---
+
+# Brain Context
+
+BrainContext represents the complete reasoning context supplied to the Brain.
+
+Current contents:
+
+- Request
+- Retrieved Memory
+
+Future versions may extend BrainContext with:
+
+- Working Memory
+- Active Project
+- Vision Context
+- Environment
+- User Context
+
+The Brain API should evolve through BrainContext rather than by expanding the Brain.process() signature.
 
 ---
 
@@ -218,20 +253,6 @@ Capability
 ```
 
 Capabilities represent everything ASTRALIS can do.
-
-Current capabilities:
-
-- Language
-- Time
-- Calculator
-- Weather
-- Search
-- Notes
-- Calendar
-- Browser
-- File System
-- Alarm
-- Email
 
 Every capability implements the same interface and is independently testable.
 
@@ -259,17 +280,24 @@ Their only responsibility is language generation.
 
 # Memory
 
-Memory manages persistent user information.
+Memory manages knowledge rather than persistence.
 
-Current memory modules:
+Current components:
 
-- Notes
-- Calendar
-- Alarm
+- MemoryManager
+- MemoryRetriever
+- EntityStore
+- JsonEntityStore
 
-Memory determines what is stored.
+Memory is responsible for:
 
-Storage determines where it is stored.
+- Managing persistent entities
+- Retrieving relevant knowledge
+- Abstracting storage
+
+Storage determines where information is stored.
+
+Memory determines what information is available for reasoning.
 
 ---
 
@@ -335,20 +363,22 @@ Every architectural decision should reinforce these rules.
 
 - Bootstrap owns object construction.
 - Application stores shared dependencies.
-- Engine coordinates the application.
-- Request Pipeline coordinates request processing.
-- Brain owns intelligence.
+- Engine coordinates the application lifecycle.
+- Request Pipeline assembles reasoning context.
+- Brain owns reasoning and decision making.
+- Brain never retrieves or persists memory directly.
 - Capabilities perform actions.
-- Providers generate language.
-- Memory manages state.
+- Memory manages knowledge.
 - Storage manages persistence.
+- Providers generate language.
 - Interfaces remain thin.
 - Prefer composition over inheritance.
 - Keep modules independent.
+- Favor explicit dependencies over hidden coupling.
 - Catch specific exceptions.
 - Design before implementation.
 - Keep documentation synchronized with the code.
-
+- Preserve user autonomy.
 ---
 
 Project: **ASTRALIS**

@@ -1,3 +1,4 @@
+from astralis.brain.context import BrainContext
 from astralis.brain.conversation import Conversation
 from astralis.brain.interpretation import Interpretation
 from astralis.brain.interpreter import Interpreter
@@ -16,37 +17,45 @@ class Brain:
         self,
         capability_manager: CapabilityManager,
     ) -> None:
-
         # Brain components
-        self.interpreter = Interpreter()
-        self.planner = Planner()
+        self._interpreter = Interpreter()
+        self._planner = Planner()
 
         # Brain state
-        self.conversation = Conversation()
+        self._conversation = Conversation()
 
         # Execution
-        self.capability_manager = capability_manager
+        self._capability_manager = capability_manager
 
     def process(
         self,
-        request: Request,
+        context: BrainContext,
     ) -> Response:
         """Process a user request through the Brain pipeline."""
 
-        # Stage 1 - validation
-        request = self._validate(request)
+        # Memory is intentionally unused for now.
+        # Future versions will use it to build richer
+        # reasoning context before interpretation.
+        _ = context.memory
+
+        # Stage 1 - Validation
+        request = self._validate(
+            context.request,
+        )
 
         # Stage 2 - Conversation
-        self.conversation.add(
+        self._conversation.add(
             Role.USER,
             request.text,
         )
 
         # Stage 3 - Interpretation
-        interpretation = self._interpret(request)
+        interpretation = self._interpret(
+            request,
+        )
 
         # Stage 4 - Planning
-        plan = self.planner.plan(
+        plan = self._planner.plan(
             interpretation,
         )
 
@@ -58,7 +67,7 @@ class Brain:
         )
 
         # Stage 6 - Conversation
-        self.conversation.add(
+        self._conversation.add(
             Role.ASSISTANT,
             response.text,
         )
@@ -80,7 +89,9 @@ class Brain:
     ) -> Interpretation:
         """Interpret the user's request."""
 
-        return self.interpreter.interpret(request)
+        return self._interpreter.interpret(
+            request,
+        )
 
     def _execute(
         self,
@@ -90,9 +101,9 @@ class Brain:
     ) -> Response:
         """Execute the processing plan."""
 
-        return self.capability_manager.execute(
+        return self._capability_manager.execute(
             request=request,
-            conversation=self.conversation,
+            conversation=self._conversation,
             interpretation=interpretation,
             plan=plan,
         )

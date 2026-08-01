@@ -12,9 +12,9 @@ Every milestone builds toward one philosophy:
 
 # Current Development
 
-**Current Release:** `v0.3.0 – Capability Platform`
+**Current Release:** `v0.3.1 – Engineering Stability`
 
-**Next Milestone:** `v0.4.0 – Memory`
+**Current Milestone:** `v0.4.0 – Memory`
 
 ---
 
@@ -22,13 +22,13 @@ Every milestone builds toward one philosophy:
 
 Established the vision for ASTRALIS.
 
-### Completed
+## Completed
 
-- Project foundation
-- Engineering principles
-- Architecture planning
-- Documentation
-- Development environment
+- [x] Project foundation
+- [x] Engineering principles
+- [x] Architecture planning
+- [x] Documentation
+- [x] Development environment
 
 ---
 
@@ -36,15 +36,21 @@ Established the vision for ASTRALIS.
 
 Built the core application infrastructure.
 
-### Completed
+## Completed
 
-- Core Engine
-- Configuration system
-- Logging
-- Lifecycle management
-- Module system
-- Brain foundation
-- Command-line interface
+- [x] Core Engine
+- [x] Configuration system
+- [x] Logging
+- [x] Lifecycle management
+- [x] Module system
+- [x] Brain foundation
+- [x] Command-line interface
+
+### Success Criteria
+
+- [x] Stable application lifecycle
+- [x] Modular project structure
+- [x] Foundation ready for intelligent features
 
 ---
 
@@ -52,15 +58,23 @@ Built the core application infrastructure.
 
 Taught ASTRALIS how to think.
 
-### Completed
+## Completed
 
-- Request processing pipeline
-- Conversation management
-- Interpreter
-- Planner
-- Capability Framework
-- Provider abstraction
-- Gemini and OpenAI providers
+- [x] Request processing pipeline
+- [x] Conversation management
+- [x] Interpreter
+- [x] Planner
+- [x] Capability Framework
+- [x] Provider abstraction
+- [x] Gemini provider
+- [x] OpenAI provider
+- [x] Mock provider
+
+### Success Criteria
+
+- [x] Modular reasoning architecture
+- [x] Provider-independent intelligence
+- [x] Capability-based execution
 
 ---
 
@@ -68,142 +82,187 @@ Taught ASTRALIS how to think.
 
 Enabled ASTRALIS to interact with the world.
 
-### Completed
+## Architecture
 
-#### Architecture
+- [x] Bootstrap composition root
+- [x] Dependency Injection
+- [x] Application dependency container
 
-- Bootstrap composition root
-- Dependency Injection
-- Application container
+## Capabilities
 
-#### Capabilities
+- [x] Language
+- [x] Time
+- [x] Calculator
+- [x] Weather
+- [x] Search
+- [x] Browser
+- [x] File System
+- [x] Notes
+- [x] Calendar
+- [x] Alarm
+- [x] Email
 
-- Language
-- Time
-- Calculator
-- Weather
-- Search
-- Browser
-- File System
-- Notes
-- Calendar
-- Alarm
-- Email
+## Platform
 
-#### Platform
+- [x] Persistent Notes
+- [x] Persistent Calendar
+- [x] Persistent Alarms
+- [x] API layer
+- [x] Browser tools
+- [x] File System tools
+- [x] Domain models
 
-- Persistent Memory
-- API layer
-- Domain models
-- Browser and File System tools
+## Engineering
 
-#### Engineering
-
-- 110+ automated tests
-- Ruff compliance
-- MyPy compliance
-- Updated documentation
+- [x] Bootstrap architecture
+- [x] Static typing
+- [x] Ruff compliance
+- [x] MyPy compliance
+- [x] 110+ automated tests
+- [x] Updated documentation
 
 ### Success Criteria
 
-ASTRALIS performs useful real-world tasks through modular capabilities while remaining provider-independent.
+- [x] Provider-independent architecture
+- [x] Modular capabilities
+- [x] Real-world functionality
 
 ---
 
-# v0.4.0 — Memory
+# v0.4.0 — Memory 🚧
+
+**Progress:** **6 / 17**
 
 Teach ASTRALIS to remember.
 
-### Planned
+## Architecture
 
-#### Architecture
+- [x] BrainContext
+- [x] Entity-based Memory
+- [x] EntityStore abstraction
+- [x] JSON Entity Store
+- [x] MemoryManager
+- [x] MemoryRetriever
+- [ ] Memory Policy
+- [ ] Working Memory
+- [ ] Long-Term Memory
 
-- Request Pipeline
-- Monitoring infrastructure
-- Improved request processing architecture
+## Intelligence
 
-#### Memory
+- [ ] Explicit memory
+- [ ] User profile
+- [ ] Project awareness
+- [ ] Context-aware reasoning
+- [ ] Preference learning
+- [ ] Explainable memory
+- [ ] Importance scoring
+- [ ] Memory updates after reasoning
 
-- Long-term memory
-- User profile
-- Memory retrieval
-- Memory importance scoring
-- Project awareness
-- Context-aware responses
+### Architectural Goal
+
+Separate reasoning from persistence.
 
 ### Success Criteria
 
-ASTRALIS remembers useful information while keeping users in complete control of their data.
-
-The Request Pipeline provides a unified entry point for request processing, preparing the platform for future monitoring, automation, and additional interfaces.
-
-# v0.5.0 — Voice
-
-Enable natural conversations.
-
-### Planned
-
-- Speech-to-text
-- Text-to-speech
-- Wake word
-- Streaming conversations
-- Interrupt handling
+- [ ] Retrieve relevant memories
+- [ ] Remember user information
+- [ ] Explain remembered information
+- [ ] Allow users to inspect memories
+- [ ] Allow users to edit memories
+- [ ] Allow users to delete memories
 
 ---
 
-# v0.6.0 — Vision
-
-Enable visual understanding.
-
-### Planned
-
-- OCR
-- Screenshot understanding
-- Image understanding
-- Visual context
-
----
-
-# v0.7.0 — Awareness
-
-Improve contextual understanding.
-
-### Planned
-
-- Workspace awareness
-- Active project awareness
-- Context Engine
-- Intelligent suggestions
-- Presence without interruption
-
----
-
-# v0.8.0 — Automation
+# v0.5.0 — Automation
 
 Reduce repetitive work.
 
-### Planned
+## Planned
 
-- Scheduled tasks
-- Background jobs
-- Workflow automation
-- Smart reminders
-- Permission-aware execution
+- [ ] Background Scheduler
+- [ ] Scheduled tasks
+- [ ] Recurring jobs
+- [ ] Smart reminders
+- [ ] Workflow automation
+- [ ] Permission-aware execution
+
+### Architectural Goal
+
+Separate user interaction from background execution.
 
 ---
 
-# v0.9.0 — Intelligence
+# v0.6.0 — Voice
 
-Strengthen reasoning.
+Enable natural conversations.
 
-### Planned
+## Planned
 
-- Multi-step planning
-- Reflection
-- Better reasoning
-- Capability orchestration
-- Explainable decisions
-- Multi-agent coordination
+- [ ] Speech-to-text
+- [ ] Text-to-speech
+- [ ] Wake word
+- [ ] Streaming conversations
+- [ ] Interrupt handling
+
+### Architectural Goal
+
+Support conversational interaction through interchangeable interfaces.
+
+---
+
+# v0.7.0 — Vision
+
+Enable visual understanding.
+
+## Planned
+
+- [ ] OCR
+- [ ] Screenshot understanding
+- [ ] Image understanding
+- [ ] Visual context
+- [ ] Multi-modal reasoning
+
+### Architectural Goal
+
+Treat visual information as another reasoning context.
+
+---
+
+# v0.8.0 — Context
+
+Improve contextual understanding.
+
+## Planned
+
+- [ ] Workspace awareness
+- [ ] Active project awareness
+- [ ] Environment awareness
+- [ ] Context Engine
+- [ ] Intelligent suggestions
+- [ ] Presence without interruption
+
+### Architectural Goal
+
+Provide assistance based on context rather than isolated requests.
+
+---
+
+# v0.9.0 — Reasoning
+
+Strengthen intelligent decision making.
+
+## Planned
+
+- [ ] Multi-step planning
+- [ ] Reflection
+- [ ] Capability orchestration
+- [ ] Explainable reasoning
+- [ ] Multi-agent collaboration
+- [ ] Adaptive provider selection
+
+### Architectural Goal
+
+Improve reasoning quality while preserving transparency.
 
 ---
 
@@ -211,39 +270,58 @@ Strengthen reasoning.
 
 The first stable release.
 
-### Goals
+## Goals
 
-- Reliable
-- Modular
-- Privacy-respecting
-- Context-aware
-- Extensible
-- Provider-independent
+- [ ] Reliable
+- [ ] Modular
+- [ ] Privacy-respecting
+- [ ] Context-aware
+- [ ] Extensible
+- [ ] Provider-independent
+- [ ] Production-ready
 
-ASTRALIS should be capable of assisting users throughout their daily work while remaining faithful to its philosophy:
+### Success Criteria
 
-> **Assist. Don't Control.**
+- [ ] Stable public architecture
+- [ ] Fully documented
+- [ ] Comprehensive automated tests
+- [ ] Cross-platform support
+- [ ] Long-term memory
+- [ ] Automation
+- [ ] Voice
+- [ ] Vision
+- [ ] Context-aware reasoning
 
 ---
 
 # Beyond v1.0
 
-Long-term research areas include:
+Long-term research areas.
 
-- Local language models
-- Plugin ecosystem
-- Multi-device synchronization
-- Advanced memory
-- Personal knowledge graphs
-- ASTRALIS-native intelligence
+- [ ] Local language models
+- [ ] Plugin ecosystem
+- [ ] Multi-device synchronization
+- [ ] Knowledge Graph
+- [ ] Semantic Memory
+- [ ] Native ASTRALIS language models
+- [ ] Distributed intelligence
 
 ---
 
-## Development Philosophy
+# Development Philosophy
 
 ASTRALIS is built incrementally.
 
 Every release should leave the project in a stable, tested, and maintainable state before moving to the next milestone.
+
+Before marking any roadmap item as complete:
+
+- Architecture is finalized.
+- Implementation is complete.
+- Tests pass.
+- Documentation is updated.
+- Quality checks pass.
+- Changes are committed.
 
 Build simple today.
 
@@ -253,7 +331,7 @@ Extend tomorrow.
 
 **Current Release:** **v0.3.1 – Engineering Stability**
 
-**Next Milestone:** **v0.4.0 – Memory**
+**Current Milestone:** **v0.4.0 – Memory**
 
 **Philosophy:**
 
