@@ -129,13 +129,21 @@ Enabled ASTRALIS to interact with the world.
 
 ---
 
-# v0.4.0 — Memory 🚧
+# v0.4.0 — Context Foundation 🚧
 
-**Progress:** **6 / 17**
+**Progress:** **8 / 46**
 
-Teach ASTRALIS to remember.
+Build the foundation for trusted, persistent context.
 
-## Architecture
+## Goal
+
+> **Give humans and AI agents the right context at the right time, with enough history and provenance to understand why it can be trusted.**
+
+---
+
+## Foundation
+
+## Foundation
 
 - [x] BrainContext
 - [x] Entity-based Memory
@@ -143,33 +151,93 @@ Teach ASTRALIS to remember.
 - [x] JSON Entity Store
 - [x] MemoryManager
 - [x] MemoryRetriever
-- [ ] Memory Policy
-- [ ] Working Memory
-- [ ] Long-Term Memory
+- [x] ContextItem
+- [x] Context model
+- [ ] Context relevance
+- [ ] Context provenance
+- [ ] Context freshness
+- [ ] Context lifecycle
 
-## Intelligence
+---
 
-- [ ] Explicit memory
-- [ ] User profile
-- [ ] Project awareness
-- [ ] Context-aware reasoning
-- [ ] Preference learning
-- [ ] Explainable memory
-- [ ] Importance scoring
-- [ ] Memory updates after reasoning
+## Project Context
+
+ASTRALIS should begin understanding a project as more than a collection of files.
+
+- [ ] Project identity
+- [ ] Project goals
+- [ ] Architecture context
+- [ ] Constraints
+- [ ] Requirements
+- [ ] Important decisions
+- [ ] Current state
+
+---
+
+## Decision Context
+
+ASTRALIS should preserve the reasoning behind important decisions.
+
+- [ ] Decision entity
+- [ ] Decision rationale
+- [ ] Decision evidence
+- [ ] Decision status
+- [ ] Decision relationships
+- [ ] Superseded decisions
+
+---
+
+## Context Retrieval
+
+ASTRALIS should provide relevant context rather than returning everything it knows.
+
+- [ ] Relevant context retrieval
+- [ ] Context filtering
+- [ ] Context prioritization
+- [ ] Source-aware retrieval
+- [ ] Context assembly for Brain
+- [ ] Context-aware responses
+
+---
+
+## Trust & Safety
+
+Context should not automatically become truth.
+
+- [ ] Context provenance
+- [ ] Context freshness
+- [ ] Confidence representation
+- [ ] Conflicting context detection
+- [ ] User-controlled context updates
+- [ ] Context inspection
+- [ ] Context deletion
+
+---
 
 ### Architectural Goal
 
-Separate reasoning from persistence.
+Separate **knowledge, context, reasoning, and action**.
+
+The Brain should reason over context without becoming responsible for storing or retrieving it.
+
+Memory should manage accumulated knowledge.
+
+The Request Pipeline should assemble the appropriate reasoning context.
+
+Storage should remain responsible for persistence.
+
+---
 
 ### Success Criteria
 
-- [ ] Retrieve relevant memories
-- [ ] Remember user information
-- [ ] Explain remembered information
-- [ ] Allow users to inspect memories
-- [ ] Allow users to edit memories
-- [ ] Allow users to delete memories
+- [ ] ASTRALIS can represent structured project context.
+- [ ] ASTRALIS can preserve important decisions and their rationale.
+- [ ] ASTRALIS can retrieve relevant context instead of all stored information.
+- [ ] Retrieved context includes enough provenance to understand its origin.
+- [ ] Stale or conflicting context can be identified.
+- [ ] The Brain receives context without directly accessing persistent storage.
+- [ ] Users can inspect and control stored context.
+- [ ] The architecture is ready for future AI-agent integrations.
 
 ---
 
@@ -228,7 +296,7 @@ Treat visual information as another reasoning context.
 
 ---
 
-# v0.8.0 — Context
+# v0.8.0 — Awareness
 
 Improve contextual understanding.
 
@@ -237,7 +305,6 @@ Improve contextual understanding.
 - [ ] Workspace awareness
 - [ ] Active project awareness
 - [ ] Environment awareness
-- [ ] Context Engine
 - [ ] Intelligent suggestions
 - [ ] Presence without interruption
 
@@ -331,7 +398,7 @@ Extend tomorrow.
 
 **Current Release:** **v0.3.1 – Engineering Stability**
 
-**Current Milestone:** **v0.4.0 – Memory**
+**Current Milestone:** **v0.4.0 – Context Foundation**
 
 **Philosophy:**
 

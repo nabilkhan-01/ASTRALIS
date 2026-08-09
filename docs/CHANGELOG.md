@@ -116,7 +116,7 @@ This release introduces the Capability Platform, transforming ASTRALIS from a co
 
 **Current Release:** **v0.3.1 – Engineering Stability**
 
-**Next Milestone:** **v0.4.0 – Memory**
+**Next Milestone:** **v0.4.0 – Context Foundation**
 
 **Philosophy:**
 

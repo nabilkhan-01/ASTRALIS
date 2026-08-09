@@ -131,7 +131,7 @@ Changing the interface should never change how ASTRALIS thinks.
 
 **Current Release:** **v0.3.1 – Engineering Stability**
 
-**Next Milestone:** **v0.4.0 – Memory**
+**Next Milestone:** **v0.4.0 – Context Foundation**
 
 **Philosophy:**
 

@@ -104,6 +104,6 @@ This release established the architectural foundation for future intelligent ass
 
 **Current Release:** **v0.3.0 – Capability Platform**
 
-**Next Milestone:** **v0.4.0 – Memory**
+**Next Milestone:** **v0.4.0 – Context Foundation**
 
 **Philosophy:** *Assist. Don't Control.*

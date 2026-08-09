@@ -3,9 +3,9 @@
 > **Assist. Don't Control.**
 
 **Current Release:** `v0.3.1 – Engineering Stability`  
-**Current Milestone:** `v0.4.0 – Memory`
+**Current Milestone:** `v0.4.0 – Context Foundation`
 
-ASTRALIS is an research and engineering project focused on building a personal AI Operating System that assists people while respecting their autonomy, privacy, and decisions.
+ASTRALIS is a research and engineering project focused on building a personal AI Operating System that assists people while respecting their autonomy, privacy, and decisions.
 
 Rather than becoming another chatbot, ASTRALIS is designed as a modular AI system capable of reasoning, planning, remembering, and interacting with the world through independent capabilities while ensuring the user always remains in control.
 
@@ -48,10 +48,12 @@ The long-term goal is to build an AI Operating System that people trust—not ju
 - ✅ Brain Architecture
 - ✅ Bootstrap & Dependency Injection
 - ✅ Capability Platform
-- ✅ Memory Foundation
-- ✅ Contextual Reasoning Pipeline
+- ✅ Persistent Memory Foundation
+- ✅ MemoryManager
+- ✅ MemoryRetriever
 - ✅ BrainContext
-- ✅ Entity-based Memory
+- ✅ Context Foundation
+- ✅ Entity-based Knowledge Model
 - ✅ External API Integrations
 - ✅ Gemini, OpenAI & Mock Providers
 - ✅ Browser & File System Tools
@@ -61,22 +63,34 @@ The long-term goal is to build an AI Operating System that people trust—not ju
 
 ## Current Focus
 
-### v0.4.0 — Memory
+### v0.4.0 — Context Foundation
 
-Current work includes:
+The current milestone focuses on building the foundation for trusted, persistent context.
+
+Completed:
 
 - [x] Entity-based Memory
+- [x] EntityStore abstraction
+- [x] JSON Entity Store
 - [x] MemoryManager
 - [x] MemoryRetriever
 - [x] BrainContext
-- [x] Contextual reasoning pipeline
-- [ ] Working Memory
-- [ ] Long-Term Memory
-- [ ] Memory Policy
-- [ ] User Profile
-- [ ] Context-aware reasoning
-- [ ] Preference learning
-- [ ] Explainable memory
+- [x] ContextItem
+- [x] Context model
+
+Planned:
+
+- [ ] Context relevance
+- [ ] Context provenance
+- [ ] Context freshness
+- [ ] Context lifecycle
+- [ ] Project context
+- [ ] Decision context
+- [ ] Relevant context retrieval
+- [ ] Context inspection and control
+- [ ] Conflict detection
+
+The goal is to allow ASTRALIS to provide humans and AI agents with the right context at the right time while preserving enough history and provenance to understand why that context can be trusted.
 
 ---
 
@@ -94,10 +108,13 @@ Interface
 Request Pipeline
  │
  ▼
-Memory Retrieval
+Memory
  │
  ▼
-Brain Context
+Context
+ │
+ ▼
+BrainContext
  │
  ▼
 Brain
@@ -108,8 +125,9 @@ Capability Manager
  ▼
 Capabilities
  │
- ▼
-Providers / Tools / External Services
+ ├── Providers
+ ├── Tools
+ └── External Services
 ```
 
 For a detailed overview, see **docs/architecture.md**.
@@ -127,9 +145,11 @@ ASTRALIS/
 │   ├── bootstrap/
 │   ├── brain/
 │   ├── capability/
+│   ├── context/
 │   ├── core/
 │   ├── interfaces/
 │   ├── memory/
+│   ├── models/
 │   ├── monitoring/
 │   ├── pipeline/
 │   ├── providers/
@@ -197,6 +217,7 @@ ASTRALIS emphasizes:
 - Testability
 - Transparency
 - Human-Centered AI
+- User Autonomy
 
 ---
 
@@ -205,7 +226,8 @@ ASTRALIS emphasizes:
 ASTRALIS is being built to:
 
 - Understand natural language
-- Remember important information
+- Maintain useful persistent knowledge
+- Provide relevant context
 - Learn responsibly from user interactions
 - Plan before acting
 - Reason through complex problems
@@ -240,11 +262,10 @@ python scripts/check.py
 
 Current milestone:
 
-**v0.4.0 — Memory**
+**v0.4.0 — Context Foundation**
 
 Upcoming milestones:
 
-- Memory
 - Automation
 - Voice
 - Vision

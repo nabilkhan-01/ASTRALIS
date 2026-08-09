@@ -498,7 +498,7 @@ Project: **ASTRALIS**
 
 Current Release: **v0.3.1 – Engineering Stability**
 
-Current Milestone: **v0.4.0 "Memory"**
+Current Milestone: **v0.4.0 "Context Foundation"**
 
 Philosophy:
 
