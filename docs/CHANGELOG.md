@@ -18,6 +18,8 @@ This project follows Semantic Versioning.
 - Added deterministic context ranking and filtering.
 - Added relevant context retrieval from persistent memory.
 - Added context-to-language generation integration.
+- Added dynamic context freshness assessment with `FRESH`, `STALE`, and `UNKNOWN` states.
+- Added caller-defined freshness thresholds without introducing a global freshness policy.
 
 ### Brain
 
@@ -36,6 +38,8 @@ This project follows Semantic Versioning.
 - Added current-project-aware retrieval scoping.
 - Preserved backward compatibility with entities stored without provenance or timestamps.
 - Preserved the separation between persistent Memory and ephemeral Context.
+- Added freshness assessment based on entity `updated_at` metadata.
+- Preserved retrieval behavior independently from freshness assessment.
 
 ### Project Context
 
@@ -62,6 +66,8 @@ This project follows Semantic Versioning.
 - Established temporal metadata without introducing automatic freshness policies.
 - Established project identity without introducing a dedicated Project abstraction.
 - Established current-project resolution within the memory retrieval boundary without introducing a separate project-resolution service.
+- Established freshness as an advisory assessment rather than a retrieval or execution policy.
+- Preserved `UNKNOWN` when freshness cannot be determined from available metadata.
 
 ### Testing
 
@@ -78,6 +84,7 @@ This project follows Semantic Versioning.
 - Updated MemoryRetriever tests.
 - Updated Brain tests for BrainContext and Context integration.
 - Added integration coverage for temporary Context during language generation.
+- Added freshness assessment tests covering fresh, stale, unknown, boundary, timezone, and immutability behavior.
 
 ---
 
