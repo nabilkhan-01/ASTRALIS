@@ -164,10 +164,10 @@ ASTRALIS should begin understanding a project as more than a collection of files
 
 - [x] Project identity
 - [x] Current project resolution
-- [ ] Project goals
-- [ ] Architecture context
-- [ ] Constraints
-- [ ] Requirements
+- [x] Project goals
+- [x] Architecture context
+- [x] Constraints
+- [x] Requirements
 - [ ] Important decisions
 - [ ] Current state
 
@@ -204,7 +204,7 @@ ASTRALIS should provide relevant context rather than returning everything it kno
 Context should not automatically become truth.
 
 - [x] Context provenance
-- [ ] Context freshness
+- [x] Context freshness
 - [ ] Confidence representation
 - [ ] Conflicting context detection
 - [ ] User-controlled context updates
