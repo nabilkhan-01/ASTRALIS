@@ -98,6 +98,12 @@ class JsonEntityStore(
                 )
                 if item.get("provenance") is not None
                 else None,
+                created_at=item.get(
+                    "created_at",
+                ),
+                updated_at=item.get(
+                    "updated_at",
+                ),
             )
             for item in data
         ]
@@ -121,6 +127,12 @@ class JsonEntityStore(
                     "source_type": entity.provenance.source_type,
                     "source_identifier": entity.provenance.source_identifier,
                 }
+
+            if entity.created_at is not None:
+                item_data["created_at"] = entity.created_at
+
+            if entity.updated_at is not None:
+                item_data["updated_at"] = entity.updated_at
 
             serialized.append(
                 item_data,

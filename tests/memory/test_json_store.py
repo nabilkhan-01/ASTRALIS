@@ -83,11 +83,45 @@ class TestJsonEntityStore:
             source_identifier="docs/DECISIONS.md",
         )
 
-    def test_load_legacy_entities_without_provenance(
+    def test_save_and_recall_with_timestamps(
         self,
         tmp_path: Path,
     ) -> None:
-        """Load legacy JSON file where entities lack a provenance field."""
+        """Save and recall an entity with created_at and updated_at timestamps."""
+
+        store = JsonEntityStore(
+            tmp_path / "memory.json",
+        )
+
+        entity = Entity(
+            id="adr-005",
+            type=EntityType.PROJECT,
+            name="Freshness Model",
+            properties={
+                "status": "draft",
+            },
+            created_at="2026-08-27T10:00:00Z",
+            updated_at="2026-08-27T10:05:00Z",
+        )
+
+        store.save(
+            entity,
+        )
+
+        result = store.get(
+            entity.id,
+        )
+
+        assert result == entity
+        assert result is not None
+        assert result.created_at == "2026-08-27T10:00:00Z"
+        assert result.updated_at == "2026-08-27T10:05:00Z"
+
+    def test_load_legacy_entities_without_timestamps_or_provenance(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        """Load legacy JSON file where entities lack provenance and timestamp fields."""
 
         file_path = tmp_path / "memory.json"
         file_path.write_text(
@@ -117,6 +151,8 @@ class TestJsonEntityStore:
         ) == 1
         assert entities[0].id == "legacy_project"
         assert entities[0].provenance is None
+        assert entities[0].created_at is None
+        assert entities[0].updated_at is None
 
     def test_recall_missing_entity(
         self,

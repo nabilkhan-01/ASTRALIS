@@ -18,3 +18,5 @@ class Entity:
         default_factory=dict,
     )
     provenance: Provenance | None = None
+    created_at: str | None = None
+    updated_at: str | None = None
