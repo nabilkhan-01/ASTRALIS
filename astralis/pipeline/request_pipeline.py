@@ -26,17 +26,17 @@ class RequestPipeline:
         """Process a request."""
 
         with self._monitor.measure() as _timer:
-            memory = self._retriever.retrieve(
+            context = self._retriever.retrieve(
                 request,
             )
 
-            context = BrainContext(
+            brain_context = BrainContext(
                 request=request,
-                memory=memory,
+                context=context,
             )
 
             response = self._brain.process(
-                context,
+                brain_context,
             )
 
         return response

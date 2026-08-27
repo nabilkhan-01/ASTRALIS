@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from astralis.brain.request import Request
-from astralis.memory.entity import Entity
+from astralis.context.context import Context
 
 
 @dataclass(
@@ -12,4 +12,4 @@ class BrainContext:
     """Represents the context available to the Brain."""
 
     request: Request
-    memory: list[Entity]
+    context: Context

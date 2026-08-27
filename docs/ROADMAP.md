@@ -131,8 +131,6 @@ Enabled ASTRALIS to interact with the world.
 
 # v0.4.0 — Context Foundation 🚧
 
-**Progress:** **8 / 46**
-
 Build the foundation for trusted, persistent context.
 
 ## Goal
@@ -153,7 +151,8 @@ Build the foundation for trusted, persistent context.
 - [x] MemoryRetriever
 - [x] ContextItem
 - [x] Context model
-- [ ] Context relevance
+- [x] Deterministic context relevance
+- [x] Relevant context retrieval
 - [ ] Context provenance
 - [ ] Context freshness
 - [ ] Context lifecycle
@@ -191,12 +190,12 @@ ASTRALIS should preserve the reasoning behind important decisions.
 
 ASTRALIS should provide relevant context rather than returning everything it knows.
 
-- [ ] Relevant context retrieval
-- [ ] Context filtering
-- [ ] Context prioritization
+- [x] Relevant context retrieval
+- [x] Context filtering
+- [x] Context prioritization
 - [ ] Source-aware retrieval
-- [ ] Context assembly for Brain
-- [ ] Context-aware responses
+- [x] Context assembly for Brain
+- [x] Context-aware language generation
 
 ---
 
@@ -230,12 +229,13 @@ Storage should remain responsible for persistence.
 
 ### Success Criteria
 
+- [x] ASTRALIS can represent structured request context.
 - [ ] ASTRALIS can represent structured project context.
 - [ ] ASTRALIS can preserve important decisions and their rationale.
-- [ ] ASTRALIS can retrieve relevant context instead of all stored information.
+- [x] ASTRALIS can retrieve relevant context instead of all stored information.
 - [ ] Retrieved context includes enough provenance to understand its origin.
 - [ ] Stale or conflicting context can be identified.
-- [ ] The Brain receives context without directly accessing persistent storage.
+- [x] The Brain receives context without directly accessing persistent storage.
 - [ ] Users can inspect and control stored context.
 - [ ] The architecture is ready for future AI-agent integrations.
 

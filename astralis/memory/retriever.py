@@ -1,26 +1,34 @@
 from astralis.brain.request import Request
-from astralis.memory.entity import Entity
+from astralis.context.context import Context
+from astralis.context.relevance import LexicalRelevanceEngine
 from astralis.memory.manager import MemoryManager
 
 
 class MemoryRetriever:
-    """Retrieves memory relevant to a request."""
+    """Retrieves a request-scoped Context from memory."""
 
     def __init__(
         self,
         memory: MemoryManager,
+        relevance_engine: LexicalRelevanceEngine | None = None,
     ) -> None:
         self._memory = memory
+        self._relevance = relevance_engine or LexicalRelevanceEngine()
 
     def retrieve(
         self,
         request: Request,
-    ) -> list[Entity]:
-        """Return memory relevant to a request."""
+    ) -> Context:
+        """Return a Context of entities ranked by relevance to the request.
 
-        # Future implementations will perform
-        # filtering, ranking, semantic search,
-        # and context-aware retrieval.
-        _ = request
+        Uses lexical overlap between the request text and each
+        entity's name + properties. The result is deterministic
+        and ordered by relevance (highest first).
 
-        return self._memory.get_all()
+        Entities with zero relevance are excluded.
+        """
+        entities = self._memory.get_all()
+        return self._relevance.build_context(
+            request_text=request.text,
+            entities=entities,
+        )

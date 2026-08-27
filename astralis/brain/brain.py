@@ -8,6 +8,7 @@ from astralis.brain.request import Request
 from astralis.brain.response import Response
 from astralis.brain.role import Role
 from astralis.capability.manager import CapabilityManager
+from astralis.context.context import Context
 
 
 class Brain:
@@ -33,17 +34,12 @@ class Brain:
     ) -> Response:
         """Process a user request through the Brain pipeline."""
 
-        # Memory is intentionally unused for now.
-        # Future versions will use it to build richer
-        # reasoning context before interpretation.
-        _ = context.memory
-
         # Stage 1 - Validation
         request = self._validate(
             context.request,
         )
 
-        # Stage 2 - Conversation
+        # Stage 2 - Conversation (records clean user request)
         self._conversation.add(
             Role.USER,
             request.text,
@@ -61,12 +57,13 @@ class Brain:
 
         # Stage 5 - Execution
         response = self._execute(
-            request,
-            interpretation,
-            plan,
+            request=request,
+            interpretation=interpretation,
+            plan=plan,
+            context=context.context,
         )
 
-        # Stage 6 - Conversation
+        # Stage 6 - Conversation (records assistant response)
         self._conversation.add(
             Role.ASSISTANT,
             response.text,
@@ -98,12 +95,65 @@ class Brain:
         request: Request,
         interpretation: Interpretation,
         plan: Plan,
+        context: Context,
     ) -> Response:
         """Execute the processing plan."""
 
+        conversation = self._build_execution_conversation(
+            request=request,
+            context=context,
+        )
+
         return self._capability_manager.execute(
             request=request,
-            conversation=self._conversation,
+            conversation=conversation,
             interpretation=interpretation,
             plan=plan,
         )
+
+    def _build_execution_conversation(
+        self,
+        request: Request,
+        context: Context,
+    ) -> Conversation:
+        """Construct temporary conversation input for capability execution."""
+
+        if not context.items:
+            return self._conversation
+
+        context_lines: list[str] = []
+        for item in context.items:
+            if item.entity.properties:
+                props = ", ".join(
+                    f"{key}={value}"
+                    for key, value in item.entity.properties.items()
+                )
+                context_lines.append(
+                    f"- {item.entity.name}: {props}",
+                )
+            else:
+                context_lines.append(
+                    f"- {item.entity.name}",
+                )
+
+        augmented_content = (
+            "[ASTRALIS Retrieved Context]\n"
+            + "\n".join(context_lines)
+            + "\n[End Retrieved Context]\n\n"
+            + "[User Request]\n"
+            + request.text
+        )
+
+        execution_conversation = Conversation()
+        for message in self._conversation.messages[:-1]:
+            execution_conversation.add(
+                message.role,
+                message.content,
+            )
+
+        execution_conversation.add(
+            Role.USER,
+            augmented_content,
+        )
+
+        return execution_conversation

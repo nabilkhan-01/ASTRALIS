@@ -10,38 +10,47 @@ This project follows Semantic Versioning.
 
 ## Added
 
+### Context
+
+- Introduced `ContextItem` as a request-scoped wrapper around persistent entities and relevance.
+- Introduced `Context` as an immutable, request-scoped collection of relevant context items.
+- Added deterministic lexical relevance scoring.
+- Added deterministic context ranking and filtering.
+- Added relevant context retrieval from persistent memory.
+- Added context-to-language generation integration.
+
 ### Brain
 
 - Introduced `BrainContext` as the unified reasoning context for the Brain.
-- Updated the Brain to consume contextual information instead of raw requests.
-- Established a stable Brain API for future context expansion.
+- Updated the Brain to consume request-scoped Context.
+- Connected retrieved Context to language generation without changing the Provider interface.
+- Preserved clean permanent conversation history while using temporary retrieved context during generation.
 
 ### Memory
 
-- Introduced the Entity-based Memory architecture.
-- Added EntityStore abstraction.
-- Added JSON-backed EntityStore implementation.
-- Added MemoryManager.
-- Added MemoryRetriever.
-- Integrated Memory into the application bootstrap.
-- Integrated Memory Retrieval into the Request Pipeline.
+- Added `MemoryRetriever` support for relevance-ranked Context.
+- Preserved the separation between persistent Memory and ephemeral Context.
 
 ### Pipeline
 
-- Request Pipeline now retrieves relevant memory before reasoning.
-- Request Pipeline now assembles the BrainContext.
+- Request Pipeline now retrieves relevant Context before reasoning.
+- Request Pipeline now assembles `BrainContext`.
 
 ### Architecture
 
-- Introduced contextual reasoning architecture.
+- Established separation between knowledge, context, reasoning, and action.
 - Brain no longer retrieves persistent memory directly.
-- Established separation between reasoning and persistence.
-- Updated architecture and engineering documentation.
+- Providers remain independent of the Context and Memory domain models.
+- Context remains ephemeral and is not persisted as conversation history.
 
 ### Testing
 
-- Expanded unit test coverage for the Memory subsystem.
-- Updated Brain and Pipeline tests for BrainContext integration.
+- Added Context model tests.
+- Added ContextItem tests.
+- Added lexical relevance tests.
+- Updated MemoryRetriever tests.
+- Updated Brain tests for BrainContext and Context integration.
+- Added integration coverage for temporary Context during language generation.
 
 ---
 
