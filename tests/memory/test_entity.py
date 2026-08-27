@@ -1,5 +1,6 @@
 from astralis.memory.entity import Entity
 from astralis.memory.entity_type import EntityType
+from astralis.memory.provenance import Provenance
 
 
 def test_create_entity() -> None:
@@ -19,7 +20,6 @@ def test_create_entity() -> None:
     assert entity.created_at is None
     assert entity.updated_at is None
 
-
 def test_entity_properties() -> None:
     """Store entity properties."""
 
@@ -34,7 +34,6 @@ def test_entity_properties() -> None:
 
     assert entity.properties["language"] == "Python"
 
-
 def test_entity_with_created_at() -> None:
     """Store created_at timestamp on entity."""
 
@@ -47,7 +46,6 @@ def test_entity_with_created_at() -> None:
 
     assert entity.created_at == "2026-08-27T10:00:00Z"
     assert entity.updated_at is None
-
 
 def test_entity_with_updated_at() -> None:
     """Store updated_at timestamp on entity."""
@@ -62,3 +60,36 @@ def test_entity_with_updated_at() -> None:
 
     assert entity.created_at == "2026-08-27T10:00:00Z"
     assert entity.updated_at == "2026-08-27T10:05:00Z"
+
+def test_project_identity_representation() -> None:
+    """Represent project identity using Entity and EntityType.PROJECT."""
+
+    provenance = Provenance(
+        source_type="file",
+        source_identifier="workspace_root",
+    )
+
+    project = Entity(
+        id="project_astralis",
+        type=EntityType.PROJECT,
+        name="ASTRALIS",
+        properties={
+            "description": "Trusted context layer for AI-powered work",
+            "root_path": "D:/ASTRALIS",
+        },
+        provenance=provenance,
+        created_at="2026-08-27T10:00:00Z",
+        updated_at="2026-08-27T10:00:00Z",
+    )
+
+    assert project.id == "project_astralis"
+    assert project.type is EntityType.PROJECT
+    assert project.name == "ASTRALIS"
+    assert (
+        project.properties["description"]
+        == "Trusted context layer for AI-powered work"
+    )
+    assert project.properties["root_path"] == "D:/ASTRALIS"
+    assert project.provenance == provenance
+    assert project.created_at == "2026-08-27T10:00:00Z"
+    assert project.updated_at == "2026-08-27T10:00:00Z"
