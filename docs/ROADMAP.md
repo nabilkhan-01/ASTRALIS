@@ -141,8 +141,6 @@ Build the foundation for trusted, persistent context.
 
 ## Foundation
 
-## Foundation
-
 - [x] BrainContext
 - [x] Entity-based Memory
 - [x] EntityStore abstraction

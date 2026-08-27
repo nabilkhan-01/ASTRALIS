@@ -7,12 +7,12 @@ from astralis.brain.source import RequestSource
 from astralis.context.context import Context
 from astralis.memory.entity import Entity
 from astralis.memory.entity_type import EntityType
-from astralis.memory.retriever import MemoryRetriever
-from astralis.monitoring.monitor import Monitor
-from astralis.pipeline.request_pipeline import (
-    RequestPipeline,
+from astralis.memory.retriever import (
+    MemoryRetriever,
     resolve_current_project,
 )
+from astralis.monitoring.monitor import Monitor
+from astralis.pipeline.request_pipeline import RequestPipeline
 
 
 class TestRequestPipeline:

@@ -33,6 +33,7 @@ This project follows Semantic Versioning.
 - Added JSON persistence support for entity provenance.
 - Added temporal metadata through `created_at` and `updated_at`.
 - Added JSON persistence support for entity timestamps.
+- Added current-project-aware retrieval scoping.
 - Preserved backward compatibility with entities stored without provenance or timestamps.
 - Preserved the separation between persistent Memory and ephemeral Context.
 
@@ -43,12 +44,13 @@ This project follows Semantic Versioning.
 - Added current-project resolution based on the active working directory.
 - Added support for project roots and descendant directories.
 - Added deterministic handling for nested and equally specific project matches.
+- Excluded foreign PROJECT entities when a current project is active while keeping non-project entities eligible for retrieval.
 
 ### Pipeline
 
 - Request Pipeline now retrieves relevant Context before reasoning.
 - Request Pipeline now assembles `BrainContext`.
-- Added current-project resolution at the Request Pipeline boundary.
+- Preserved the Pipeline as a request-processing coordinator without direct persistent-memory access.
 
 ### Architecture
 
@@ -59,6 +61,7 @@ This project follows Semantic Versioning.
 - Established origin provenance as part of persistent knowledge without coupling provenance to request-time relevance.
 - Established temporal metadata without introducing automatic freshness policies.
 - Established project identity without introducing a dedicated Project abstraction.
+- Established current-project resolution within the memory retrieval boundary without introducing a separate project-resolution service.
 
 ### Testing
 
@@ -71,6 +74,7 @@ This project follows Semantic Versioning.
 - Added timestamp persistence and legacy-compatibility tests.
 - Added project identity representation tests.
 - Added current-project resolution tests.
+- Added current-project retrieval scoping tests.
 - Updated MemoryRetriever tests.
 - Updated Brain tests for BrainContext and Context integration.
 - Added integration coverage for temporary Context during language generation.
