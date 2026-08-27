@@ -31,13 +31,24 @@ This project follows Semantic Versioning.
 - Added `MemoryRetriever` support for relevance-ranked Context.
 - Added optional provenance metadata to persistent entities.
 - Added JSON persistence support for entity provenance.
-- Preserved backward compatibility with entities stored without provenance.
+- Added temporal metadata through `created_at` and `updated_at`.
+- Added JSON persistence support for entity timestamps.
+- Preserved backward compatibility with entities stored without provenance or timestamps.
 - Preserved the separation between persistent Memory and ephemeral Context.
+
+### Project Context
+
+- Established project identity using the existing `EntityType.PROJECT` and Entity model.
+- Established the `description` and `root_path` project property conventions.
+- Added current-project resolution based on the active working directory.
+- Added support for project roots and descendant directories.
+- Added deterministic handling for nested and equally specific project matches.
 
 ### Pipeline
 
 - Request Pipeline now retrieves relevant Context before reasoning.
 - Request Pipeline now assembles `BrainContext`.
+- Added current-project resolution at the Request Pipeline boundary.
 
 ### Architecture
 
@@ -46,6 +57,8 @@ This project follows Semantic Versioning.
 - Providers remain independent of the Context and Memory domain models.
 - Context remains ephemeral and is not persisted as conversation history.
 - Established origin provenance as part of persistent knowledge without coupling provenance to request-time relevance.
+- Established temporal metadata without introducing automatic freshness policies.
+- Established project identity without introducing a dedicated Project abstraction.
 
 ### Testing
 
@@ -54,6 +67,10 @@ This project follows Semantic Versioning.
 - Added lexical relevance tests.
 - Added provenance model tests.
 - Added provenance persistence and legacy-compatibility tests.
+- Added temporal metadata tests.
+- Added timestamp persistence and legacy-compatibility tests.
+- Added project identity representation tests.
+- Added current-project resolution tests.
 - Updated MemoryRetriever tests.
 - Updated Brain tests for BrainContext and Context integration.
 - Added integration coverage for temporary Context during language generation.

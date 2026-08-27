@@ -154,6 +154,7 @@ Build the foundation for trusted, persistent context.
 - [x] Deterministic context relevance
 - [x] Relevant context retrieval
 - [x] Context provenance
+- [x] Temporal metadata
 - [ ] Context freshness
 - [ ] Context lifecycle
 
@@ -163,7 +164,8 @@ Build the foundation for trusted, persistent context.
 
 ASTRALIS should begin understanding a project as more than a collection of files.
 
-- [ ] Project identity
+- [x] Project identity
+- [x] Current project resolution
 - [ ] Project goals
 - [ ] Architecture context
 - [ ] Constraints
