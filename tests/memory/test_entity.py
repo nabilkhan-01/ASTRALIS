@@ -365,3 +365,64 @@ def test_decision_supersession_representation() -> None:
     assert "supersedes" not in older_decision.properties
     assert newer_decision.properties["supersedes"] == "decision_json_storage"
     assert newer_decision.properties["status"] == "active"
+
+
+def test_project_current_state() -> None:
+    """Represent project current state as a string in PROJECT Entity properties."""
+
+    project = Entity(
+        id="project_astralis",
+        type=EntityType.PROJECT,
+        name="ASTRALIS",
+        properties={
+            "description": "Trusted context layer for AI-powered work",
+            "root_path": "D:/ASTRALIS",
+            "goals": [
+                "Build a trusted context layer",
+                "Preserve user autonomy",
+            ],
+            "architecture": [
+                "Engine coordinates application lifecycle",
+                "Request Pipeline assembles reasoning context",
+                "Brain owns reasoning",
+                "Memory manages persistent knowledge",
+                "Capabilities perform actions",
+            ],
+            "constraints": [
+                "Preserve provider independence",
+                "Prefer simple architecture",
+                "Do not modify user files without permission",
+                "Avoid unnecessary external dependencies",
+            ],
+            "requirements": [
+                "Context retrieval must be deterministic",
+                "Providers must remain independent of Memory",
+                "Users must be able to delete stored knowledge",
+            ],
+            "current_state": (
+                "ASTRALIS v0.4.0 Context Foundation is under active development. "
+                "Core context is complete and Project Context is being expanded."
+            ),
+        },
+        provenance=Provenance(
+            source_type="file",
+            source_identifier="workspace_root",
+        ),
+        created_at="2026-08-27T10:00:00Z",
+        updated_at="2026-08-27T10:00:00Z",
+    )
+
+    assert project.type is EntityType.PROJECT
+    assert project.properties["description"] == "Trusted context layer for AI-powered work"
+    assert project.properties["root_path"] == "D:/ASTRALIS"
+    assert len(project.properties["goals"]) == 2
+    assert len(project.properties["architecture"]) == 5
+    assert len(project.properties["constraints"]) == 4
+    assert len(project.properties["requirements"]) == 3
+    assert project.properties["current_state"] == (
+        "ASTRALIS v0.4.0 Context Foundation is under active development. "
+        "Core context is complete and Project Context is being expanded."
+    )
+    assert project.provenance is not None
+    assert project.created_at == "2026-08-27T10:00:00Z"
+    assert project.updated_at == "2026-08-27T10:00:00Z"

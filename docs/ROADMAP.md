@@ -169,7 +169,7 @@ ASTRALIS should begin understanding a project as more than a collection of files
 - [x] Constraints
 - [x] Requirements
 - [x] Important decisions
-- [ ] Current state
+- [x] Current state
 
 ---
 

@@ -57,11 +57,18 @@ This project follows Semantic Versioning.
 
 ### Project Context
 
+### Project Context
+
 - Established project identity using the existing `EntityType.PROJECT` and Entity model.
 - Established the `description` and `root_path` project property conventions.
 - Added current-project resolution based on the active working directory.
 - Added support for project roots and descendant directories.
 - Added deterministic handling for nested and equally specific project matches.
+- Added project goals as curated project context.
+- Added project architecture as curated project context.
+- Added project constraints as advisory project context.
+- Added project requirements as advisory project context.
+- Added project current state as a curated narrative snapshot.
 - Excluded foreign PROJECT entities when a current project is active while keeping non-project entities eligible for retrieval.
 
 ### Pipeline
@@ -106,6 +113,7 @@ This project follows Semantic Versioning.
 - Added decision supersession representation tests.
 - Added decision supersession persistence tests.
 - Added retrieval coverage for superseding decisions.
+- Added project current-state representation tests.
 
 ---
 
