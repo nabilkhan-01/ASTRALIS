@@ -168,7 +168,7 @@ ASTRALIS should begin understanding a project as more than a collection of files
 - [x] Architecture context
 - [x] Constraints
 - [x] Requirements
-- [ ] Important decisions
+- [x] Important decisions
 - [ ] Current state
 
 ---
@@ -177,10 +177,10 @@ ASTRALIS should begin understanding a project as more than a collection of files
 
 ASTRALIS should preserve the reasoning behind important decisions.
 
-- [ ] Decision entity
-- [ ] Decision rationale
-- [ ] Decision evidence
-- [ ] Decision status
+- [x] Decision entity
+- [x] Decision rationale
+- [x] Decision evidence
+- [x] Decision status
 - [ ] Decision relationships
 - [ ] Superseded decisions
 
@@ -230,8 +230,8 @@ Storage should remain responsible for persistence.
 ### Success Criteria
 
 - [x] ASTRALIS can represent structured request context.
-- [ ] ASTRALIS can represent structured project context.
-- [ ] ASTRALIS can preserve important decisions and their rationale.
+- [x] ASTRALIS can represent structured project context.
+- [x] ASTRALIS can preserve important decisions and their rationale.
 - [x] ASTRALIS can retrieve relevant context instead of all stored information.
 - [x] Retrieved context includes enough provenance to understand its origin.
 - [ ] Stale or conflicting context can be identified.

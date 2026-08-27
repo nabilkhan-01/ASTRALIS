@@ -373,3 +373,46 @@ class TestMemoryRetriever:
 
         assert context_a is not context_b
         assert context_a.items == context_b.items
+
+    def test_matching_request_retrieves_decision(
+        self,
+    ) -> None:
+        """Retrieve relevant DECISION entity through standard lexical matching."""
+
+        decision = Entity(
+            id="decision_json_storage",
+            type=EntityType.DECISION,
+            name="Use JSON entity storage",
+            properties={
+                "rationale": "Keep infrastructure simple and dependency-free.",
+                "evidence": [
+                    "Small current project scale",
+                    "Need easy local portability",
+                ],
+                "status": "active",
+            },
+        )
+
+        memory = Mock(
+            spec=MemoryManager,
+        )
+        memory.get_all.return_value = [
+            decision,
+        ]
+
+        retriever = MemoryRetriever(
+            memory,
+        )
+
+        result = retriever.retrieve(
+            request=self._request(
+                text="Why did we choose JSON storage?",
+            ),
+        )
+
+        assert len(
+            result.items,
+        ) == 1
+        assert result.items[0].entity.id == "decision_json_storage"
+        assert result.items[0].entity.type is EntityType.DECISION
+        assert result.items[0].relevance > 0.0

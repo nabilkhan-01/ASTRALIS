@@ -288,3 +288,45 @@ def test_project_requirements() -> None:
     assert project.provenance is not None
     assert project.created_at == "2026-08-27T10:00:00Z"
     assert project.updated_at == "2026-08-27T10:00:00Z"
+
+
+def test_decision_representation() -> None:
+    """Represent an important decision using Entity and EntityType.DECISION."""
+
+    provenance = Provenance(
+        source_type="file",
+        source_identifier="docs/decisions/001-json-storage.md",
+    )
+
+    decision = Entity(
+        id="decision_json_storage",
+        type=EntityType.DECISION,
+        name="Use JSON entity storage",
+        properties={
+            "rationale": "Keep infrastructure simple and dependency-free.",
+            "evidence": [
+                "Small current project scale",
+                "Need easy local portability",
+            ],
+            "status": "active",
+        },
+        provenance=provenance,
+        created_at="2026-08-27T10:00:00Z",
+        updated_at="2026-08-27T10:00:00Z",
+    )
+
+    assert decision.id == "decision_json_storage"
+    assert decision.type is EntityType.DECISION
+    assert decision.name == "Use JSON entity storage"
+    assert (
+        decision.properties["rationale"]
+        == "Keep infrastructure simple and dependency-free."
+    )
+    assert decision.properties["evidence"] == [
+        "Small current project scale",
+        "Need easy local portability",
+    ]
+    assert decision.properties["status"] == "active"
+    assert decision.provenance == provenance
+    assert decision.created_at == "2026-08-27T10:00:00Z"
+    assert decision.updated_at == "2026-08-27T10:00:00Z"

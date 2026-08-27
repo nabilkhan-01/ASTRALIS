@@ -20,6 +20,9 @@ This project follows Semantic Versioning.
 - Added context-to-language generation integration.
 - Added dynamic context freshness assessment with `FRESH`, `STALE`, and `UNKNOWN` states.
 - Added caller-defined freshness thresholds without introducing a global freshness policy.
+- Added persistent decision entities through `EntityType.DECISION`.
+- Added decision rationale, evidence, and status representation.
+- Enabled decisions to participate in standard lexical context retrieval.
 
 ### Brain
 
@@ -40,6 +43,15 @@ This project follows Semantic Versioning.
 - Preserved the separation between persistent Memory and ephemeral Context.
 - Added freshness assessment based on entity `updated_at` metadata.
 - Preserved retrieval behavior independently from freshness assessment.
+
+### Decision Context
+
+- Introduced `EntityType.DECISION` for discrete persistent decisions.
+- Represented decision statements using `Entity.name`.
+- Represented rationale, evidence, and status through decision properties.
+- Preserved existing provenance and temporal metadata for decisions.
+- Kept decision retrieval within the existing lexical relevance system.
+- Deferred decision relationships, supersession links, conflict detection, and automated decision extraction.
 
 ### Project Context
 
@@ -85,6 +97,9 @@ This project follows Semantic Versioning.
 - Updated Brain tests for BrainContext and Context integration.
 - Added integration coverage for temporary Context during language generation.
 - Added freshness assessment tests covering fresh, stale, unknown, boundary, timezone, and immutability behavior.
+- Added decision entity representation tests.
+- Added decision persistence tests.
+- Added decision retrieval tests.
 
 ---
 

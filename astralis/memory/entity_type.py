@@ -8,6 +8,7 @@ class EntityType(
 
     USER = "user"
     PROJECT = "project"
+    DECISION = "decision"
 
     NOTE = "note"
     CALENDAR_EVENT = "calendar_event"

@@ -266,3 +266,49 @@ class TestJsonEntityStore:
         )
 
         assert store.load_all() == []
+
+    def test_save_and_recall_decision(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        """Save and recall a DECISION entity."""
+
+        store = JsonEntityStore(
+            tmp_path / "memory.json",
+        )
+
+        decision = Entity(
+            id="decision_json_storage",
+            type=EntityType.DECISION,
+            name="Use JSON entity storage",
+            properties={
+                "rationale": "Keep infrastructure simple and dependency-free.",
+                "evidence": [
+                    "Small current project scale",
+                    "Need easy local portability",
+                ],
+                "status": "active",
+            },
+            provenance=Provenance(
+                source_type="file",
+                source_identifier="docs/decisions/001-json-storage.md",
+            ),
+            created_at="2026-08-27T10:00:00Z",
+            updated_at="2026-08-27T10:00:00Z",
+        )
+
+        store.save(
+            decision,
+        )
+
+        result = store.get(
+            decision.id,
+        )
+
+        assert result == decision
+        assert result is not None
+        assert result.type is EntityType.DECISION
+        assert result.properties["evidence"] == [
+            "Small current project scale",
+            "Need easy local portability",
+        ]
