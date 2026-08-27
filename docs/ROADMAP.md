@@ -181,8 +181,8 @@ ASTRALIS should preserve the reasoning behind important decisions.
 - [x] Decision rationale
 - [x] Decision evidence
 - [x] Decision status
-- [ ] Decision relationships
-- [ ] Superseded decisions
+- [x] Decision relationships
+- [x] Superseded decisions
 
 ---
 

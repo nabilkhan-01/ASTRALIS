@@ -416,3 +416,45 @@ class TestMemoryRetriever:
         assert result.items[0].entity.id == "decision_json_storage"
         assert result.items[0].entity.type is EntityType.DECISION
         assert result.items[0].relevance > 0.0
+
+    def test_matching_request_retrieves_superseding_decision(
+        self,
+    ) -> None:
+        """Retrieve superseding DECISION entity with supersedes property normally."""
+
+        newer = Entity(
+            id="decision_sqlite_storage",
+            type=EntityType.DECISION,
+            name="Use SQLite entity storage",
+            properties={
+                "rationale": "Need concurrency and indexing.",
+                "evidence": [
+                    "Higher write load",
+                ],
+                "status": "active",
+                "supersedes": "decision_json_storage",
+            },
+        )
+
+        memory = Mock(
+            spec=MemoryManager,
+        )
+        memory.get_all.return_value = [
+            newer,
+        ]
+
+        retriever = MemoryRetriever(
+            memory,
+        )
+
+        result = retriever.retrieve(
+            request=self._request(
+                text="Tell me about SQLite entity storage",
+            ),
+        )
+
+        assert len(
+            result.items,
+        ) == 1
+        assert result.items[0].entity.id == "decision_sqlite_storage"
+        assert result.items[0].entity.properties["supersedes"] == "decision_json_storage"

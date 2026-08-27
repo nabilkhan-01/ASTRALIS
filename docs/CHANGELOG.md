@@ -43,15 +43,17 @@ This project follows Semantic Versioning.
 - Preserved the separation between persistent Memory and ephemeral Context.
 - Added freshness assessment based on entity `updated_at` metadata.
 - Preserved retrieval behavior independently from freshness assessment.
+- Added support for persisting decision supersession metadata through existing entity properties.
 
 ### Decision Context
 
 - Introduced `EntityType.DECISION` for discrete persistent decisions.
 - Represented decision statements using `Entity.name`.
-- Represented rationale, evidence, and status through decision properties.
+- Added decision rationale, evidence, and status representation.
+- Added lightweight decision supersession through the optional `supersedes` property.
 - Preserved existing provenance and temporal metadata for decisions.
 - Kept decision retrieval within the existing lexical relevance system.
-- Deferred decision relationships, supersession links, conflict detection, and automated decision extraction.
+- Deferred relationship traversal, referential integrity, automatic status updates, and conflict detection.
 
 ### Project Context
 
@@ -80,6 +82,7 @@ This project follows Semantic Versioning.
 - Established current-project resolution within the memory retrieval boundary without introducing a separate project-resolution service.
 - Established freshness as an advisory assessment rather than a retrieval or execution policy.
 - Preserved `UNKNOWN` when freshness cannot be determined from available metadata.
+- Established one-way decision supersession references without introducing a relationship framework.
 
 ### Testing
 
@@ -100,6 +103,9 @@ This project follows Semantic Versioning.
 - Added decision entity representation tests.
 - Added decision persistence tests.
 - Added decision retrieval tests.
+- Added decision supersession representation tests.
+- Added decision supersession persistence tests.
+- Added retrieval coverage for superseding decisions.
 
 ---
 

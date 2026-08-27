@@ -330,3 +330,38 @@ def test_decision_representation() -> None:
     assert decision.provenance == provenance
     assert decision.created_at == "2026-08-27T10:00:00Z"
     assert decision.updated_at == "2026-08-27T10:00:00Z"
+
+
+def test_decision_supersession_representation() -> None:
+    """Represent decision supersession via the optional supersedes property."""
+
+    older_decision = Entity(
+        id="decision_json_storage",
+        type=EntityType.DECISION,
+        name="Use JSON entity storage",
+        properties={
+            "rationale": "Keep infrastructure simple and dependency-free.",
+            "evidence": [
+                "Small current project scale",
+            ],
+            "status": "superseded",
+        },
+    )
+
+    newer_decision = Entity(
+        id="decision_sqlite_storage",
+        type=EntityType.DECISION,
+        name="Use SQLite entity storage",
+        properties={
+            "rationale": "Need concurrency and indexing.",
+            "evidence": [
+                "Higher write load",
+            ],
+            "status": "active",
+            "supersedes": "decision_json_storage",
+        },
+    )
+
+    assert "supersedes" not in older_decision.properties
+    assert newer_decision.properties["supersedes"] == "decision_json_storage"
+    assert newer_decision.properties["status"] == "active"

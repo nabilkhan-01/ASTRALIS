@@ -312,3 +312,55 @@ class TestJsonEntityStore:
             "Small current project scale",
             "Need easy local portability",
         ]
+
+    def test_save_and_recall_decision_with_supersedes(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        """Save and recall a decision with a supersedes property without mutating predecessor."""
+
+        store = JsonEntityStore(
+            tmp_path / "memory.json",
+        )
+
+        older = Entity(
+            id="decision_json_storage",
+            type=EntityType.DECISION,
+            name="Use JSON entity storage",
+            properties={
+                "status": "superseded",
+            },
+        )
+
+        newer = Entity(
+            id="decision_sqlite_storage",
+            type=EntityType.DECISION,
+            name="Use SQLite entity storage",
+            properties={
+                "status": "active",
+                "supersedes": "decision_json_storage",
+            },
+        )
+
+        store.save(
+            older,
+        )
+        store.save(
+            newer,
+        )
+
+        recalled_older = store.get(
+            older.id,
+        )
+        recalled_newer = store.get(
+            newer.id,
+        )
+
+        assert recalled_newer is not None
+        assert recalled_newer.properties["supersedes"] == "decision_json_storage"
+
+        # Predecessor was not automatically mutated
+        assert recalled_older is not None
+        assert recalled_older.properties == {
+            "status": "superseded",
+        }
