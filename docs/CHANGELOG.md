@@ -29,6 +29,9 @@ This project follows Semantic Versioning.
 ### Memory
 
 - Added `MemoryRetriever` support for relevance-ranked Context.
+- Added optional provenance metadata to persistent entities.
+- Added JSON persistence support for entity provenance.
+- Preserved backward compatibility with entities stored without provenance.
 - Preserved the separation between persistent Memory and ephemeral Context.
 
 ### Pipeline
@@ -42,12 +45,15 @@ This project follows Semantic Versioning.
 - Brain no longer retrieves persistent memory directly.
 - Providers remain independent of the Context and Memory domain models.
 - Context remains ephemeral and is not persisted as conversation history.
+- Established origin provenance as part of persistent knowledge without coupling provenance to request-time relevance.
 
 ### Testing
 
 - Added Context model tests.
 - Added ContextItem tests.
 - Added lexical relevance tests.
+- Added provenance model tests.
+- Added provenance persistence and legacy-compatibility tests.
 - Updated MemoryRetriever tests.
 - Updated Brain tests for BrainContext and Context integration.
 - Added integration coverage for temporary Context during language generation.

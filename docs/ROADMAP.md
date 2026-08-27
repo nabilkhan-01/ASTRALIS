@@ -153,7 +153,7 @@ Build the foundation for trusted, persistent context.
 - [x] Context model
 - [x] Deterministic context relevance
 - [x] Relevant context retrieval
-- [ ] Context provenance
+- [x] Context provenance
 - [ ] Context freshness
 - [ ] Context lifecycle
 
@@ -203,7 +203,7 @@ ASTRALIS should provide relevant context rather than returning everything it kno
 
 Context should not automatically become truth.
 
-- [ ] Context provenance
+- [x] Context provenance
 - [ ] Context freshness
 - [ ] Confidence representation
 - [ ] Conflicting context detection
@@ -233,7 +233,7 @@ Storage should remain responsible for persistence.
 - [ ] ASTRALIS can represent structured project context.
 - [ ] ASTRALIS can preserve important decisions and their rationale.
 - [x] ASTRALIS can retrieve relevant context instead of all stored information.
-- [ ] Retrieved context includes enough provenance to understand its origin.
+- [x] Retrieved context includes enough provenance to understand its origin.
 - [ ] Stale or conflicting context can be identified.
 - [x] The Brain receives context without directly accessing persistent storage.
 - [ ] Users can inspect and control stored context.

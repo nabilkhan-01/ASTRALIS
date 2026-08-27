@@ -3,6 +3,7 @@ from pathlib import Path
 
 from astralis.memory.entity import Entity
 from astralis.memory.entity_type import EntityType
+from astralis.memory.provenance import Provenance
 from astralis.memory.store import EntityStore
 
 
@@ -77,7 +78,7 @@ class JsonEntityStore(
         data = json.loads(
             self._path.read_text(
                 encoding="utf-8",
-            )
+            ),
         )
 
         return [
@@ -87,7 +88,16 @@ class JsonEntityStore(
                     item["type"],
                 ),
                 name=item["name"],
-                properties=item["properties"],
+                properties=item.get(
+                    "properties",
+                    {},
+                ),
+                provenance=Provenance(
+                    source_type=item["provenance"]["source_type"],
+                    source_identifier=item["provenance"]["source_identifier"],
+                )
+                if item.get("provenance") is not None
+                else None,
             )
             for item in data
         ]
@@ -96,17 +106,29 @@ class JsonEntityStore(
         self,
         entities: list[Entity],
     ) -> None:
+        serialized: list[dict[str, object]] = []
+
+        for entity in entities:
+            item_data: dict[str, object] = {
+                "id": entity.id,
+                "type": entity.type.value,
+                "name": entity.name,
+                "properties": entity.properties,
+            }
+
+            if entity.provenance is not None:
+                item_data["provenance"] = {
+                    "source_type": entity.provenance.source_type,
+                    "source_identifier": entity.provenance.source_identifier,
+                }
+
+            serialized.append(
+                item_data,
+            )
+
         self._path.write_text(
             json.dumps(
-                [
-                    {
-                        "id": entity.id,
-                        "type": entity.type.value,
-                        "name": entity.name,
-                        "properties": entity.properties,
-                    }
-                    for entity in entities
-                ],
+                serialized,
                 indent=4,
             ),
             encoding="utf-8",

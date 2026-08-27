@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from astralis.memory.entity_type import EntityType
+from astralis.memory.provenance import Provenance
 
 
 @dataclass(
@@ -16,3 +17,4 @@ class Entity:
     properties: dict[str, Any] = field(
         default_factory=dict,
     )
+    provenance: Provenance | None = None
