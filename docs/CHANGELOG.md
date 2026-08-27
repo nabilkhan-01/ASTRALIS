@@ -23,6 +23,9 @@ This project follows Semantic Versioning.
 - Added persistent decision entities through `EntityType.DECISION`.
 - Added decision rationale, evidence, and status representation.
 - Enabled decisions to participate in standard lexical context retrieval.
+- Added explicit confidence metadata for persistent knowledge.
+- Added typed `HIGH`, `MEDIUM`, and `LOW` confidence levels.
+- Preserved confidence independently from relevance, freshness, and provenance.
 
 ### Brain
 
@@ -46,6 +49,9 @@ This project follows Semantic Versioning.
 - Added support for persisting decision supersession metadata through existing entity properties.
 - Added optional source-aware retrieval using provenance source type.
 - Preserved lexical relevance ranking independently from source filtering.
+- Added optional confidence metadata to persistent entities.
+- Added JSON persistence support for entity confidence.
+- Preserved `None` as the default for entities without explicit confidence.
 
 ### Decision Context
 
@@ -56,8 +62,6 @@ This project follows Semantic Versioning.
 - Preserved existing provenance and temporal metadata for decisions.
 - Kept decision retrieval within the existing lexical relevance system.
 - Deferred relationship traversal, referential integrity, automatic status updates, and conflict detection.
-
-### Project Context
 
 ### Project Context
 
@@ -117,6 +121,9 @@ This project follows Semantic Versioning.
 - Added retrieval coverage for superseding decisions.
 - Added project current-state representation tests.
 - Added source-aware retrieval tests covering source filtering, missing provenance, ranking preservation, and project scoping.
+- Added confidence representation tests.
+- Added confidence persistence and legacy-compatibility tests.
+- Verified confidence does not affect retrieval ranking.
 
 ---
 

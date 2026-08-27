@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+from astralis.memory.confidence import ConfidenceLevel
 from astralis.memory.entity import Entity
 from astralis.memory.entity_type import EntityType
 from astralis.memory.provenance import Provenance
@@ -104,6 +105,11 @@ class JsonEntityStore(
                 updated_at=item.get(
                     "updated_at",
                 ),
+                confidence=ConfidenceLevel(
+                    item["confidence"],
+                )
+                if item.get("confidence") is not None
+                else None,
             )
             for item in data
         ]
@@ -133,6 +139,9 @@ class JsonEntityStore(
 
             if entity.updated_at is not None:
                 item_data["updated_at"] = entity.updated_at
+
+            if entity.confidence is not None:
+                item_data["confidence"] = entity.confidence.value
 
             serialized.append(
                 item_data,

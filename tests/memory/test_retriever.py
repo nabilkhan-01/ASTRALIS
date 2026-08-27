@@ -4,6 +4,7 @@ from unittest.mock import Mock
 from astralis.brain.request import Request
 from astralis.brain.source import RequestSource
 from astralis.context.context import Context
+from astralis.memory.confidence import ConfidenceLevel
 from astralis.memory.entity import Entity
 from astralis.memory.entity_type import EntityType
 from astralis.memory.manager import MemoryManager
@@ -754,3 +755,51 @@ class TestMemoryRetriever:
         assert len(
             result.items,
         ) == 2
+
+    def test_confidence_does_not_alter_retrieval_ranking(
+        self,
+    ) -> None:
+        """Verify confidence does not affect lexical retrieval ranking."""
+
+        # HIGH confidence but only one query token in name → weaker match
+        high_confidence_weak_match = Entity(
+            id="e_high",
+            type=EntityType.NOTE,
+            name="Memory Manager",
+            confidence=ConfidenceLevel.HIGH,
+        )
+        # LOW confidence but both query tokens in name → stronger match
+        low_confidence_strong_match = Entity(
+            id="e_low",
+            type=EntityType.NOTE,
+            name="Memory Architecture Pipeline",
+            confidence=ConfidenceLevel.LOW,
+        )
+
+        memory = Mock(
+            spec=MemoryManager,
+        )
+        memory.get_all.return_value = [
+            high_confidence_weak_match,
+            low_confidence_strong_match,
+        ]
+
+        retriever = MemoryRetriever(
+            memory,
+        )
+
+        result = retriever.retrieve(
+            request=self._request(
+                text="Memory Architecture",
+            ),
+        )
+
+        # Both entities have lexical overlap — both are retrieved
+        assert len(result.items) == 2
+
+        # LOW-confidence entity ranks first because its lexical score is higher
+        assert result.items[0].entity.id == "e_low"
+        assert result.items[1].entity.id == "e_high"
+
+        # Relevance scores differ — ranking is driven by lexical match, not confidence
+        assert result.items[0].relevance > result.items[1].relevance

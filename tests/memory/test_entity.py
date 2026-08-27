@@ -1,3 +1,4 @@
+from astralis.memory.confidence import ConfidenceLevel
 from astralis.memory.entity import Entity
 from astralis.memory.entity_type import EntityType
 from astralis.memory.provenance import Provenance
@@ -19,6 +20,7 @@ def test_create_entity() -> None:
     assert entity.provenance is None
     assert entity.created_at is None
     assert entity.updated_at is None
+    assert entity.confidence is None
 
 def test_entity_properties() -> None:
     """Store entity properties."""
@@ -426,3 +428,102 @@ def test_project_current_state() -> None:
     assert project.provenance is not None
     assert project.created_at == "2026-08-27T10:00:00Z"
     assert project.updated_at == "2026-08-27T10:00:00Z"
+
+
+def test_confidence_level_enum_values() -> None:
+    """ConfidenceLevel defines HIGH, MEDIUM, and LOW string values."""
+
+    assert ConfidenceLevel.HIGH.value == "high"
+    assert ConfidenceLevel.MEDIUM.value == "medium"
+    assert ConfidenceLevel.LOW.value == "low"
+
+
+def test_entity_confidence_high() -> None:
+    """Entity can hold HIGH confidence."""
+
+    entity = Entity(
+        id="note_1",
+        type=EntityType.NOTE,
+        name="Architecture decision",
+        confidence=ConfidenceLevel.HIGH,
+    )
+
+    assert entity.confidence is ConfidenceLevel.HIGH
+
+
+def test_entity_confidence_medium() -> None:
+    """Entity can hold MEDIUM confidence."""
+
+    entity = Entity(
+        id="note_2",
+        type=EntityType.NOTE,
+        name="Heuristic observation",
+        confidence=ConfidenceLevel.MEDIUM,
+    )
+
+    assert entity.confidence is ConfidenceLevel.MEDIUM
+
+
+def test_entity_confidence_low() -> None:
+    """Entity can hold LOW confidence."""
+
+    entity = Entity(
+        id="note_3",
+        type=EntityType.NOTE,
+        name="Speculative guess",
+        confidence=ConfidenceLevel.LOW,
+    )
+
+    assert entity.confidence is ConfidenceLevel.LOW
+
+
+def test_entity_confidence_defaults_to_none() -> None:
+    """Entity confidence defaults to None when not specified."""
+
+    entity = Entity(
+        id="note_4",
+        type=EntityType.NOTE,
+        name="Unrated note",
+    )
+
+    assert entity.confidence is None
+
+
+def test_entity_confidence_is_type_safe() -> None:
+    """Entity confidence is a ConfidenceLevel instance, not a plain string."""
+
+    entity = Entity(
+        id="note_5",
+        type=EntityType.NOTE,
+        name="Verified constraint",
+        confidence=ConfidenceLevel.HIGH,
+    )
+
+    assert isinstance(
+        entity.confidence,
+        ConfidenceLevel,
+    )
+
+
+def test_confidence_does_not_appear_as_context_item_field() -> None:
+    """ContextItem does not expose a confidence field; access is via entity.confidence."""
+
+    from astralis.context.context_item import ContextItem
+
+    entity = Entity(
+        id="note_6",
+        type=EntityType.NOTE,
+        name="Policy note",
+        confidence=ConfidenceLevel.HIGH,
+    )
+
+    item = ContextItem(
+        entity=entity,
+        relevance=0.8,
+    )
+
+    assert not hasattr(
+        item,
+        "confidence",
+    )
+    assert item.entity.confidence is ConfidenceLevel.HIGH

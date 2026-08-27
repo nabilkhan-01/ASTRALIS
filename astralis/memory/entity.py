@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Any
 
+from astralis.memory.confidence import ConfidenceLevel
 from astralis.memory.entity_type import EntityType
 from astralis.memory.provenance import Provenance
 
@@ -20,3 +21,4 @@ class Entity:
     provenance: Provenance | None = None
     created_at: str | None = None
     updated_at: str | None = None
+    confidence: ConfidenceLevel | None = None

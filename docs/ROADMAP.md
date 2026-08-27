@@ -205,7 +205,7 @@ Context should not automatically become truth.
 
 - [x] Context provenance
 - [x] Context freshness
-- [ ] Confidence representation
+- [x] Confidence representation
 - [ ] Conflicting context detection
 - [ ] User-controlled context updates
 - [ ] Context inspection

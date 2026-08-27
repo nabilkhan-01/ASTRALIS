@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+from astralis.memory.confidence import ConfidenceLevel
 from astralis.memory.entity import Entity
 from astralis.memory.entity_type import EntityType
 from astralis.memory.json_store import JsonEntityStore
@@ -364,3 +365,62 @@ class TestJsonEntityStore:
         assert recalled_older.properties == {
             "status": "superseded",
         }
+
+    def test_save_and_recall_confidence(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        """Persist and reload confidence through JSON storage."""
+
+        store = JsonEntityStore(
+            tmp_path / "memory.json",
+        )
+
+        entity = Entity(
+            id="note_confident",
+            type=EntityType.NOTE,
+            name="Authoritative constraint",
+            confidence=ConfidenceLevel.HIGH,
+        )
+
+        store.save(
+            entity,
+        )
+
+        result = store.get(
+            entity.id,
+        )
+
+        assert result == entity
+        assert result is not None
+        assert result.confidence is ConfidenceLevel.HIGH
+
+    def test_legacy_entity_without_confidence_loads_as_none(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        """Load legacy JSON entity without a confidence field with confidence=None."""
+
+        file_path = tmp_path / "memory.json"
+        file_path.write_text(
+            json.dumps(
+                [
+                    {
+                        "id": "legacy_note",
+                        "type": "note",
+                        "name": "Old note",
+                        "properties": {},
+                    },
+                ],
+            ),
+            encoding="utf-8",
+        )
+
+        store = JsonEntityStore(
+            file_path,
+        )
+
+        entities = store.load_all()
+
+        assert len(entities) == 1
+        assert entities[0].confidence is None
