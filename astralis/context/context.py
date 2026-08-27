@@ -8,6 +8,10 @@ from astralis.context.context_item import ContextItem
     slots=True,
 )
 class Context:
-    """Represents request-scoped context."""
+    """Represents an ephemeral, request-scoped collection of context items.
+
+    Context is created for a single request and is not intended for
+    cross-request reuse, caching, or persistence.
+    """
 
     items: tuple[ContextItem, ...]

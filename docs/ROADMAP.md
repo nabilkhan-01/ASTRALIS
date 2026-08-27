@@ -154,7 +154,7 @@ Build the foundation for trusted, persistent context.
 - [x] Context provenance
 - [x] Temporal metadata
 - [x] Context freshness
-- [ ] Context lifecycle
+- [x] Context lifecycle
 
 ---
 

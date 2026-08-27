@@ -339,3 +339,37 @@ class TestMemoryRetriever:
         ) == 1
         assert result.items[0].entity.id == "project_astralis"
         assert result.items[0].relevance > 0.0
+
+    def test_retrieve_creates_distinct_context_instances_per_call(
+        self,
+    ) -> None:
+        """Create distinct, ephemeral Context instances for each retrieval call."""
+
+        memory = Mock(
+            spec=MemoryManager,
+        )
+        memory.get_all.return_value = [
+            Entity(
+                id="project_astralis",
+                type=EntityType.PROJECT,
+                name="ASTRALIS",
+            ),
+        ]
+
+        retriever = MemoryRetriever(
+            memory,
+        )
+
+        request = self._request(
+            text="Tell me about ASTRALIS",
+        )
+
+        context_a = retriever.retrieve(
+            request,
+        )
+        context_b = retriever.retrieve(
+            request,
+        )
+
+        assert context_a is not context_b
+        assert context_a.items == context_b.items

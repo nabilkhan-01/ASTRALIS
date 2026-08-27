@@ -70,7 +70,7 @@ class TestContext:
     def test_context_is_immutable(
         self,
     ) -> None:
-        """Prevent context mutation."""
+        """Prevent context field reassignment because Context is frozen."""
 
         context = Context(
             items=(),
@@ -80,3 +80,23 @@ class TestContext:
             FrozenInstanceError,
         ):
             context.items = ()
+
+    def test_context_items_is_immutable_tuple(
+        self,
+    ) -> None:
+        """Context items is an immutable tuple."""
+
+        item = self._item(
+            "item_1",
+        )
+
+        context = Context(
+            items=(
+                item,
+            ),
+        )
+
+        assert isinstance(
+            context.items,
+            tuple,
+        )
