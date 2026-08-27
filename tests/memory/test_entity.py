@@ -179,3 +179,55 @@ def test_project_architecture_context() -> None:
     assert project.provenance is not None
     assert project.created_at == "2026-08-27T10:00:00Z"
     assert project.updated_at == "2026-08-27T10:00:00Z"
+
+
+def test_project_constraints() -> None:
+    """Represent project constraints as a list in PROJECT Entity properties."""
+
+    project = Entity(
+        id="project_astralis",
+        type=EntityType.PROJECT,
+        name="ASTRALIS",
+        properties={
+            "description": "Trusted context layer for AI-powered work",
+            "root_path": "D:/ASTRALIS",
+            "goals": [
+                "Build a trusted context layer",
+                "Preserve user autonomy",
+            ],
+            "architecture": [
+                "Engine coordinates application lifecycle",
+                "Request Pipeline assembles reasoning context",
+                "Brain owns reasoning",
+                "Memory manages persistent knowledge",
+                "Capabilities perform actions",
+            ],
+            "constraints": [
+                "Preserve provider independence",
+                "Prefer simple architecture",
+                "Do not modify user files without permission",
+                "Avoid unnecessary external dependencies",
+            ],
+        },
+        provenance=Provenance(
+            source_type="file",
+            source_identifier="workspace_root",
+        ),
+        created_at="2026-08-27T10:00:00Z",
+        updated_at="2026-08-27T10:00:00Z",
+    )
+
+    assert project.type is EntityType.PROJECT
+    assert project.properties["description"] == "Trusted context layer for AI-powered work"
+    assert project.properties["root_path"] == "D:/ASTRALIS"
+    assert len(project.properties["goals"]) == 2
+    assert len(project.properties["architecture"]) == 5
+    assert project.properties["constraints"] == [
+        "Preserve provider independence",
+        "Prefer simple architecture",
+        "Do not modify user files without permission",
+        "Avoid unnecessary external dependencies",
+    ]
+    assert project.provenance is not None
+    assert project.created_at == "2026-08-27T10:00:00Z"
+    assert project.updated_at == "2026-08-27T10:00:00Z"
