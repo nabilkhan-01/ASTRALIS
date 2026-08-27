@@ -93,3 +93,39 @@ def test_project_identity_representation() -> None:
     assert project.provenance == provenance
     assert project.created_at == "2026-08-27T10:00:00Z"
     assert project.updated_at == "2026-08-27T10:00:00Z"
+
+
+def test_project_goals_representation() -> None:
+    """Represent project goals as a list in PROJECT Entity properties."""
+
+    project = Entity(
+        id="project_astralis",
+        type=EntityType.PROJECT,
+        name="ASTRALIS",
+        properties={
+            "description": "Trusted context layer for AI-powered work",
+            "root_path": "D:/ASTRALIS",
+            "goals": [
+                "Build a trusted context layer",
+                "Preserve user autonomy",
+            ],
+        },
+        provenance=Provenance(
+            source_type="file",
+            source_identifier="workspace_root",
+        ),
+        created_at="2026-08-27T10:00:00Z",
+        updated_at="2026-08-27T10:00:00Z",
+    )
+
+    assert project.type is EntityType.PROJECT
+    assert project.properties["description"] == "Trusted context layer for AI-powered work"
+    assert project.properties["root_path"] == "D:/ASTRALIS"
+    assert project.properties["goals"] == [
+        "Build a trusted context layer",
+        "Preserve user autonomy",
+    ]
+    assert len(project.properties["goals"]) == 2
+    assert project.provenance is not None
+    assert project.created_at == "2026-08-27T10:00:00Z"
+    assert project.updated_at == "2026-08-27T10:00:00Z"
