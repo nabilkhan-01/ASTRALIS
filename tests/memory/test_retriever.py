@@ -7,6 +7,7 @@ from astralis.context.context import Context
 from astralis.memory.entity import Entity
 from astralis.memory.entity_type import EntityType
 from astralis.memory.manager import MemoryManager
+from astralis.memory.provenance import Provenance
 from astralis.memory.retriever import MemoryRetriever
 
 
@@ -458,3 +459,298 @@ class TestMemoryRetriever:
         ) == 1
         assert result.items[0].entity.id == "decision_sqlite_storage"
         assert result.items[0].entity.properties["supersedes"] == "decision_json_storage"
+
+    def test_source_type_none_preserves_all_entities(
+        self,
+    ) -> None:
+        """Include entities with or without provenance when source_type is None."""
+
+        e1 = Entity(
+            id="e1",
+            type=EntityType.NOTE,
+            name="Architecture Note",
+            provenance=Provenance(
+                source_type="file",
+                source_identifier="docs/arch.md",
+            ),
+        )
+        e2 = Entity(
+            id="e2",
+            type=EntityType.NOTE,
+            name="User Architecture Note",
+            provenance=Provenance(
+                source_type="user",
+                source_identifier="manual",
+            ),
+        )
+        e3 = Entity(
+            id="e3",
+            type=EntityType.NOTE,
+            name="Legacy Architecture Note",
+            provenance=None,
+        )
+
+        memory = Mock(
+            spec=MemoryManager,
+        )
+        memory.get_all.return_value = [
+            e1,
+            e2,
+            e3,
+        ]
+
+        retriever = MemoryRetriever(
+            memory,
+        )
+
+        result = retriever.retrieve(
+            request=self._request(
+                text="Architecture Note",
+            ),
+            source_type=None,
+        )
+
+        matched_ids = [item.entity.id for item in result.items]
+        assert matched_ids == [
+            "e1",
+            "e2",
+            "e3",
+        ]
+
+    def test_source_type_filtering_returns_matching_origin_only(
+        self,
+    ) -> None:
+        """Return only entities whose provenance.source_type matches the filter."""
+
+        e_file = Entity(
+            id="e_file",
+            type=EntityType.NOTE,
+            name="Architecture Guide",
+            provenance=Provenance(
+                source_type="file",
+                source_identifier="docs/guide.md",
+            ),
+        )
+        e_user = Entity(
+            id="e_user",
+            type=EntityType.NOTE,
+            name="Architecture Guide",
+            provenance=Provenance(
+                source_type="user",
+                source_identifier="manual_prompt",
+            ),
+        )
+        e_none = Entity(
+            id="e_none",
+            type=EntityType.NOTE,
+            name="Architecture Guide",
+            provenance=None,
+        )
+
+        memory = Mock(
+            spec=MemoryManager,
+        )
+        memory.get_all.return_value = [
+            e_file,
+            e_user,
+            e_none,
+        ]
+
+        retriever = MemoryRetriever(
+            memory,
+        )
+
+        result = retriever.retrieve(
+            request=self._request(
+                text="Architecture Guide",
+            ),
+            source_type="file",
+        )
+
+        assert len(
+            result.items,
+        ) == 1
+        assert result.items[0].entity.id == "e_file"
+
+    def test_source_filtering_does_not_alter_relevance_scoring_or_ranking(
+        self,
+    ) -> None:
+        """Preserve exact relevance scores and deterministic tie-breaking under source filtering."""
+
+        e_alpha = Entity(
+            id="e_alpha",
+            type=EntityType.NOTE,
+            name="Context Pipeline",
+            provenance=Provenance(
+                source_type="file",
+                source_identifier="docs/a.md",
+            ),
+        )
+        e_beta = Entity(
+            id="e_beta",
+            type=EntityType.NOTE,
+            name="Context Pipeline",
+            provenance=Provenance(
+                source_type="file",
+                source_identifier="docs/b.md",
+            ),
+        )
+
+        memory = Mock(
+            spec=MemoryManager,
+        )
+        memory.get_all.return_value = [
+            e_alpha,
+            e_beta,
+        ]
+
+        retriever = MemoryRetriever(
+            memory,
+        )
+
+        result = retriever.retrieve(
+            request=self._request(
+                text="Context Pipeline",
+            ),
+            source_type="file",
+        )
+
+        assert len(
+            result.items,
+        ) == 2
+        assert result.items[0].entity.id == "e_alpha"
+        assert result.items[1].entity.id == "e_beta"
+        assert result.items[0].relevance == result.items[1].relevance
+
+    def test_project_scoping_and_source_filtering_combine_correctly(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        """Apply project scoping and source filtering together in order."""
+
+        current_root = tmp_path / "project_root"
+        foreign_root = tmp_path / "foreign_root"
+        current_root.mkdir()
+        foreign_root.mkdir()
+
+        current_proj = Entity(
+            id="curr_proj",
+            type=EntityType.PROJECT,
+            name="ASTRALIS Core",
+            properties={
+                "root_path": str(
+                    current_root,
+                ),
+            },
+            provenance=Provenance(
+                source_type="file",
+                source_identifier="workspace_root",
+            ),
+        )
+        foreign_proj = Entity(
+            id="foreign_proj",
+            type=EntityType.PROJECT,
+            name="ASTRALIS Core",
+            properties={
+                "root_path": str(
+                    foreign_root,
+                ),
+            },
+            provenance=Provenance(
+                source_type="file",
+                source_identifier="workspace_root",
+            ),
+        )
+        note_user = Entity(
+            id="note_user",
+            type=EntityType.NOTE,
+            name="ASTRALIS Core Note",
+            provenance=Provenance(
+                source_type="user",
+                source_identifier="chat",
+            ),
+        )
+        note_file = Entity(
+            id="note_file",
+            type=EntityType.NOTE,
+            name="ASTRALIS Core Note",
+            provenance=Provenance(
+                source_type="file",
+                source_identifier="docs/core.md",
+            ),
+        )
+
+        memory = Mock(
+            spec=MemoryManager,
+        )
+        memory.get_all.return_value = [
+            current_proj,
+            foreign_proj,
+            note_user,
+            note_file,
+        ]
+
+        retriever = MemoryRetriever(
+            memory,
+        )
+
+        result = retriever.retrieve(
+            request=self._request(
+                text="ASTRALIS Core",
+            ),
+            cwd=current_root,
+            source_type="file",
+        )
+
+        matched_ids = [item.entity.id for item in result.items]
+        assert "foreign_proj" not in matched_ids
+        assert "note_user" not in matched_ids
+        assert "curr_proj" in matched_ids
+        assert "note_file" in matched_ids
+
+    def test_source_filtering_does_not_inspect_source_identifier(
+        self,
+    ) -> None:
+        """Match on source_type regardless of source_identifier value."""
+
+        e1 = Entity(
+            id="e1",
+            type=EntityType.NOTE,
+            name="Data",
+            provenance=Provenance(
+                source_type="custom_src",
+                source_identifier="id_1",
+            ),
+        )
+        e2 = Entity(
+            id="e2",
+            type=EntityType.NOTE,
+            name="Data",
+            provenance=Provenance(
+                source_type="custom_src",
+                source_identifier="id_2",
+            ),
+        )
+
+        memory = Mock(
+            spec=MemoryManager,
+        )
+        memory.get_all.return_value = [
+            e1,
+            e2,
+        ]
+
+        retriever = MemoryRetriever(
+            memory,
+        )
+
+        result = retriever.retrieve(
+            request=self._request(
+                text="Data",
+            ),
+            source_type="custom_src",
+        )
+
+        assert len(
+            result.items,
+        ) == 2

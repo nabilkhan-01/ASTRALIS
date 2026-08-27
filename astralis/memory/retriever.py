@@ -122,6 +122,7 @@ class MemoryRetriever:
         self,
         request: Request,
         cwd: Path | None = None,
+        source_type: str | None = None,
     ) -> Context:
         """Return a Context of entities ranked by relevance to the request.
 
@@ -129,6 +130,9 @@ class MemoryRetriever:
         working directory (or Path.cwd()). If a current project is found,
         foreign PROJECT entities are excluded. If no current project is found,
         all entities remain candidates.
+
+        If source_type is specified, only entities with matching
+        provenance.source_type are eligible.
 
         Entities are ranked using deterministic lexical relevance against
         the request text. Entities with zero relevance are excluded.
@@ -150,6 +154,14 @@ class MemoryRetriever:
             ]
         else:
             candidates = entities
+
+        if source_type is not None:
+            candidates = [
+                entity
+                for entity in candidates
+                if entity.provenance is not None
+                and entity.provenance.source_type == source_type
+            ]
 
         return self._relevance.build_context(
             request_text=request.text,

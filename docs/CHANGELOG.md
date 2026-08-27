@@ -44,6 +44,8 @@ This project follows Semantic Versioning.
 - Added freshness assessment based on entity `updated_at` metadata.
 - Preserved retrieval behavior independently from freshness assessment.
 - Added support for persisting decision supersession metadata through existing entity properties.
+- Added optional source-aware retrieval using provenance source type.
+- Preserved lexical relevance ranking independently from source filtering.
 
 ### Decision Context
 
@@ -114,6 +116,7 @@ This project follows Semantic Versioning.
 - Added decision supersession persistence tests.
 - Added retrieval coverage for superseding decisions.
 - Added project current-state representation tests.
+- Added source-aware retrieval tests covering source filtering, missing provenance, ranking preservation, and project scoping.
 
 ---
 

@@ -193,7 +193,7 @@ ASTRALIS should provide relevant context rather than returning everything it kno
 - [x] Relevant context retrieval
 - [x] Context filtering
 - [x] Context prioritization
-- [ ] Source-aware retrieval
+- [x] Source-aware retrieval
 - [x] Context assembly for Brain
 - [x] Context-aware language generation
 
