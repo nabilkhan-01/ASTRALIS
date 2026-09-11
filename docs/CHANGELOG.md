@@ -26,6 +26,9 @@ This project follows Semantic Versioning.
 - Added explicit confidence metadata for persistent knowledge.
 - Added typed `HIGH`, `MEDIUM`, and `LOW` confidence levels.
 - Preserved confidence independently from relevance, freshness, and provenance.
+- Added structural conflicting-context detection for decision supersession states.
+- Detects when a decision supersedes a predecessor that is still marked active.
+- Added deterministic conflict reports without mutating stored entities or retrieval behavior.
 
 ### Brain
 
@@ -52,6 +55,11 @@ This project follows Semantic Versioning.
 - Added optional confidence metadata to persistent entities.
 - Added JSON persistence support for entity confidence.
 - Preserved `None` as the default for entities without explicit confidence.
+- Verified caller-controlled context updates through existing `MemoryManager` primitives.
+- Callers can update project `current_state`, decision status, and confidence by constructing a revised `Entity` with the same `id` and saving it through `MemoryManager.save()`.
+- Callers can explicitly resolve detected decision conflicts by updating the predecessor status to `"superseded"` through `MemoryManager.save()`.
+- Callers can explicitly upgrade or downgrade entity confidence through `MemoryManager.save()`.
+- Verified that `MemoryRetriever.retrieve()`, `RequestPipeline.process()`, and `Brain.process()` never mutate stored entities as a side-effect of processing a request.
 
 ### Decision Context
 

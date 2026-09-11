@@ -206,8 +206,8 @@ Context should not automatically become truth.
 - [x] Context provenance
 - [x] Context freshness
 - [x] Confidence representation
-- [ ] Conflicting context detection
-- [ ] User-controlled context updates
+- [x] Conflicting context detection
+- [x] User-controlled context updates
 - [ ] Context inspection
 - [ ] Context deletion
 
@@ -234,9 +234,9 @@ Storage should remain responsible for persistence.
 - [x] ASTRALIS can preserve important decisions and their rationale.
 - [x] ASTRALIS can retrieve relevant context instead of all stored information.
 - [x] Retrieved context includes enough provenance to understand its origin.
-- [ ] Stale or conflicting context can be identified.
+- [x] Stale or conflicting context can be identified.
 - [x] The Brain receives context without directly accessing persistent storage.
-- [ ] Users can inspect and control stored context.
+- [x] Users can inspect and control stored context.
 - [ ] The architecture is ready for future AI-agent integrations.
 
 ---
