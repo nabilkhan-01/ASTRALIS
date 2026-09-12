@@ -102,8 +102,38 @@ This release established the architectural foundation for future intelligent ass
 
 ---
 
-**Current Release:** **v0.3.0 – Capability Platform**
+### v0.4.0 — Context Foundation
 
-**Next Milestone:** **v0.4.0 – Context Foundation**
+ASTRALIS gained a foundation for trusted, persistent, and request-aware context.
+
+Major milestones:
+
+- Entity-based Memory
+- MemoryRetriever
+- Context and ContextItem
+- Deterministic context relevance and retrieval
+- Project Context
+- Decision Context
+- Context provenance
+- Temporal metadata
+- Context freshness assessment
+- Confidence representation
+- Conflicting context detection
+- User-controlled context updates
+- Context inspection
+- Context deletion
+- BrainContext integration
+- Context-aware language generation
+- Separation between knowledge, context, reasoning, and action
+- Expanded automated testing
+- Full Ruff and MyPy compliance
+
+This release established the foundation for ASTRALIS to reason over relevant, persistent context while preserving user control and architectural separation.
+
+---
 
 **Philosophy:** *Assist. Don't Control.*
+
+**Current Release:** **v0.4.0 "Context Foundation"**
+
+**Next Milestone:** **v0.5.0 "Local Intelligence"**

@@ -60,6 +60,33 @@ The architecture follows one guiding principle:
                                 External Services
 ```
 
+The request path is therefore:
+
+```text
+User
+  │
+  ▼
+Interface
+  │
+  ▼
+Request Pipeline
+  │
+  ├── Retrieve relevant knowledge
+  │
+  ├── Assemble Context
+  │
+  ▼
+BrainContext
+  │
+  ▼
+Brain
+  │
+  ├── Interpret
+  ├── Plan
+  ├── Execute capabilities
+  └── Generate response
+```
+
 ---
 
 # Composition Root
@@ -182,13 +209,17 @@ Responsibilities:
 
 - Receive requests from interfaces
 - Retrieve relevant memory
+- Assemble request-scoped Context
 - Build the BrainContext
 - Coordinate request processing
 - Delegate execution to the Brain
+- Provide read-only context inspection
 
 The pipeline contains no intelligence.
 
 It assembles the context required for reasoning while isolating cross-cutting concerns from the Brain and user interfaces.
+
+The Pipeline does not directly manage persistent storage.
 
 ---
 
@@ -212,7 +243,52 @@ It never retrieves persistent memory directly.
 
 ---
 
-# Brain Context
+## Context
+
+Context represents the request-scoped reasoning information assembled for the Brain.
+
+Context is immutable and ephemeral.
+
+Current contents:
+
+- Relevant ContextItems
+- Persistent Entities
+- Deterministic relevance scores
+
+Context may expose entity metadata such as:
+
+- Entity identity
+- Entity type
+- Properties
+- Provenance
+- Temporal metadata
+- Confidence
+
+Context is not persistent storage.
+
+A new Context is assembled for each retrieval operation and is not reused as persistent memory.
+
+---
+
+## ContextItem
+
+ContextItem is an immutable wrapper connecting a persistent Entity with its relevance to the current request.
+
+Current structure:
+
+```text
+ContextItem
+├── Entity
+└── Relevance
+```
+
+Relevance is calculated deterministically by the context relevance engine.
+
+ContextItem does not own persistence or retrieval.
+
+---
+
+## BrainContext
 
 BrainContext represents the complete reasoning context supplied to the Brain.
 
@@ -220,6 +296,8 @@ Current contents:
 
 - Request
 - Retrieved Memory
+
+The Brain API should evolve through BrainContext rather than by expanding the Brain.process() signature.
 
 Future versions may extend BrainContext with:
 
@@ -229,7 +307,7 @@ Future versions may extend BrainContext with:
 - Environment
 - User Context
 
-The Brain API should evolve through BrainContext rather than by expanding the Brain.process() signature.
+The Brain should consume context rather than retrieve it independently.
 
 ---
 
@@ -268,13 +346,10 @@ Current providers:
 - OpenAI
 - Mock
 
-Providers:
+Future providers may include local inference providers.
 
-- do not store memory
-- do not plan requests
-- do not execute capabilities
-
-Their only responsibility is language generation.
+The Brain depends on the provider abstraction rather than a
+specific model or model runtime.
 
 ---
 
@@ -292,8 +367,19 @@ Current components:
 Memory is responsible for:
 
 - Managing persistent entities
+- Updating entities
+- Deleting entities
 - Retrieving relevant knowledge
+- Applying retrieval policies
 - Abstracting storage
+
+Memory also supports knowledge metadata such as:
+
+- Provenance
+- Temporal metadata
+- Confidence
+- Decision state
+- Project context
 
 Storage determines where information is stored.
 
@@ -303,13 +389,17 @@ Memory determines what information is available for reasoning.
 
 # Storage
 
-Storage provides persistence for memory modules.
+Storage provides persistence for Memory.
 
 Current implementation:
 
 - JSON Storage
 
-Storage is independent from memory implementations.
+Storage is independent from memory behavior.
+
+The storage layer is responsible for persistence mechanics.
+
+Memory remains responsible for managing knowledge and determining what is available for reasoning.
 
 ---
 
@@ -338,6 +428,8 @@ Current components:
 
 Monitoring is implemented independently from the Brain and capabilities.
 
+Monitoring does not own memory or reasoning.
+
 ---
 
 # Design Principles
@@ -354,6 +446,8 @@ ASTRALIS is designed around:
 - Testability
 - Interface Independence
 - User Autonomy
+- Explicit Context
+- Provider Independence
 
 ---
 
@@ -370,7 +464,10 @@ Every architectural decision should reinforce these rules.
 - Capabilities perform actions.
 - Memory manages knowledge.
 - Storage manages persistence.
+- Context represents ephemeral request-scoped reasoning state.
+- Context remains separate from persistent Memory.
 - Providers generate language.
+- Providers remain independent from Memory and Context.
 - Interfaces remain thin.
 - Prefer composition over inheritance.
 - Keep modules independent.
@@ -379,13 +476,18 @@ Every architectural decision should reinforce these rules.
 - Design before implementation.
 - Keep documentation synchronized with the code.
 - Preserve user autonomy.
+- Never silently mutate persistent context.
+- Prefer deterministic behavior where possible.
+- Treat provenance, freshness, confidence, and conflict state as explicit context metadata.
+- Separate knowledge, context, reasoning, and action.
+
 ---
 
 Project: **ASTRALIS**
 
-Release: **v0.3.1**
+Release: **v0.4.0**
 
-Codename: **Engineering Stability**
+Codename: **Context Foundation**
 
 Philosophy:
 

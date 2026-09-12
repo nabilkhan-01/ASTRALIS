@@ -1,6 +1,6 @@
 # ASTRALIS Roadmap
 
-> *"Build an intelligence people trust—not just another AI."*
+> **"Build an intelligence people trust—not just another AI."**
 
 This roadmap outlines the planned evolution of ASTRALIS into a modular AI Operating System.
 
@@ -12,9 +12,9 @@ Every milestone builds toward one philosophy:
 
 # Current Development
 
-**Current Release:** `v0.3.1 – Engineering Stability`
+**Current Release:** `v0.4.0 – Context Foundation`
 
-**Current Milestone:** `v0.4.0 – Memory`
+**Current Milestone:** `v0.5.0 – Local Intelligence`
 
 ---
 
@@ -118,7 +118,7 @@ Enabled ASTRALIS to interact with the world.
 - [x] Static typing
 - [x] Ruff compliance
 - [x] MyPy compliance
-- [x] 110+ automated tests
+- [x] Automated tests
 - [x] Updated documentation
 
 ### Success Criteria
@@ -129,7 +129,7 @@ Enabled ASTRALIS to interact with the world.
 
 ---
 
-# v0.4.0 — Context Foundation 🚧
+# v0.4.0 — Context Foundation ✅
 
 Build the foundation for trusted, persistent context.
 
@@ -225,8 +225,6 @@ The Request Pipeline should assemble the appropriate reasoning context.
 
 Storage should remain responsible for persistence.
 
----
-
 ### Success Criteria
 
 - [x] ASTRALIS can represent structured request context.
@@ -237,11 +235,78 @@ Storage should remain responsible for persistence.
 - [x] Stale or conflicting context can be identified.
 - [x] The Brain receives context without directly accessing persistent storage.
 - [x] Users can inspect and control stored context.
-- [ ] The architecture is ready for future AI-agent integrations.
+- [x] The architecture is ready for future AI-agent integrations.
 
 ---
 
-# v0.5.0 — Automation
+# v0.5.0 — Local Intelligence 🚧
+
+Give ASTRALIS a locally runnable intelligence layer without making cloud APIs mandatory.
+
+## Goal
+
+> **Make ASTRALIS capable of useful reasoning locally, while keeping model providers interchangeable and cloud intelligence optional.**
+
+## Local Model Infrastructure
+
+- [ ] Local model provider abstraction
+- [ ] Ollama provider
+- [ ] Local model discovery
+- [ ] Model configuration
+- [ ] Model lifecycle management
+- [ ] Local inference
+- [ ] Streaming responses
+
+## Model Independence
+
+- [ ] Provider-independent local model interface
+- [ ] Configurable model selection
+- [ ] Model capability metadata
+- [ ] Runtime provider switching
+- [ ] Local / cloud provider interchangeability
+
+## Offline Intelligence
+
+- [ ] Offline execution mode
+- [ ] Operation without mandatory API keys
+- [ ] Local conversation reasoning
+- [ ] Local context-aware reasoning
+- [ ] Graceful handling when no cloud provider is available
+
+## Model Routing
+
+- [ ] Task-aware model selection
+- [ ] Lightweight vs larger local models
+- [ ] Configurable model routing
+- [ ] Optional cloud fallback
+- [ ] Provider health / availability detection
+
+## Privacy
+
+- [ ] Local inference privacy guarantees
+- [ ] Clear cloud vs local execution state
+- [ ] User-controlled provider selection
+- [ ] No automatic migration of private context to cloud providers
+
+### Architectural Goal
+
+Separate **ASTRALIS intelligence orchestration from the underlying model**.
+
+ASTRALIS should be able to reason through interchangeable local or cloud providers without coupling Memory, Context, Capabilities, or the Request Pipeline to any specific model.
+
+### Success Criteria
+
+- [ ] ASTRALIS can operate using a local model.
+- [ ] Ollama can be used as an interchangeable provider.
+- [ ] ASTRALIS does not require a paid API for basic local operation.
+- [ ] Existing Memory and Context systems work with local models.
+- [ ] Switching between local and cloud providers does not require architectural changes.
+- [ ] Users control whether reasoning occurs locally or through a cloud provider.
+- [ ] ASTRALIS remains functional when internet access is unavailable for local-capable tasks.
+
+---
+
+# v0.6.0 — Automation
 
 Reduce repetitive work.
 
@@ -260,7 +325,7 @@ Separate user interaction from background execution.
 
 ---
 
-# v0.6.0 — Voice
+# v0.7.0 — Voice
 
 Enable natural conversations.
 
@@ -278,7 +343,7 @@ Support conversational interaction through interchangeable interfaces.
 
 ---
 
-# v0.7.0 — Vision
+# v0.8.0 — Vision
 
 Enable visual understanding.
 
@@ -296,7 +361,7 @@ Treat visual information as another reasoning context.
 
 ---
 
-# v0.8.0 — Awareness
+# v0.9.0 — Awareness
 
 Improve contextual understanding.
 
@@ -314,7 +379,7 @@ Provide assistance based on context rather than isolated requests.
 
 ---
 
-# v0.9.0 — Reasoning
+# v1.0.0 — Reasoning
 
 Strengthen intelligent decision making.
 
@@ -333,9 +398,9 @@ Improve reasoning quality while preserving transparency.
 
 ---
 
-# v1.0.0 — AI Operating System
+# v1.1.0 — AI Operating System
 
-The first stable release.
+The first full platform release.
 
 ## Goals
 
@@ -358,20 +423,22 @@ The first stable release.
 - [ ] Voice
 - [ ] Vision
 - [ ] Context-aware reasoning
+- [ ] Local intelligence
 
 ---
 
-# Beyond v1.0
+# Beyond v1.1
 
 Long-term research areas.
 
-- [ ] Local language models
 - [ ] Plugin ecosystem
 - [ ] Multi-device synchronization
 - [ ] Knowledge Graph
 - [ ] Semantic Memory
 - [ ] Native ASTRALIS language models
 - [ ] Distributed intelligence
+- [ ] Advanced multi-agent systems
+- [ ] Self-hosted model orchestration
 
 ---
 
@@ -388,6 +455,7 @@ Before marking any roadmap item as complete:
 - Tests pass.
 - Documentation is updated.
 - Quality checks pass.
+- Manual verification is performed where appropriate.
 - Changes are committed.
 
 Build simple today.
@@ -396,9 +464,9 @@ Extend tomorrow.
 
 ---
 
-**Current Release:** **v0.3.1 – Engineering Stability**
+**Current Release:** **v0.4.0 – Context Foundation**
 
-**Current Milestone:** **v0.4.0 – Context Foundation**
+**Current Milestone:** **v0.5.0 – Local Intelligence**
 
 **Philosophy:**
 

@@ -333,13 +333,11 @@ Separating intelligence coordination from application orchestration keeps respon
 
 ### Consequences
 
-- The Engine communicates only with the Brain.
+- The Engine coordinates application lifecycle without owning Brain internals.
 - The Brain becomes the central coordinator for intelligent behavior.
 - Future integrations with Memory, Vision, Tools, and AI providers remain isolated from the Engine.
 
 ---
-
-
 
 ## ADR-0015
 
@@ -560,27 +558,16 @@ The Brain executes requests through a Capability Framework rather than communica
 
 - New capabilities implement a common interface.
 - The Capability Manager coordinates execution.
-- Language generation becomes one capability among many.
+- The Brain remains separated from external actions.
 
 ----
 
 ## ADR-0023
 
 ### Title
-
-Introduce Bootstrap as the Composition Root
-
 ### Decision
-
-Object construction and dependency wiring are centralized in Bootstrap.
-
 ### Rationale
-
-Keeps the Engine focused on orchestration, improves testability, and simplifies dependency management.
-
 ### Consequences
-
-The Engine no longer constructs application-wide dependencies; Bootstrap owns composition.
 
 ---
 
@@ -663,9 +650,11 @@ Memory retrieval and memory persistence are separate responsibilities.
 
 The Brain never retrieves or persists memory directly.
 
-Memory retrieval occurs before reasoning.
+Memory retrieval occurs before reasoning through the Request Pipeline.
 
-Memory persistence occurs after reasoning through a dedicated Memory Policy.
+Persistent memory updates occur through the Memory layer and remain explicitly controlled by the caller.
+
+Automatic memory-learning policy is deferred until a future version.
 
 ### Rationale
 
@@ -679,10 +668,10 @@ Separating these responsibilities preserves modularity and aligns with the proje
 
 ### Consequences
 
-- Memory retrieval becomes part of the request pipeline.
+- Memory retrieval remains part of the Request Pipeline.
 - The Brain remains independent of storage implementations.
-- Future Memory Policies can evolve without modifying Brain logic.
-- Automatic learning and explicit user memory can coexist through a common persistence policy.
+- Explicit memory updates and deletion remain controlled by the caller.
+- Future automatic memory policies can be introduced without coupling them to the Brain.
 
 
 ## ADR Guidelines
@@ -706,10 +695,14 @@ The goal is to preserve the reasoning behind major architectural decisions—not
 
 --- 
 
+**Note:** ADR-0023 is empty. Use this for new architectural decisions.
+
+---
+
 Project: **ASTRALIS**
 
-Current Release: **v0.3.1 – Engineering Stability**
+Current Release: **v0.4.0 "Context Foundation"**
 
-Current Milestone: **v0.4.0 "Context Foundation"**
+Current Milestone: **v0.5.0 "Local Intelligence"**
 
 Philosophy: **Assist. Don't Control.**

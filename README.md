@@ -2,8 +2,8 @@
 
 > **Assist. Don't Control.**
 
-**Current Release:** `v0.3.1 – Engineering Stability`  
-**Current Milestone:** `v0.4.0 – Context Foundation`
+**Current Release:** `v0.4.0 "Context Foundation"`  
+**Current Milestone:** `v0.5.0 "Local Intelligence"`
 
 ASTRALIS is a research and engineering project focused on building a personal AI Operating System that assists people while respecting their autonomy, privacy, and decisions.
 
@@ -38,59 +38,23 @@ The long-term goal is to build an AI Operating System that people trust—not ju
 
 ---
 
-# Current Status
+# Current Release
 
-🚧 **Active Development**
+**v0.4.0 — Context Foundation**
 
-## Completed
+The latest release establishes the foundation for trusted, persistent, and request-aware context.
 
-- ✅ Core Engine
-- ✅ Brain Architecture
-- ✅ Bootstrap & Dependency Injection
-- ✅ Capability Platform
-- ✅ Persistent Memory Foundation
-- ✅ MemoryManager
-- ✅ MemoryRetriever
-- ✅ BrainContext
-- ✅ Context Foundation
-- ✅ Entity-based Knowledge Model
-- ✅ External API Integrations
-- ✅ Gemini, OpenAI & Mock Providers
-- ✅ Browser & File System Tools
-- ✅ Automated Testing
-- ✅ Static Analysis (Ruff & MyPy)
-- ✅ Project Documentation
+For the complete release history and implementation details, see **docs/changelog.md**.
 
-## Current Focus
+---
 
-### v0.4.0 — Context Foundation
+# Next Milestone
 
-The current milestone focuses on building the foundation for trusted, persistent context.
+**v0.5.0 — Local Intelligence**
 
-Completed:
+The next milestone focuses on giving ASTRALIS a locally runnable intelligence layer while keeping model providers interchangeable and cloud intelligence optional.
 
-- [x] Entity-based Memory
-- [x] EntityStore abstraction
-- [x] JSON Entity Store
-- [x] MemoryManager
-- [x] MemoryRetriever
-- [x] BrainContext
-- [x] ContextItem
-- [x] Context model
-
-Planned:
-
-- [ ] Context relevance
-- [ ] Context provenance
-- [ ] Context freshness
-- [ ] Context lifecycle
-- [ ] Project context
-- [ ] Decision context
-- [ ] Relevant context retrieval
-- [ ] Context inspection and control
-- [ ] Conflict detection
-
-The goal is to allow ASTRALIS to provide humans and AI agents with the right context at the right time while preserving enough history and provenance to understand why that context can be trusted.
+For the planned features, architecture, and success criteria, see **docs/roadmap.md**.
 
 ---
 
@@ -108,7 +72,7 @@ Interface
 Request Pipeline
  │
  ▼
-Memory
+Memory Retrieval
  │
  ▼
 Context
@@ -124,7 +88,6 @@ Capability Manager
  │
  ▼
 Capabilities
- │
  ├── Providers
  ├── Tools
  └── External Services
@@ -165,7 +128,10 @@ ASTRALIS/
 ├── scripts/
 ├── tests/
 ├── .env.example
+├── .gitignore
+├── LICENSE
 ├── main.py
+├── pytest.ini
 ├── requirements.txt
 ├── requirements-dev.txt
 └── README.md
@@ -262,7 +228,7 @@ python scripts/check.py
 
 Current milestone:
 
-**v0.4.0 — Context Foundation**
+**v0.5.0 — Local Intelligence**
 
 Upcoming milestones:
 

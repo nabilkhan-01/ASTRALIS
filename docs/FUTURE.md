@@ -114,9 +114,9 @@ This should only occur when they become genuinely shared.
 
 ## BrainContext Evolution
 
-BrainContext currently contains only the information required by the Brain for reasoning.
+BrainContext currently carries the information required by the Brain for request processing.
 
-Future versions may extend BrainContext with additional context such as:
+Future versions may extend BrainContext with additional contextual information such as:
 
 - Working Memory
 - Active Project
@@ -124,7 +124,7 @@ Future versions may extend BrainContext with additional context such as:
 - Environmental Context
 - User Context
 
-The Brain's public API should evolve by extending BrainContext rather than by expanding the `Brain.process()` method signature.
+The Brain's public API should evolve by extending BrainContext rather than expanding the `Brain.process()` method signature.
 
 **Status:** Planned
 
@@ -133,34 +133,6 @@ The Brain's public API should evolve by extending BrainContext rather than by ex
 ---
 
 # Memory
-
-## Entity-Based Memory Model
-
-Persistent memory should be represented using a unified entity model.
-
-Every piece of information remembered by ASTRALIS should be represented as an Entity.
-
-Examples include:
-
-- User
-- Project
-- Note
-- Calendar Event
-- Alarm
-- Preference
-- Goal
-
-Each entity owns its own properties.
-
-Future capabilities may introduce additional entity types without changing the memory architecture.
-
-Relationships between entities should only be introduced when they become necessary.
-
-**Status:** Deferred
-
-**Reason:** Provides a unified, extensible representation for persistent knowledge.
-
----
 
 ## Working and Long-Term Memory
 
@@ -296,28 +268,6 @@ Examples include:
 ---
 
 # Intelligence
-
-## Context-Aware Assistance
-
-ASTRALIS should eventually reason using relevant context rather than only the current request.
-
-Context may include:
-
-- Conversation history
-- Working memory
-- Long-term memory
-- User preferences
-- Current project
-- Active application
-- Time and schedule
-- Previous work
-- Environmental context
-
-**Status:** Planned
-
-**Reason:** Enables coherent, personalized assistance while preserving transparency and user control.
-
----
 
 ## Explainability
 
@@ -496,9 +446,9 @@ This document should remain intentionally small and focused on significant defer
 
 Project: **ASTRALIS**
 
-Current Release: **v0.3.1 – Engineering Stability**
+Current Release: **v0.4.0 "Context Foundation"**
 
-Current Milestone: **v0.4.0 "Context Foundation"**
+Current Milestone: **v0.5.0 "Local Intelligence"**
 
 Philosophy:
 
