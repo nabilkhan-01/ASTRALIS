@@ -60,6 +60,11 @@ This project follows Semantic Versioning.
 - Callers can explicitly resolve detected decision conflicts by updating the predecessor status to `"superseded"` through `MemoryManager.save()`.
 - Callers can explicitly upgrade or downgrade entity confidence through `MemoryManager.save()`.
 - Verified that `MemoryRetriever.retrieve()`, `RequestPipeline.process()`, and `Brain.process()` never mutate stored entities as a side-effect of processing a request.
+- Verified caller-controlled persistent context deletion through `MemoryManager.delete(entity_id)`.
+- Deleted entities are immediately and permanently excluded from subsequent retrieval (`MemoryRetriever.retrieve()`), pipeline inspection (`RequestPipeline.inspect_context()`), and Brain reasoning (`RequestPipeline.process()`).
+- Established the lifecycle guarantee that persistent deletion does not mutate previously created ephemeral `Context` objects (preserving `Context` as an immutable request-scoped snapshot).
+- Verified that deleting a non-existent entity is a safe, deterministic no-op.
+- Established that stale or conflicting context entities are never automatically deleted by freshness assessment or conflict detection.
 
 ### Decision Context
 

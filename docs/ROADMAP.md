@@ -209,7 +209,7 @@ Context should not automatically become truth.
 - [x] Conflicting context detection
 - [x] User-controlled context updates
 - [x] Context inspection
-- [ ] Context deletion
+- [x] Context deletion
 
 ---
 
