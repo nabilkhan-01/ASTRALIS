@@ -1,12 +1,20 @@
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import Mock
 
+from astralis.brain.brain import Brain
 from astralis.brain.request import Request
 from astralis.brain.response import Response
 from astralis.brain.source import RequestSource
 from astralis.context.context import Context
+from astralis.memory.confidence import ConfidenceLevel
+from astralis.memory.conflict import detect_conflicts
 from astralis.memory.entity import Entity
 from astralis.memory.entity_type import EntityType
+from astralis.memory.freshness import FreshnessStatus, assess_freshness
+from astralis.memory.json_store import JsonEntityStore
+from astralis.memory.manager import MemoryManager
+from astralis.memory.provenance import Provenance
 from astralis.memory.retriever import (
     MemoryRetriever,
     resolve_current_project,
@@ -369,3 +377,368 @@ class TestCurrentProjectResolution:
         )
 
         assert resolved == p_alpha
+
+
+class TestContextInspection:
+    """Tests for RequestPipeline.inspect_context()."""
+
+    def test_inspect_context_returns_assembled_context(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        """inspect_context() returns the assembled Context matching retrieval."""
+
+        store = JsonEntityStore(
+            tmp_path / "memory.json",
+        )
+        manager = MemoryManager(
+            store,
+        )
+        entity = Entity(
+            id="proj_astralis",
+            type=EntityType.PROJECT,
+            name="ASTRALIS Core",
+            properties={
+                "root_path": str(
+                    tmp_path,
+                ),
+            },
+        )
+        manager.save(
+            entity,
+        )
+
+        retriever = MemoryRetriever(
+            manager,
+        )
+        brain = Mock(
+            spec=Brain,
+        )
+        pipeline = RequestPipeline(
+            brain=brain,
+            retriever=retriever,
+            monitor=Monitor(
+                enabled=False,
+            ),
+        )
+
+        request = Request(
+            text="Tell me about ASTRALIS Core",
+            source=RequestSource.CLI,
+        )
+
+        inspected = pipeline.inspect_context(
+            request,
+        )
+
+        assert isinstance(
+            inspected,
+            Context,
+        )
+        assert len(inspected.items) == 1
+        assert inspected.items[0].entity.id == "proj_astralis"
+        assert inspected.items[0].relevance > 0.0
+
+    def test_inspect_context_does_not_execute_brain(
+        self,
+    ) -> None:
+        """inspect_context() must never execute Brain.process()."""
+
+        brain = Mock(
+            spec=Brain,
+        )
+        retriever = Mock(
+            spec=MemoryRetriever,
+        )
+        retriever.retrieve.return_value = Context(
+            items=(),
+        )
+
+        pipeline = RequestPipeline(
+            brain=brain,
+            retriever=retriever,
+            monitor=Monitor(
+                enabled=False,
+            ),
+        )
+
+        request = Request(
+            text="Query text",
+            source=RequestSource.CLI,
+        )
+
+        pipeline.inspect_context(
+            request,
+        )
+
+        brain.process.assert_not_called()
+        retriever.retrieve.assert_called_once_with(
+            request,
+        )
+
+    def test_inspect_context_preserves_available_metadata(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        """inspect_context() preserves entity fields, provenance, timestamps, confidence, freshness, and conflicts."""
+
+        store = JsonEntityStore(
+            tmp_path / "memory.json",
+        )
+        manager = MemoryManager(
+            store,
+        )
+
+        predecessor = Entity(
+            id="dec_00",
+            type=EntityType.DECISION,
+            name="Architecture Decision Predecessor",
+            properties={
+                "status": "active",
+            },
+            created_at="2026-09-01T08:00:00+00:00",
+            updated_at="2026-09-01T08:00:00+00:00",
+            confidence=ConfidenceLevel.MEDIUM,
+        )
+        decision = Entity(
+            id="dec_01",
+            type=EntityType.DECISION,
+            name="Architecture Decision Modern",
+            properties={
+                "status": "active",
+                "supersedes": "dec_00",
+                "rationale": "Separation of concerns.",
+            },
+            provenance=Provenance(
+                source_type="user",
+                source_identifier="architect",
+            ),
+            created_at="2026-09-05T10:00:00+00:00",
+            updated_at="2026-09-10T12:00:00+00:00",
+            confidence=ConfidenceLevel.HIGH,
+        )
+
+        manager.save(
+            predecessor,
+        )
+        manager.save(
+            decision,
+        )
+
+        retriever = MemoryRetriever(
+            manager,
+        )
+        brain = Mock(
+            spec=Brain,
+        )
+        pipeline = RequestPipeline(
+            brain=brain,
+            retriever=retriever,
+            monitor=Monitor(
+                enabled=False,
+            ),
+        )
+
+        request = Request(
+            text="Architecture Decision Modern",
+            source=RequestSource.CLI,
+        )
+
+        inspected = pipeline.inspect_context(
+            request,
+        )
+
+        item_map = {
+            item.entity.id: item
+            for item in inspected.items
+        }
+
+        assert "dec_01" in item_map
+        item = item_map["dec_01"]
+
+        # Relevance
+        assert item.relevance > 0.0
+
+        # Core entity fields
+        assert item.entity.id == "dec_01"
+        assert item.entity.name == "Architecture Decision Modern"
+        assert item.entity.type == EntityType.DECISION
+        assert item.entity.properties["status"] == "active"
+        assert item.entity.properties["supersedes"] == "dec_00"
+
+        # Provenance
+        assert item.entity.provenance is not None
+        assert item.entity.provenance.source_type == "user"
+        assert item.entity.provenance.source_identifier == "architect"
+
+        # Timestamps
+        assert item.entity.created_at == "2026-09-05T10:00:00+00:00"
+        assert item.entity.updated_at == "2026-09-10T12:00:00+00:00"
+
+        # Confidence
+        assert item.entity.confidence == ConfidenceLevel.HIGH
+
+        # Dynamic freshness assessment through existing assess_freshness()
+        ref_time = datetime(
+            2026,
+            9,
+            12,
+            12,
+            0,
+            0,
+            tzinfo=timezone.utc,
+        )
+        fresh_status = assess_freshness(
+            entity=item.entity,
+            threshold=timedelta(
+                days=7,
+            ),
+            reference_time=ref_time,
+        )
+        assert fresh_status == FreshnessStatus.FRESH
+
+        stale_status = assess_freshness(
+            entity=item.entity,
+            threshold=timedelta(
+                days=1,
+            ),
+            reference_time=ref_time,
+        )
+        assert stale_status == FreshnessStatus.STALE
+
+        # Conflict evaluation through existing detect_conflicts()
+        conflicts = detect_conflicts(
+            [item.entity for item in inspected.items],
+        )
+        assert len(conflicts) == 1
+        assert conflicts[0].entity_a.id == "dec_01"
+        assert conflicts[0].entity_b.id == "dec_00"
+
+    def test_inspect_context_is_read_only(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        """inspect_context() leaves stored entities and persistent storage unchanged."""
+
+        memory_file = tmp_path / "memory.json"
+        store = JsonEntityStore(
+            memory_file,
+        )
+        manager = MemoryManager(
+            store,
+        )
+
+        entity = Entity(
+            id="proj_stable",
+            type=EntityType.PROJECT,
+            name="Stable Project",
+            properties={
+                "state": "immutable",
+            },
+            created_at="2026-09-01T00:00:00+00:00",
+            updated_at="2026-09-01T00:00:00+00:00",
+            confidence=ConfidenceLevel.LOW,
+        )
+        manager.save(
+            entity,
+        )
+
+        raw_before = memory_file.read_bytes()
+        stored_before = manager.get(
+            "proj_stable",
+        )
+
+        retriever = MemoryRetriever(
+            manager,
+        )
+        brain = Mock(
+            spec=Brain,
+        )
+        pipeline = RequestPipeline(
+            brain=brain,
+            retriever=retriever,
+            monitor=Monitor(
+                enabled=False,
+            ),
+        )
+
+        request = Request(
+            text="Stable Project query",
+            source=RequestSource.CLI,
+        )
+
+        inspected = pipeline.inspect_context(
+            request,
+        )
+
+        assert len(inspected.items) == 1
+
+        raw_after = memory_file.read_bytes()
+        stored_after = manager.get(
+            "proj_stable",
+        )
+
+        assert raw_after == raw_before
+        assert stored_after == stored_before
+
+    def test_inspect_context_is_deterministic(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        """Repeated calls with identical request and memory state yield identical contexts."""
+
+        store = JsonEntityStore(
+            tmp_path / "memory.json",
+        )
+        manager = MemoryManager(
+            store,
+        )
+
+        manager.save(
+            Entity(
+                id="e1",
+                type=EntityType.NOTE,
+                name="Alpha Token Information",
+            ),
+        )
+        manager.save(
+            Entity(
+                id="e2",
+                type=EntityType.NOTE,
+                name="Alpha Token Extended Information",
+            ),
+        )
+
+        retriever = MemoryRetriever(
+            manager,
+        )
+        brain = Mock(
+            spec=Brain,
+        )
+        pipeline = RequestPipeline(
+            brain=brain,
+            retriever=retriever,
+            monitor=Monitor(
+                enabled=False,
+            ),
+        )
+
+        request = Request(
+            text="Alpha Token",
+            source=RequestSource.CLI,
+        )
+
+        first = pipeline.inspect_context(
+            request,
+        )
+        for _ in range(4):
+            subsequent = pipeline.inspect_context(
+                request,
+            )
+            assert [item.entity.id for item in subsequent.items] == [
+                item.entity.id for item in first.items
+            ]
+            assert [item.relevance for item in subsequent.items] == [
+                item.relevance for item in first.items
+            ]
+            assert subsequent == first

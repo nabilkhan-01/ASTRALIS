@@ -208,7 +208,7 @@ Context should not automatically become truth.
 - [x] Confidence representation
 - [x] Conflicting context detection
 - [x] User-controlled context updates
-- [ ] Context inspection
+- [x] Context inspection
 - [ ] Context deletion
 
 ---

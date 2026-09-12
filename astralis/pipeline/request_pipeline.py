@@ -2,6 +2,7 @@ from astralis.brain.brain import Brain
 from astralis.brain.context import BrainContext
 from astralis.brain.request import Request
 from astralis.brain.response import Response
+from astralis.context.context import Context
 from astralis.memory.retriever import MemoryRetriever
 from astralis.monitoring.monitor import Monitor
 
@@ -40,3 +41,12 @@ class RequestPipeline:
             )
 
         return response
+
+    def inspect_context(
+        self,
+        request: Request,
+    ) -> Context:
+        """Return the assembled context for a request without executing the Brain."""
+        return self._retriever.retrieve(
+            request,
+        )

@@ -89,6 +89,8 @@ This project follows Semantic Versioning.
 
 - Request Pipeline now retrieves relevant Context before reasoning.
 - Request Pipeline now assembles `BrainContext`.
+- Added read-only context inspection through `RequestPipeline.inspect_context()`, allowing callers to inspect the exact context assembled for a request without executing Brain reasoning or mutating memory.
+- Context inspection exposes actual recorded system metadata (relevance, provenance, timestamps, confidence, and entity properties) without generating synthetic explanations.
 - Preserved the Pipeline as a request-processing coordinator without direct persistent-memory access.
 
 ### Architecture
