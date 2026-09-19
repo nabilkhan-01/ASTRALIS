@@ -10,6 +10,12 @@ This project follows Semantic Versioning.
 
 ## Added
 
+- `LocalProvider` abstract base class for local reasoning runtimes (`astralis/providers/local.py`)
+  - Extends existing `Provider` abstraction and keeps `generate()` abstract for concrete runtimes
+  - Exposes `model`, normalized `host` endpoint, and `is_local = True` flag
+  - Reusable helper for local runtime connection/unavailability failures returning standard `Response(success=False)`
+- Centralized configuration for local runtimes in `Config` (`ollama_host`, `ollama_model`) reading `OLLAMA_HOST` and `OLLAMA_MODEL` environment variables with neutral defaults
+
 # [v0.4.0] - Context Foundation
 
 ## 🚀 Highlights

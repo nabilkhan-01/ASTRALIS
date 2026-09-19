@@ -62,6 +62,17 @@ class Config:
         "gpt-5",
     )
 
+    # Ollama / Local Model Configuration
+    ollama_host: str = os.getenv(
+        "OLLAMA_HOST",
+        "http://localhost:11434",
+    )
+
+    ollama_model: str = os.getenv(
+        "OLLAMA_MODEL",
+        "",
+    )
+
     # Tavily Configuration
     tavily_api_key: str = os.getenv(
         "TAVILY_API_KEY",

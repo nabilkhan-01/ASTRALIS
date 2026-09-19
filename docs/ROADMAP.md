@@ -245,11 +245,11 @@ Give ASTRALIS a locally runnable intelligence layer without making cloud APIs ma
 
 ## Goal
 
-> **Make ASTRALIS capable of useful reasoning locally, while keeping model providers interchangeable and cloud intelligence optional.**
+> **Make local reasoning the primary path when a suitable local model is available, while keeping model providers interchangeable and cloud providers optional and user-controlled.**
 
 ## Local Model Infrastructure
 
-- [ ] Local model provider abstraction
+- [x] Local model provider abstraction
 - [ ] Ollama provider
 - [ ] Local model discovery
 - [ ] Model configuration

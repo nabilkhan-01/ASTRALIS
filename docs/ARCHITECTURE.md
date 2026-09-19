@@ -345,8 +345,9 @@ Current providers:
 - Gemini
 - OpenAI
 - Mock
+- LocalProvider (abstract base for local runtimes)
 
-Future providers may include local inference providers.
+Future providers may include concrete local inference providers such as Ollama.
 
 The Brain depends on the provider abstraction rather than a
 specific model or model runtime.
