@@ -250,7 +250,7 @@ Give ASTRALIS a locally runnable intelligence layer without making cloud APIs ma
 ## Local Model Infrastructure
 
 - [x] Local model provider abstraction
-- [ ] Ollama provider
+- [x] Ollama provider
 - [ ] Local model discovery
 - [ ] Model configuration
 - [ ] Model lifecycle management

@@ -1,10 +1,22 @@
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import ClassVar
 
 from dotenv import load_dotenv
 
+from astralis.providers.reasoning import ReasoningMode
+
 load_dotenv()
+
+
+def _get_default_reasoning_mode() -> ReasoningMode:
+    return ReasoningMode.from_string(
+        os.getenv(
+            "OLLAMA_REASONING_MODE",
+            "auto",
+        ),
+    )
+
 
 
 @dataclass
@@ -13,8 +25,8 @@ class Config:
 
     # Application Information
     project_name: str = "ASTRALIS"
-    version: str = "0.3.1"
-    codename: str = "Engineering Stability"
+    version: str = "0.4.0"
+    codename: str = "Context Foundation"
     tagline: str = "Assist. Don't Control."
 
     # Runtime Settings
@@ -73,6 +85,18 @@ class Config:
         "",
     )
 
+    ollama_timeout: int = int(
+        os.getenv(
+            "OLLAMA_TIMEOUT",
+            "60",
+        )
+    )
+
+    ollama_reasoning_mode: ReasoningMode = field(
+        default_factory=_get_default_reasoning_mode,
+    )
+
+
     # Tavily Configuration
     tavily_api_key: str = os.getenv(
         "TAVILY_API_KEY",
@@ -92,3 +116,14 @@ class Config:
     # Voice Settings
     voice_enabled: bool = False
     wake_word: str = "Astralis"
+
+    def __post_init__(self) -> None:
+        if isinstance(
+            self.ollama_reasoning_mode,
+            str,
+        ):
+            self.ollama_reasoning_mode = (
+                ReasoningMode.from_string(
+                    self.ollama_reasoning_mode,
+                )
+            )

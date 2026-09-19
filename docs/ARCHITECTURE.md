@@ -346,11 +346,11 @@ Current providers:
 - OpenAI
 - Mock
 - LocalProvider (abstract base for local runtimes)
-
-Future providers may include concrete local inference providers such as Ollama.
+- OllamaProvider (concrete local provider subclassing LocalProvider)
 
 The Brain depends on the provider abstraction rather than a
-specific model or model runtime.
+specific model or model runtime. Local model runtimes such as
+Ollama remain strictly encapsulated beneath the Provider abstraction.
 
 ---
 

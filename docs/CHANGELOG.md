@@ -14,7 +14,22 @@ This project follows Semantic Versioning.
   - Extends existing `Provider` abstraction and keeps `generate()` abstract for concrete runtimes
   - Exposes `model`, normalized `host` endpoint, and `is_local = True` flag
   - Reusable helper for local runtime connection/unavailability failures returning standard `Response(success=False)`
-- Centralized configuration for local runtimes in `Config` (`ollama_host`, `ollama_model`) reading `OLLAMA_HOST` and `OLLAMA_MODEL` environment variables with neutral defaults
+- Centralized configuration for local runtimes in `Config` (`ollama_host`, `ollama_model`, `ollama_timeout`, `ollama_reasoning_mode`) reading `OLLAMA_HOST`, `OLLAMA_MODEL`, `OLLAMA_TIMEOUT`, and `OLLAMA_REASONING_MODE` environment variables with neutral defaults and safe validation
+- Provider-independent `ReasoningMode` abstraction (`FAST`, `DEEP`, `AUTO`) in `astralis/providers/reasoning.py`
+  - Local reasoning is now configurable through reasoning modes
+  - `FAST` and `DEEP` explicitly control local thinking where supported (`think: false` and `think: true` respectively in Ollama)
+  - `AUTO` is the default reasoning mode; until task-aware routing is implemented, AUTO safely uses FAST local inference (`think: false`)
+  - Future routing will allow AUTO to select FAST or DEEP according to task requirements
+  - Automatic routing is NOT implemented in this step and will be introduced in a future v0.5.0 routing phase
+- `OllamaProvider` concrete local AI provider (`astralis/providers/ollama.py`)
+  - Subclasses `LocalProvider` to communicate directly with local Ollama HTTP API (`/api/chat`)
+  - Maps ASTRALIS `Conversation`, `Message`, and `Role` models 1:1 to Ollama chat payload
+  - Injects the shared ASTRALIS `SYSTEM_PROMPT` as the initial system message to guide concise, identity-aligned responses
+  - Configurable request timeout (defaults to 60 seconds) to accommodate local inference speeds
+  - Configurable local reasoning mode (`ReasoningMode`) translating into top-level `think` API parameter (`think: false` for FAST and AUTO, `think: true` for DEEP)
+  - Robust exception and error handling translating network and HTTP errors into `Response(success=False)` without exposing raw exceptions
+  - Registered in `ProviderFactory` under `"ollama"` key using configured host, model, timeout, and reasoning mode parameters
+
 
 # [v0.4.0] - Context Foundation
 

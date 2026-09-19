@@ -4,6 +4,7 @@ from typing import ClassVar
 from astralis.core.config import Config
 from astralis.providers.gemini import GeminiProvider
 from astralis.providers.mock import MockProvider
+from astralis.providers.ollama import OllamaProvider
 from astralis.providers.openai import OpenAIProvider
 from astralis.providers.provider import Provider
 
@@ -15,6 +16,12 @@ class ProviderFactory:
         "gemini": GeminiProvider,
         "openai": OpenAIProvider,
         "mock": lambda _config: MockProvider(),
+        "ollama": lambda config: OllamaProvider(
+            model=config.ollama_model,
+            host=config.ollama_host,
+            timeout=config.ollama_timeout,
+            reasoning_mode=config.ollama_reasoning_mode,
+        ),
     }
 
     @staticmethod

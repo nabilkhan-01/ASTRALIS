@@ -2,12 +2,14 @@ import importlib
 import os
 from unittest.mock import patch
 
+import pytest
+
 import astralis.core.config as config_module
 from astralis.brain.conversation import Conversation
 from astralis.brain.response import Response
-from astralis.core.config import Config
 from astralis.providers.local import LocalProvider
 from astralis.providers.provider import Provider
+from astralis.providers.reasoning import ReasoningMode
 
 
 class ConcreteLocalProvider(
@@ -159,23 +161,37 @@ class TestLocalConfiguration:
     ) -> None:
         """Default configuration does not hardcode a specific model dependency."""
 
-        with patch.dict(
-            os.environ,
-            {},
-            clear=True,
-        ):
-            config = Config()
+        try:
+            with patch.dict(
+                os.environ,
+                {},
+                clear=True,
+            ), patch(
+                "dotenv.load_dotenv",
+            ):
+                importlib.reload(
+                    config_module,
+                )
+                config = config_module.Config()
 
-            assert config.ollama_host == "http://localhost:11434"
-            assert config.ollama_model == ""
+                assert config.ollama_host == "http://localhost:11434"
+                assert config.ollama_model == ""
+                assert config.ollama_timeout == 60
+                assert config.ollama_reasoning_mode == ReasoningMode.AUTO
+        finally:
+            importlib.reload(
+                config_module,
+            )
 
     def test_configuration_reads_env_vars(
         self,
     ) -> None:
-        """Config respects OLLAMA_HOST and OLLAMA_MODEL environment variables."""
+        """Config respects OLLAMA_HOST, OLLAMA_MODEL, OLLAMA_TIMEOUT, and OLLAMA_REASONING_MODE."""
         env = {
             "OLLAMA_HOST": "http://remote-gpu:11434",
             "OLLAMA_MODEL": "custom-model:latest",
+            "OLLAMA_TIMEOUT": "90",
+            "OLLAMA_REASONING_MODE": "deep",
         }
 
         try:
@@ -190,7 +206,68 @@ class TestLocalConfiguration:
 
                 assert config.ollama_host == "http://remote-gpu:11434"
                 assert config.ollama_model == "custom-model:latest"
+                assert config.ollama_timeout == 90
+                assert config.ollama_reasoning_mode == ReasoningMode.DEEP
         finally:
             importlib.reload(
                 config_module,
             )
+
+    @pytest.mark.parametrize(
+        ("env_value", "expected_mode"),
+        [
+            ("fast", ReasoningMode.FAST),
+            ("FAST", ReasoningMode.FAST),
+            ("FaSt", ReasoningMode.FAST),
+            ("  fast  ", ReasoningMode.FAST),
+            ("deep", ReasoningMode.DEEP),
+            ("DEEP", ReasoningMode.DEEP),
+            ("Deep", ReasoningMode.DEEP),
+            ("auto", ReasoningMode.AUTO),
+            ("AUTO", ReasoningMode.AUTO),
+            ("Auto", ReasoningMode.AUTO),
+        ],
+    )
+    def test_configuration_reasoning_mode_variations(
+        self,
+        env_value: str,
+        expected_mode: ReasoningMode,
+    ) -> None:
+        """Config parses OLLAMA_REASONING_MODE case-insensitively for all valid modes."""
+        try:
+            with patch.dict(
+                os.environ,
+                {"OLLAMA_REASONING_MODE": env_value},
+            ):
+                importlib.reload(
+                    config_module,
+                )
+                config = config_module.Config()
+
+                assert config.ollama_reasoning_mode is expected_mode
+        finally:
+            importlib.reload(
+                config_module,
+            )
+
+    def test_configuration_invalid_reasoning_mode_raises_value_error(
+        self,
+    ) -> None:
+        """Invalid OLLAMA_REASONING_MODE value raises ValueError and fails safely."""
+        with patch.dict(
+            os.environ,
+            {"OLLAMA_REASONING_MODE": "unsupported_mode"},
+        ), pytest.raises(
+            ValueError,
+            match="Invalid reasoning mode: 'unsupported_mode'",
+        ):
+            config_module.Config()
+
+    def test_config_post_init_coerces_string_reasoning_mode(
+        self,
+    ) -> None:
+        """Instantiating Config with a string reasoning_mode parses it to ReasoningMode."""
+        config = config_module.Config(
+            ollama_reasoning_mode="fast",  # type: ignore[arg-type]
+        )
+        assert config.ollama_reasoning_mode is ReasoningMode.FAST
