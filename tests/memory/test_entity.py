@@ -527,3 +527,42 @@ def test_confidence_does_not_appear_as_context_item_field() -> None:
         "confidence",
     )
     assert item.entity.confidence is ConfidenceLevel.HIGH
+
+
+def test_entity_creator_property() -> None:
+    """Entity.creator returns the creator string when set on an entity."""
+    entity = Entity(
+        id="entity_test",
+        type=EntityType.PROJECT,
+        name="TestProject",
+        properties={
+            "creator": "Alice",
+        },
+    )
+
+    assert entity.creator == "Alice"
+
+
+def test_entity_creator_property_absent_returns_none() -> None:
+    """Entity.creator returns None when creator property is missing or empty."""
+    entity = Entity(
+        id="entity_test",
+        type=EntityType.PROJECT,
+        name="TestProject",
+        properties={
+            "root_path": "C:/Users/dynam/projects/test",
+        },
+    )
+
+    assert entity.creator is None
+
+    empty_creator = Entity(
+        id="entity_test_2",
+        type=EntityType.PROJECT,
+        name="TestProject2",
+        properties={
+            "creator": "   ",
+        },
+    )
+
+    assert empty_creator.creator is None

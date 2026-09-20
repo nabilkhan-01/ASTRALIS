@@ -6,7 +6,12 @@ import re
 
 from astralis.context.context import Context
 from astralis.context.context_item import ContextItem
+from astralis.core.project_identity import (
+    CANONICAL_PROJECT_IDENTITY,
+    ProjectIdentity,
+)
 from astralis.memory.entity import Entity
+from astralis.memory.entity_type import EntityType
 
 
 class LexicalRelevanceEngine:
@@ -24,6 +29,22 @@ class LexicalRelevanceEngine:
 
     _NAME_WEIGHT: float = 3.0
     _PROPERTY_WEIGHT: float = 1.0
+
+    _IDENTITY_SEMANTIC_TOKENS: frozenset[str] = frozenset({
+        "project",
+        "founder",
+        "creator",
+        "created",
+        "creation",
+        "made",
+        "maker",
+        "author",
+        "built",
+        "builder",
+        "yourself",
+        "self",
+        "identity",
+    })
 
     _STOP_WORDS: frozenset[str] = frozenset({
         "a", "an", "the", "is", "are", "was", "were", "be", "been",
@@ -102,6 +123,16 @@ class LexicalRelevanceEngine:
         )
 
         prop_tokens: set[str] = set()
+        prop_tokens.update(
+            self._tokenize(
+                str(entity.type.value),
+            ),
+        )
+        if entity.type is EntityType.PROJECT:
+            prop_tokens.update(
+                self._IDENTITY_SEMANTIC_TOKENS,
+            )
+
         for key, value in entity.properties.items():
             prop_tokens.update(
                 self._tokenize(
@@ -123,6 +154,49 @@ class LexicalRelevanceEngine:
 
         raw_score = (self._NAME_WEIGHT * name_matches) + (
             self._PROPERTY_WEIGHT * prop_only_matches
+        )
+        max_possible = self._NAME_WEIGHT * len(
+            query_tokens,
+        )
+
+        normalized = raw_score / max_possible
+        return round(
+            max(0.0, min(1.0, normalized)),
+            4,
+        )
+
+    def score_project_identity(
+        self,
+        request_text: str,
+        identity: ProjectIdentity = CANONICAL_PROJECT_IDENTITY,
+    ) -> float:
+        """Score project identity relevance against the request text.
+
+        Uses term overlap with the canonical project name (3x weight) and
+        project identity semantics such as founder/creator/project/self (1x weight).
+        Does NOT rely on matching the founder's name, ensuring queries like
+        'Who made Astralis?' or 'Who is the founder?' retrieve identity context.
+        """
+        query_tokens = self._tokenize(
+            request_text,
+        )
+        if not query_tokens:
+            return 0.0
+
+        name_tokens = self._tokenize(
+            identity.name,
+        )
+        semantic_tokens = self._IDENTITY_SEMANTIC_TOKENS
+
+        name_matches = len(
+            query_tokens & name_tokens,
+        )
+        semantic_matches = len(
+            (query_tokens & semantic_tokens) - name_tokens,
+        )
+
+        raw_score = (self._NAME_WEIGHT * name_matches) + (
+            self._PROPERTY_WEIGHT * semantic_matches
         )
         max_possible = self._NAME_WEIGHT * len(
             query_tokens,
@@ -169,15 +243,19 @@ class LexicalRelevanceEngine:
         self,
         request_text: str,
         entities: list[Entity],
+        identity: ProjectIdentity = CANONICAL_PROJECT_IDENTITY,
     ) -> Context:
-        """Build a Context from entities, ranked by relevance.
-
-        Wraps rank_entities in a Context dataclass.
-        """
+        """Build a Context from entities and canonical project identity."""
         items = self.rank_entities(
             request_text,
             entities,
         )
+        identity_relevance = self.score_project_identity(
+            request_text=request_text,
+            identity=identity,
+        )
         return Context(
             items=tuple(items),
+            project_identity=identity,
+            identity_relevance=identity_relevance,
         )

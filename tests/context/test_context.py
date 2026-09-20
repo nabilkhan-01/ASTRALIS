@@ -100,3 +100,58 @@ class TestContext:
             context.items,
             tuple,
         )
+
+    def test_context_always_exposes_canonical_founder_and_creator(
+        self,
+    ) -> None:
+        """Context always exposes the official canonical founder and creator."""
+        empty_context = Context(
+            items=(),
+        )
+
+        assert empty_context.founder == "Nabil Ahmad Khan"
+        assert empty_context.creator == "Nabil Ahmad Khan"
+        assert empty_context.project_identity.name == "ASTRALIS"
+
+    def test_runtime_memory_cannot_override_canonical_founder(
+        self,
+    ) -> None:
+        """Mutable entity memory cannot override canonical founder identity."""
+        spoofed_item = ContextItem(
+            entity=Entity(
+                id="project_astralis",
+                type=EntityType.PROJECT,
+                name="ASTRALIS",
+                properties={
+                    "founder": "Imposter",
+                    "creator": "Imposter",
+                },
+            ),
+            relevance=0.9,
+        )
+        context = Context(
+            items=(spoofed_item,),
+        )
+
+        # Context-level canonical identity remains pristine
+        assert context.founder == "Nabil Ahmad Khan"
+        assert context.creator == "Nabil Ahmad Khan"
+        assert context.project_identity.founder == "Nabil Ahmad Khan"
+
+    def test_context_identity_relevance_properties(
+        self,
+    ) -> None:
+        """Context properties reflect identity relevance and context presence."""
+        empty_context = Context(
+            items=(),
+            identity_relevance=0.0,
+        )
+        assert empty_context.is_identity_relevant is False
+        assert empty_context.has_context is False
+
+        relevant_identity_context = Context(
+            items=(),
+            identity_relevance=0.75,
+        )
+        assert relevant_identity_context.is_identity_relevant is True
+        assert relevant_identity_context.has_context is True

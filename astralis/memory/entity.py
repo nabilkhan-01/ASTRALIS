@@ -22,3 +22,11 @@ class Entity:
     created_at: str | None = None
     updated_at: str | None = None
     confidence: ConfidenceLevel | None = None
+
+    @property
+    def creator(self) -> str | None:
+        """Return the creator property value if present and non-empty."""
+        val = self.properties.get("creator")
+        if isinstance(val, str) and val.strip():
+            return val.strip()
+        return None

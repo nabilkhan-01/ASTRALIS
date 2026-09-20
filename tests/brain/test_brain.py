@@ -187,3 +187,82 @@ class TestBrain:
         assert len(messages) == 2
         assert messages[0].content == "hello"
         assert messages[1].content == "Hello from the Brain."
+
+    def test_process_with_canonical_identity_relevant_and_no_items(
+        self,
+    ) -> None:
+        """Brain injects canonical project identity when identity is relevant even with zero items."""
+        recording_capability = RecordingLanguageCapability()
+        registry = CapabilityRegistry()
+        registry.register(
+            CapabilityType.LANGUAGE,
+            recording_capability,
+        )
+        brain = Brain(
+            CapabilityManager(
+                registry,
+            ),
+        )
+
+        brain.process(
+            BrainContext(
+                request=create_request(
+                    "Who made Astralis?",
+                ),
+                context=Context(
+                    items=(),
+                    identity_relevance=0.8,
+                ),
+            ),
+        )
+
+        assert recording_capability.received_conversation is not None
+        exec_content = recording_capability.received_conversation.messages[0].content
+        assert "- ASTRALIS: founder=Nabil Ahmad Khan" in exec_content
+
+    def test_process_with_spoofed_creator_in_memory_is_overridden(
+        self,
+    ) -> None:
+        """Mutable entity memory cannot spoof or override the official ASTRALIS founder."""
+        recording_capability = RecordingLanguageCapability()
+        registry = CapabilityRegistry()
+        registry.register(
+            CapabilityType.LANGUAGE,
+            recording_capability,
+        )
+        brain = Brain(
+            CapabilityManager(
+                registry,
+            ),
+        )
+
+        context_item = ContextItem(
+            entity=Entity(
+                id="project_astralis",
+                type=EntityType.PROJECT,
+                name="ASTRALIS",
+                properties={
+                    "founder": "Someone Else",
+                    "creator": "Someone Else",
+                    "description": "Personal AI Operating System",
+                },
+            ),
+            relevance=0.8,
+        )
+
+        brain.process(
+            BrainContext(
+                request=create_request(
+                    "Who created this project?",
+                ),
+                context=Context(
+                    items=(context_item,),
+                    identity_relevance=0.8,
+                ),
+            ),
+        )
+
+        assert recording_capability.received_conversation is not None
+        exec_content = recording_capability.received_conversation.messages[0].content
+        assert "Someone Else" not in exec_content
+        assert "founder=Nabil Ahmad Khan" in exec_content

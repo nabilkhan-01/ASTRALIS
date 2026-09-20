@@ -251,22 +251,27 @@ Context is immutable and ephemeral.
 
 Current contents:
 
-- Relevant ContextItems
-- Persistent Entities
-- Deterministic relevance scores
+- Canonical Project Identity (`ProjectIdentity`): immutable official project identity (`name = "ASTRALIS"`, `founder = "Nabil Ahmad Khan"`).
+- Relevant ContextItems (`ContextItem`): persistent entities ranked by deterministic relevance.
+- Deterministic relevance scores.
 
-Context may expose entity metadata such as:
+### Canonical Project Identity vs. Mutable Project Context
 
-- Entity identity
-- Entity type
-- Properties
-- Provenance
-- Temporal metadata
-- Confidence
+ASTRALIS strictly distinguishes permanent official identity from mutable project context:
 
-Context is not persistent storage.
+1. **Canonical Project Identity** (`astralis/core/project_identity.py`):
+   - Permanent, official identity of ASTRALIS.
+   - Source-controlled and distribution-native (available on clean clone without setup).
+   - Attributes: `name = "ASTRALIS"`, `founder = "Nabil Ahmad Khan"`.
+   - Immutable and read-only.
+   - Strictly takes precedence over mutable memory; cannot be overridden by `.env`, OS username, git config, or runtime user data.
 
-A new Context is assembled for each retrieval operation and is not reused as persistent memory.
+2. **Mutable Project Context** (`data/memory.json`):
+   - Ephemeral runtime/user memory.
+   - Contains evolving project context: goals, architecture notes, requirements, decisions, and current state.
+   - Excluded from version control (`data/` is gitignored).
+
+Context is not persistent storage. A new Context is assembled for each retrieval operation and is not reused as persistent memory.
 
 ---
 

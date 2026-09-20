@@ -9,6 +9,7 @@ from astralis.brain.response import Response
 from astralis.brain.role import Role
 from astralis.capability.manager import CapabilityManager
 from astralis.context.context import Context
+from astralis.memory.entity_type import EntityType
 
 
 class Brain:
@@ -118,15 +119,34 @@ class Brain:
     ) -> Conversation:
         """Construct temporary conversation input for capability execution."""
 
-        if not context.items:
+        if not context.has_context:
             return self._conversation
 
         context_lines: list[str] = []
+        project_represented = False
+
         for item in context.items:
-            if item.entity.properties:
+            props_dict = dict(item.entity.properties)
+            if (
+                item.entity.type is EntityType.PROJECT
+                and item.entity.name.upper() == context.project_identity.name.upper()
+            ):
+                project_represented = True
+                # Anti-spoof: canonical identity takes precedence over mutable memory
+                if "creator" in props_dict and props_dict["creator"] != context.creator:
+                    props_dict["creator"] = context.creator
+                if "founder" in props_dict and props_dict["founder"] not in (
+                    context.founder,
+                    "Nabil",
+                ):
+                    props_dict["founder"] = context.founder
+                if context.is_identity_relevant and "founder" not in props_dict:
+                    props_dict["founder"] = context.founder
+
+            if props_dict:
                 props = ", ".join(
                     f"{key}={value}"
-                    for key, value in item.entity.properties.items()
+                    for key, value in props_dict.items()
                 )
                 context_lines.append(
                     f"- {item.entity.name}: {props}",
@@ -135,6 +155,12 @@ class Brain:
                 context_lines.append(
                     f"- {item.entity.name}",
                 )
+
+        if context.is_identity_relevant and not project_represented:
+            context_lines.insert(
+                0,
+                f"- {context.project_identity.name}: founder={context.project_identity.founder}",
+            )
 
         augmented_content = (
             "[ASTRALIS Retrieved Context]\n"

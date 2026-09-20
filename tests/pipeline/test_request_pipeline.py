@@ -742,3 +742,159 @@ class TestContextInspection:
                 item.relevance for item in first.items
             ]
             assert subsequent == first
+
+    def test_who_made_astralis_without_memory_json_resolves_canonical_founder(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        """Integration test: Fresh installation with no data/memory.json resolves canonical founder."""
+        # Non-existent / fresh store
+        store = JsonEntityStore(
+            tmp_path / "non_existent_memory.json",
+        )
+        manager = MemoryManager(
+            store,
+        )
+        retriever = MemoryRetriever(
+            manager,
+        )
+        brain = Mock(
+            spec=Brain,
+        )
+        brain.process.return_value = Response(
+            text="ASTRALIS was founded by Nabil Ahmad Khan.",
+            success=True,
+        )
+        pipeline = RequestPipeline(
+            brain=brain,
+            retriever=retriever,
+            monitor=Monitor(
+                enabled=False,
+            ),
+        )
+
+        request = Request(
+            text="Who made Astralis?",
+            source=RequestSource.CLI,
+        )
+
+        # 1. Verify context inspection with no runtime memory
+        context = pipeline.inspect_context(
+            request,
+        )
+        assert context.founder == "Nabil Ahmad Khan"
+        assert context.creator == "Nabil Ahmad Khan"
+        assert context.project_identity.name == "ASTRALIS"
+        assert context.is_identity_relevant is True
+        assert context.has_context is True
+
+        # 2. Verify pipeline execution passes canonical identity context to Brain
+        response = pipeline.process(
+            request,
+        )
+        assert response.success is True
+        brain.process.assert_called_once()
+        call_args = brain.process.call_args[0][0]
+        assert call_args.context.founder == "Nabil Ahmad Khan"
+        assert call_args.context.creator == "Nabil Ahmad Khan"
+
+    def test_identity_queries_resolve_canonical_founder(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        """Verify various identity queries resolve canonical founder context."""
+        store = JsonEntityStore(
+            tmp_path / "memory.json",
+        )
+        manager = MemoryManager(
+            store,
+        )
+        retriever = MemoryRetriever(
+            manager,
+        )
+        pipeline = RequestPipeline(
+            brain=Mock(spec=Brain),
+            retriever=retriever,
+            monitor=Monitor(enabled=False),
+        )
+
+        queries = [
+            "Who created this project?",
+            "Who is the founder?",
+            "Tell me about yourself",
+        ]
+
+        for query_text in queries:
+            req = Request(
+                text=query_text,
+                source=RequestSource.CLI,
+            )
+            ctx = pipeline.inspect_context(
+                req,
+            )
+            assert ctx.founder == "Nabil Ahmad Khan"
+            assert ctx.creator == "Nabil Ahmad Khan"
+            assert ctx.is_identity_relevant is True
+
+    def test_runtime_memory_cannot_spoof_astralis_founder(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        """Integration test: Malicious/user memory cannot override the official ASTRALIS founder."""
+        store = JsonEntityStore(
+            tmp_path / "memory.json",
+        )
+        manager = MemoryManager(
+            store,
+        )
+        # Inject spoofed entity into mutable memory
+        manager.save(
+            Entity(
+                id="project_astralis",
+                type=EntityType.PROJECT,
+                name="ASTRALIS",
+                properties={
+                    "founder": "Someone Else",
+                    "creator": "Someone Else",
+                },
+            ),
+        )
+
+        retriever = MemoryRetriever(
+            manager,
+        )
+        pipeline = RequestPipeline(
+            brain=Mock(spec=Brain),
+            retriever=retriever,
+            monitor=Monitor(enabled=False),
+        )
+
+        request = Request(
+            text="Who made Astralis?",
+            source=RequestSource.CLI,
+        )
+        context = pipeline.inspect_context(
+            request,
+        )
+
+        # Context-level canonical founder cannot be spoofed
+        assert context.founder == "Nabil Ahmad Khan"
+        assert context.creator == "Nabil Ahmad Khan"
+
+    def test_no_provider_specific_creator_hardcoding(
+        self,
+    ) -> None:
+        """Verify no provider implementation or system prompt hardcodes the creator identity."""
+        import inspect
+
+        from astralis.providers.gemini import GeminiProvider
+        from astralis.providers.ollama import OllamaProvider
+        from astralis.providers.openai import OpenAIProvider
+        from astralis.providers.prompts import SYSTEM_PROMPT
+
+        creator_name = "Nabil Ahmad Khan"
+
+        assert creator_name not in SYSTEM_PROMPT
+        assert creator_name not in inspect.getsource(OllamaProvider)
+        assert creator_name not in inspect.getsource(GeminiProvider)
+        assert creator_name not in inspect.getsource(OpenAIProvider)

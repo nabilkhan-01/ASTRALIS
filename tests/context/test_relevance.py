@@ -246,3 +246,55 @@ class TestLexicalRelevanceEngine:
         )
 
         assert 0.0 <= score <= 1.0
+
+    def test_score_project_identity_for_identity_queries(
+        self,
+    ) -> None:
+        """Project identity queries score positive relevance without relying on creator name."""
+        engine = self._engine()
+
+        test_queries = [
+            "Who made Astralis?",
+            "Who created this project?",
+            "Who is the founder?",
+            "Who is the creator of Astralis?",
+            "Tell me about yourself.",
+            "What is Astralis?",
+            "What project are we working on?",
+            "Who built Astralis?",
+        ]
+
+        for query in test_queries:
+            score = engine.score_project_identity(
+                query,
+            )
+            assert score > 0.0, f"Query '{query}' produced zero identity score"
+            assert score <= 1.0
+
+            # Even with NO entities in memory, context has identity_relevance and canonical founder
+            context = engine.build_context(
+                query,
+                [],
+            )
+            assert context.is_identity_relevant is True
+            assert context.has_context is True
+            assert context.founder == "Nabil Ahmad Khan"
+            assert context.creator == "Nabil Ahmad Khan"
+
+    def test_unrelated_query_has_zero_project_identity_score(
+        self,
+    ) -> None:
+        """Unrelated queries produce zero project identity relevance."""
+        engine = self._engine()
+
+        unrelated_queries = [
+            "What is the weather in London?",
+            "Reverse a binary tree in Python",
+            "Calculate mortgage payment for 30 years",
+        ]
+
+        for query in unrelated_queries:
+            score = engine.score_project_identity(
+                query,
+            )
+            assert score == 0.0, f"Query '{query}' produced non-zero identity score: {score}"
